@@ -1,0 +1,13 @@
+{% extends "tsuki_app/base.html" %}
+
+{% block body_block %}
+
+<div class="jumbotron">
+
+  <a style="margin-bottom:50px;" class="btn btn-primary" href="{% url 'tsuki_app:exportardata' %}">Exportar pedidos y gastos</a><br><br>
+  <a style="margin-bottom:50px;" class="btn btn-primary" href="{% url 'tsuki_app:actualizar_carta' %}">Actualizar lista de precios</a><br><br>
+  <a style="margin-bottom:50px;" class="btn btn-primary" href="{% url 'tsuki_app:actualizar_listagastos' %}">Actualizar lista de gastos</a><br><br>
+
+  </div>
+
+{% endblock %}

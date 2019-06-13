@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "tsuki-app-242720",
+  "private_key_id": "a11f84c2dec248f14c6d8f5c2dbcefa05f7dcd32",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC3WzB7ZZFwV/GK\n9V3L9vorfezitqdjPUlQM0mCLhSkkEkZdKPQ85RJ55yy7f76V/J+hhVaJNyb5wwy\nofsVe5QqdZEX4joj03ts6Pk+UYQJVwojAh2vPseCeymz9Kzyjlf6jfMjp25/eGsl\nRrRxym6nk2sRVgy6ionntwMYkwa+2rjfd86B8C4RMiEuStclzeBfAMYpK1TNGqnq\nmjyFUEI4tBE8szst1esA6xWDD+oQgU/n+DEJ5gV2rCJrH/+OIVQd1aCzTvMz9tgM\np3kLMVkPbv/77mBwspDeTIyf9AD8ig2fYS8jqSjaW/JeQ1InmJypSl+AQXk6ppjL\nTILA1rNXAgMBAAECggEAERLCMHNUOCBQQw629bOhNuSKZs/4RTLjPT8RVLhivrIa\nxG6KhH3x7HHPMxAbQodm8qYcneC51CCPD7XqkeUIdm2tHYq4vDZIk2scLlPb1hzP\nOlRLnFJdtIYwa2vYoNtlUNTf8413KhJ186oiSkg9xofhG+Ol2sbksXlmpeam5aWC\nbVKTYrXpKvWUbUGhRMoEckGktGVud5y8XAl5dgydwVTTv+0uawQ9QibON8UHTSAo\n3qpb9LsQfs6HHwLfQCuH5jXGEwg4fP+t6xSZZ4o+XV6+AwTpvQRKX5Eene+KJDgp\n4JWBHA4AR7AJE5LJVBSRA79P7folG0ONih76lUkD7QKBgQD7pOteyVnzCIQD5HUS\nPQAflb5pX9WY4wzYwPKqOB8vHkzdCgglYL7z5m+C53s4UygRzbyj0tuw0EZzJCPL\noSWvcm6pv+kSFAX0/51z3uSZjK36/Uf51Ejktoywx8EufkJxfIA1tR3Sg0itwmaM\nnmuMNm4c5V8zZpJ+I9PGEdiBHQKBgQC6h6xvf9DnHkuEAonhavZvSWmr1vEkxDo+\nSMR5oki4vrfJVzBN0SxZJS1iIZ8tx4XrZ8SDanhghvnFcjxld4g3AIhS7zDKcQtX\nAsgYrIjojdhkACRzKDBk83rinfx+ZMLln066e7ug8LmWuLAT940KuvVxmQ5RGIjG\nfsIkGarwAwKBgHllliaj/EDCWu2FyPSDeQvDsZgkI2ceIZRvgKGdcW3JsEryC/v8\nMCJ5iFIeWdNSSoJMPjTKBDHISDRDuwEBPKznB3vcmROflUAcEFlVrfJla4kppw9e\n2ct8RWMC+q7zOhqFdVRzi2+C5gztO4ua4UdC+tv1y3eAhCtWHVPwSAIBAoGAP/Hx\nAExeDk1JcBj6sadckiwlqL5H7uXCXcXObTBgI81l7gUQzyyNOoZPN5v1GNmUpG3v\nZWnjmJvNFo4h/Frs/IYXNe8/17bHP235sNO9H5Q5AZc25694X7NEhlnIzH+4fMWP\nVMjEOtkrlmr8Gew8ktgi+m2RBeYWRY4A+iU+f4cCgYAYG65/7j7hg6uglTR5xyQI\neZ9LELlxU0jT6g3ca8wk/9qejW2dNvHOMOkVw+FEJjUJoVrdlqf1cDzwQlyF+jVD\nThHIzg6ENTFLdQevgRlZUkWKTsGiJ9uCoNd/LWQcHxCswxxXBTlaWdbb0kRQbb42\nIHAiBO0NSP2a68Oe6imDVA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "augustopiva@tsuki-app-242720.iam.gserviceaccount.com",
+  "client_id": "113809408090911011434",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/augustopiva%40tsuki-app-242720.iam.gserviceaccount.com"
+}

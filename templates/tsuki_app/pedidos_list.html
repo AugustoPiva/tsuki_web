@@ -1,0 +1,94 @@
+{% extends "tsuki_app/base.html" %}
+
+<!-- Aca se enlistan los pedidos del dia de la fecha -->
+{% block body_block %}
+
+
+<div class="jumbotron">
+<div id="primerfila"class="row">
+  <div class="col-12">
+    <div class="row">
+    <div class="col-3">
+     <form method="post">
+       {% csrf_token %}
+      {{fecha.media}}
+      {{fecha.dia}}
+      </div>
+    <div class="col-3">
+      <button class = 'btn btn-primary' type="submit" name="button"> Buscar </button>
+      </div>
+      <div class="col-3">
+       <h5>{{x|date:"l"}}, {{x|date:"j"}} de {{x|date:"F"}} </h5>
+      </div>
+      <div class="col-3">
+       <h5>Total pedidos: {{pedidostotales}}</h5>
+      </div>
+     </div>
+  </div>
+
+</form>
+
+</div>
+
+{% regroup productosdeordenes by pedido as pedido_list %}
+
+  <div id="accordion">
+      {% for pedido in pedido_list %}
+      <script type="text/javascript">
+           console.log("{{pedido.grouper}}");
+            </script>
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <div class="row">
+          <div class="col-6">
+            <div class="row">
+              <div class="col-6">
+                <h5 class="mb-0">
+                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    {{ pedido.grouper }}
+                  </button>
+                </h5>
+              </div>
+              <div class="col-6">
+                  Total: $ {{pedido.grouper.get_total}}
+              </div>
+            </div>
+          </div>
+        <div class="col-6">
+            <div class="row">
+              <div class="col-3">
+
+              </div>
+              <div class="col-3">
+                  <a class = 'btn btn-primary' href="{% url 'tsuki_app:modificarpedido' pk=pedido.grouper.id %}">Modificar</a>
+              </div>
+              <div class="col-3">
+                  <a class = 'btn btn-secondary' href="">Imprimir</a>
+              </div>
+              <div class="col-3">
+                  <a class = 'btn btn-danger' href="{% url 'tsuki_app:confirmareliminar' pk=pedido.grouper.id %}">Eliminar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+        <div class="row">
+          <div class="col-6">
+            {% for producto in pedido.list  %}
+            <li> {{producto.cantidad}} - {{ producto.item.nombre_producto }}</li>
+            {% endfor %}
+            </div>
+            <div class="col-6">
+              {{pedido.grouper.comentario}}
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}

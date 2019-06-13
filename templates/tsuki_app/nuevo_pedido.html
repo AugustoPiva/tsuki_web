@@ -1,0 +1,248 @@
+{% extends "tsuki_app/base.html" %}
+{% load my_extras %}
+
+<!-- Aca se crea un pedido nuevo -->
+{% block body_block %}
+
+
+    <div class="jumbotron">
+      <div class="row">
+      <!-- Primer columna de la pagina -->
+        <div class="col-6">
+            <!--Rolls simples  -->
+              <div class="row">
+                  <h6 class='textosrolls'>Simples</h6>
+                </div>
+                <div class="row">
+                  {% for prod in lista %}
+                  {% if prod.categoria_producto == "Simples"%}
+                          <a class="btn btn-info" href="{% url 'tsuki_app:incorporando' producto=prod.id %}" style="margin-right:5px;">{{prod.nombre_producto}}</a>
+                          <script type="text/javascript">
+                                listadoprecios.{{prod.id}} = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                          </script>
+                  {% endif %}
+                  {% endfor %}
+                </div>
+            <!-- Rolss Clasicos -->
+              <div class="row">
+                  <h6 class='textosrolls'>Clasicos</h6>
+                </div>
+                <div class="row">
+                {% for prod in lista %}
+                {% if prod.categoria_producto == "Clasicos"%}
+                        <a class="btn btn-primary" href="{% url 'tsuki_app:incorporando' producto=prod.id %}" style="margin-right:5px;">{{prod.nombre_producto}}</a>
+                        <script type="text/javascript">
+                              listadoprecios.{{prod.id}} = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                        </script>
+                {% endif %}
+                {% endfor %}
+                </div>
+            <!-- Rolls Especiales -->
+              <div class="row">
+                  <h6 class='textosrolls'>Especiales</h6>
+                </div>
+                <div class="row">
+                  {% for prod in lista %}
+                  {% if prod.categoria_producto == "Especiales"%}
+                          <a class="btn btn-secondary" href="{% url 'tsuki_app:incorporando' producto=prod.id %}" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+                          <script type="text/javascript">
+                                listadoprecios.{{prod.id}} = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                          </script>
+                  {% endif %}
+                  {% endfor %}
+                </div>
+            <!-- Rolls Premium -->
+              <div class="row">
+                    <h6 class='textosrolls'>Premium</h6>
+                    </div>
+                      <div class="row">
+                        {% for prod in lista %}
+                        {% if prod.categoria_producto == "Premium"%}
+                                <a class="btn btn-warning" href="{% url 'tsuki_app:incorporando' producto=prod.id %}" style="margin-right:5px;">{{prod.nombre_producto}}</a>
+                                <script type="text/javascript">
+                                      listadoprecios.{{prod.id}} = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                                </script>
+                        {% endif %}
+                        {% endfor %}
+                      </div>
+            <!-- Hots y Otras piezas -->
+              <div class="row">
+                          <h6 id='combinados'>Otros</h6>
+                          </div>
+                          <div class="row">
+                            <!-- Hots -->
+                          <div class="col-3">
+                                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Hots
+                                      </button><br>
+                                              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                        {% for prod in lista %}
+                                                        {% if prod.categoria_producto == "Hot"%}
+                                                  <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' producto=prod.id %}">{{prod.nombre_producto}}</a>
+                                                          <script type="text/javascript">
+                                                                listadoprecios.{{prod.id}} = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                                                          </script>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                        <span></span>
+                                              </div>
+                                    </div>
+                          <!-- Otras piezas -->
+                          <div class="col-3">
+                                                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Otras piezas
+                                                  </button><br>
+                                                          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                            {% for prod in lista %}
+                                                            {% if prod.categoria_producto == "Geishas-Nigiris-Sash"%}
+                                                              <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' producto=prod.id %}">{{prod.nombre_producto}}</a>
+                                                              <script type="text/javascript">
+                                                                    listadoprecios.{{prod.id}} = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                                                              </script>
+                                                            {% endif %}
+                                                            {% endfor %}
+                                                          </div>
+                                    </div>
+                          <!-- Salsa  -->
+                          <div class="col-3">
+                                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            Salsas
+                                                            </button><br>
+                                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                                                      {% for prod in lista %}
+                                                                      {% if prod.categoria_producto == "Salsas"%}
+                                                                        <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' producto=prod.id %}">{{prod.nombre_producto}}</a>
+                                                                        <script type="text/javascript">
+                                                                              listadoprecios.{{prod.id}} = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                                                                        </script>
+                                                                      {% endif %}
+                                                                      {% endfor %}
+                                                                    </div>
+                                              </div>
+                         </div>
+            <!-- Combinados -->
+              <div class="row">
+                <h6 id='combinados'>Combinados</h6>
+                </div>
+                <div class="row">
+                  <!-- Dropdown de surtidas -->
+                <div class="col-3">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Surtidos
+                  </button><br>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    {% for prod in lista %}
+                                    {% if prod.categoria_producto == "Surtidos"%}
+                              <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' producto=prod.id %}">{{prod.nombre_producto}}</a>
+                              <script type="text/javascript">
+                                  listadoprecios.{{prod.id}} = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
+                                  </script>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <span></span>
+                          </div>
+                </div>
+                  <!-- Dropdown de salmon -->
+                <div class="col-3">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Salmon
+                              </button><br>
+                                      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        {% for prod in lista %}
+                                        {% if prod.categoria_producto == "Salmon"%}
+                                          <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' producto=prod.id %}">{{prod.nombre_producto}}</a>
+                                          <script type="text/javascript">
+                                          listadoprecios.{{prod.id}} = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
+                                          </script>
+                                        {% endif %}
+                                        {% endfor %}
+                                      </div>
+                </div>
+                 <!-- Dropdown de Puentes -->
+                <div class="col-3">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Puentes
+                  </button><br>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            {% for prod in lista %}
+                            {% if prod.categoria_producto == "Puentes"%}
+                              <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' producto=prod.id %}">{{prod.nombre_producto}}</a>
+                              <script type="text/javascript">
+                              listadoprecios.{{prod.id}} = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
+                              </script>
+                            {% endif %}
+                            {% endfor %}
+                          </div>
+                </div>
+                <!-- Dropdown de Barcos -->
+                <div class="col-3">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Barcos
+                  </button><br>
+                          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            {% for prod in lista %}
+                            {% if prod.categoria_producto == "Barcos"%}
+                              <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' producto=prod.id %}">{{prod.nombre_producto}}</a>
+                              <script type="text/javascript">
+                              listadoprecios.{{prod.id}} = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
+                              </script>
+                            {% endif %}
+                            {% endfor %}
+                          </div>
+                </div>
+               </div>
+        </div>
+      <!-- Segunda columna de la pagina -->
+        <div class="col-6">
+          <div id="carro" class="row">
+           <!-- Tabla de rolls y tablas seleccionados -->
+           <table id="tabla-carro" class="table">
+          <thead>
+            <tr>
+              <th scope="col">Producto</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for producto in carro %}
+
+            <tr>
+              <td><p id ="{{producto}}" class = "N" ></p></td>
+              <td>{{carro|tomar_valor:producto}}</td>
+              <td><p id ="{{producto}}" class= "T" ></p> </td>
+              <td><a class="btn btn-primary" href= "{% url 'tsuki_app:eliminarproducto' productoaeliminar=producto %}" >X</a></td>
+            </tr>
+            <script type="text/javascript">
+            productospedidos.{{producto}} = {{carro|tomar_valor:producto}};
+            </script>
+            {% endfor %}
+
+          </tbody>
+        </table>
+               </div>
+             <!-- Fila para poenr total -->
+                <div class="row">
+            <h6 id="totalcarrito">Total:</h6>
+            <h6 id="total"></h6>
+          </div>
+            <!-- Fila para poner botones cancelar y siguiente -->
+                <div class="row">
+              <a id= "Siguiente"  class = 'btn btn-primary' href= "{% url 'tsuki_app:confirmarpedido' %}"> Siguiente </a>
+              <a class = 'btn btn-danger' href="{% url 'tsuki_app:pedidos' %}"> Cancelar </a>
+          </div>
+                 </div>
+      </div>
+
+<script type="text/javascript">
+
+  for (var i in productospedidos){
+      total = total + productospedidos[i]*listadoprecios[i][0];
+      $('#'+i+'.N').text(''+listadoprecios[i][1]);
+      $('#'+i+'.T').text('$ '+listadoprecios[i][0]*productospedidos[i]);
+        };
+  $('#total').html(' $ '+ total);
+</script>
+
+{% endblock %}

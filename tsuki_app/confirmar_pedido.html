@@ -1,0 +1,122 @@
+{% extends "tsuki_app/base.html" %}
+{% load my_extras %}
+
+<!-- Aca se crea un pedido nuevo -->
+{% block body_block %}
+
+<!-- Cargar precios -->
+
+{% for prod in lista %}
+        <script type="text/javascript">
+        listadoprecios.{{prod.id}} = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
+     </script>
+{% endfor %}
+
+
+
+
+    <div class="jumbotron">
+
+      <!-- Primera fila contiene la lista con los productos seleccionados, nombre fecha y comentarios -->
+<form method="post">
+  {% csrf_token %}
+
+
+      <div class="row">
+        <div class="col-6">
+          <div class="row">
+            <div class="col-6">
+              <h6>Nombre cliente</h6>
+                {{form.nombre_cliente}}
+              <h6>Comentario</h6>
+
+                {{form.comentario}}
+            </div>
+            <div class="col-6">
+                <h6>Fecha</h6>
+                {{ form.media }}
+                {{form.fecha}}
+            </div>
+          </div>
+        </div>
+      <!-- Tabla de rolls y tablas seleccionados -->
+        <div id="carro" class="col-6">
+        <table id="tabla-carro" class="table">
+          <thead>
+            <tr>
+              <th scope="col">Producto</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Precio</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            {% for producto in carro %}
+
+            <tr>
+              <td><p id ="{{producto}}" class = "N" ></p></td>
+              <td>{{carro|tomar_valor:producto}}</td>
+              <td><p id ="{{producto}}" class= "T" ></p> </td>
+
+            </tr>
+            <script type="text/javascript">
+
+            productospedidos.{{producto}} = {{carro|tomar_valor:producto}};
+
+            </script>
+            {% endfor %}
+
+          </tbody>
+        </table>
+
+      </div>
+        <h6 id="totalcarrito">Total:</h6>
+        <h6 id="total"></h6>
+      </div>
+
+      <!-- segunda fila contiene lo que vas a seleccionar -->
+
+    <div class="row">
+      <div class="col-6">
+        <h6>Combinados</h6>
+            <div class="row">
+
+                          </div>
+
+    </div>
+    <br>
+        <!-- Seccion boton confirmar pedido -->
+    <div class="row">
+
+  <input class = 'btn btn-primary' type="submit" value="Confirmar pedido">
+
+    <a class = 'btn btn-warning' href="{% url 'tsuki_app:empezarpedido' %}"> Modificar </a>
+    </div>
+
+<script type="text/javascript">
+
+  for (var i in productospedidos){
+      total = total + productospedidos[i]*listadoprecios[i][0];
+      $('#'+i+'.N').text(''+listadoprecios[i][1]);
+      $('#'+i+'.T').text('$ '+listadoprecios[i][0]*productospedidos[i]);
+
+    };
+
+var dateObj = new Date();
+var month = dateObj.getUTCMonth() + 1; //months from 1-12
+var day = dateObj.getUTCDate();
+var year = dateObj.getUTCFullYear();
+
+  $('#total').html(' $ '+ total);
+  $("#fp_1").flatpickr(
+    {
+    defaultDate:+year+"-"+month+"-"+day
+      }
+);
+  $(".flatpickr-input form-control input").flatpickr(
+    {inline:'True',
+      defaultDate: +year+"-"+month+"-"+day
+    });
+ </script>
+</form>
+{% endblock %}

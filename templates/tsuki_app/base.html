@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% load staticfiles %}
+
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title></title>
+
+    {# Bootstrap and CSS (Probably would want downloaded files in your real projects)#}
+    {# https://bootswatch.com/#}
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type = "text/css" href="{% static "/css/FuentesyEstilos.css" %}">
+    <!-- <script src="{% static "javascript/javaparanuevopedido.js" %}"> </script> -->
+  </head>
+
+  <body>
+
+  <!-- El name que va al final de cada url es el que se pone al lado de tsuki_app:  -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="navbar-nav">
+          <a class="navbar-brand" > <img src="{% static "images/tsuki.png" %}" width="100" height="50" alt="Uh Oh, didn't show!"> </a>
+          <a class="nav-item nav-link" href="{% url 'tsuki_app:pedidos' %}">Pedidos</a>
+          <a class="nav-item nav-link" href="{% url 'tsuki_app:empezarpedido' %}">Nuevo Pedido</a>
+          <a class="nav-item nav-link" href="{% url 'tsuki_app:producciondiaria' %}"> Produccion del dia</a>
+          <a class="nav-item nav-link" href="{% url 'tsuki_app:cargar_gastos' %}"> Control gastos</a>
+          <a class="nav-item nav-link" style="margin-left:50rem;" href="{% url 'tsuki_app:iniciobd' %}">Actualizar BD</a>
+        </div>
+    </nav>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="{% static "javascript/javaparanuevopedido.js" %}"> </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    {% block body_block %}
+
+    {% endblock %}
+
+
+
+
+  </body>
+</html>

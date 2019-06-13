@@ -1,0 +1,56 @@
+{% extends "tsuki_app/base.html" %}
+
+
+{% block body_block %}
+
+<script type="text/javascript">
+  var acum = 0;
+</script>
+
+<div class="jumbotron">
+  <div class="row">
+    <!-- Primer columna  -->
+    <div class="col-6">
+      <div class="row bg-white text-dark">
+        <h5 style="margin-right:10px;">Total piezas:</h5>   <h4>{{ totalparroz }}</h4>
+      </div><br>
+      <div class="row bg-white text-dark">
+        <h5 style="margin-right:10px;">Total Hot salmon:</h5>   <h4>{{ hotsalmon }}</h4>
+      </div><br>
+      <div class="row bg-white text-dark">
+        <h5 style="margin-right:10px;">Total Hot langostinos:</h5>   <h4>{{ hotlang }}</h4>
+      </div><br>
+      <!-- Agrupas por tipo de producto, y sumas las cantidades -->
+      {% regroup tablas by item as tablas_list %}
+        {% for item in tablas_list %}
+        <script type="text/javascript">
+          acum=0;
+        </script>
+        <div class="row bg-white text-dark">
+          <h5 style="margin-right:10px;">Total {{item.grouper.nombre_producto}}:</h5><h4 id="{{item.grouper.id}}"></h4>
+              {% for i in item.list %}
+              <script type="text/javascript">
+                acum=acum+ {{i.cantidad}};
+              </script>
+            {% endfor %}
+            <script type="text/javascript">
+            $('#{{item.grouper.id}}').text(acum);
+
+            </script>
+        </div><br>
+          {% endfor %}
+      </div>
+      <!-- Segunda columna  -->
+    <div class="col-6">
+      <div class="row">
+        <div class="row bg-white text-dark">
+          <h5 style="margin-right:10px;">Total piezas:</h5>   <h4>{{ totalparroz }}</h4>
+        </div><br>
+      </div><br>
+      </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

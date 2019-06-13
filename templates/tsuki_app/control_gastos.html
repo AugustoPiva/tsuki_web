@@ -1,0 +1,77 @@
+{% extends "tsuki_app/base.html" %}
+
+{% block body_block %}
+
+<div class="jumbotron">
+  <div class="row col-12">
+    <div class="col-5">
+    <form method="post">
+      {% csrf_token %}
+      {{form.as_p}}
+    </div>
+    <div class="col-3">
+      <input class = 'btn btn-primary' type="submit" name = 'Form1' value="Buscar gasto">
+    </div>
+    <div class="col-3">
+      <a class = 'btn btn-warning' href="{% url 'tsuki_app:crear_gasto' %}">Crear nuevo gasto</a><p>(si no existe en lista "seleccionar gasto")</p>
+    </div>
+  </div><br>
+  {{ form.media }}
+</form>
+    <div class="row col-12">
+      <div class="row col-4">
+
+    <form method="post">
+      {% csrf_token %}
+      <p style="background-color:white;">{{gasto.descripcion}} </p>
+      <h5>Cantidad: {{formulariocantidad.cantidades}} {{gasto.unidadmedicion}} </h5><br>
+      <h5>Total: {{formulariocantidad.total_gasto}} $</h5><br>
+        {{ formulariocantidad.media }}
+      <h5>Fecha de carga:</h5>  {{ formulariocantidad.fechacarga }} <br>
+      <input name = 'Form2' class = 'btn btn-primary' type="submit" value="Cargar nuevo gasto">
+    </form>
+    </div>
+      <div class="row col-8">
+        <div id="carro2" class="row col-12">
+          <table id="tabla-carro" class="table">
+            <thead>
+              <tr>
+                <th scope="col">Gasto</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Total</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Eliminar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for gasto in gastos %}
+              <tr>
+                <td><p>{{gasto.gasto.descripcion}}</p></td>
+                <td>{{gasto.cantidades}}</td>
+                <td><p>$ {{gasto.total_gasto}} </p></td>
+                <td><p> {{gasto.fechacarga}} </p></td>
+                <td><a class="btn btn-primary" href= "{% url 'tsuki_app:eliminar_gasto' eliminar=gasto.id %}" >X</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div><br>
+
+    <div class="pagination">
+    <span class="step-links">
+        {% if gastos.has_previous %}
+            <a href="?page=1">&laquo; Primera pagina</a>
+            <a href="?page={{ gastos.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        <span class="current">
+            Pagina {{ gastos.number }} de {{ gastos.paginator.num_pages }}.
+        </span>
+
+        {% if gastos.has_next %}
+            <a href="?page={{ gastos.next_page_number }}">Siguiente</a>
+        {% endif %}
+    </span>
+    </div>
+    </div>
+{% endblock %}

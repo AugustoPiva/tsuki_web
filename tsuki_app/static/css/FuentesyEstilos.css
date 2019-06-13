@@ -1,0 +1,56 @@
+/* .close {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  padding: 12px 16px;
+  transform: translate(0%, -50%);
+}
+
+.close:hover {background: #bbb;} */
+.textosrolls{
+  padding-top:5px;
+}
+
+.jumbotron{
+padding-top: 10px;
+}
+
+#carro{
+  background-color: white;
+  max-height: 300px;
+  height: 300px;
+  overflow-y: auto;
+}
+
+#carro2{
+  background-color: white;
+  max-height: 520px;
+  height: 520px;
+  overflow-y: auto;
+}
+
+#total{
+  padding-top: 10px;
+
+}
+#totalcarrito{
+  padding-left:300px ;
+  padding-top: 10px;
+}
+
+#Siguiente{
+  margin-right: 15px;
+}
+
+#calendario{
+  margin-bottom: 20px;
+}
+
+#primerfila{
+  margin-bottom: 10px;
+}
+
+#combinados{
+  padding-top: 10px;
+}

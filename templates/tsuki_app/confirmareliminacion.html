@@ -1,0 +1,25 @@
+{% extends "tsuki_app/base.html" %}
+
+{% block body_block %}
+
+<div class="jumbotron">
+<h2> Confirmar para eliminar pedido de: </h2><br>
+<div class="jumbotron bg-white text-dark">
+<h2>{{pedidoaeliminar.nombre_cliente}}</h2>
+<br>
+{% for i in prods %}
+  <ul>
+    <h4>{{i.cantidad}} - {{i.item}}</h4>
+  </ul>
+  {% endfor %}
+  </div>
+
+  <form method="post">
+      {% csrf_token %}
+    <input class = 'btn btn-primary' type="submit" value="Confirmar eliminacion">
+
+      <a class = 'btn btn-warning' href="{% url 'tsuki_app:empezarpedido' %}"> Cancelar </a>
+  </form>
+</div>
+
+{% endblock %}
