@@ -1,17 +1,19 @@
 from flatpickr import DatePickerInput
 from django import forms
-from .models import Pedidos,Tiposdegastos,Gastos
+from .models import Pedidos,Tiposdegastos,Gastos,Clientes
 from datetime import datetime,date
 from dal import autocomplete
 
 class FormularioNuevoPedido(forms.ModelForm):
+    client =forms.ModelChoiceField(
+    queryset=Clientes.objects.all(),
+    widget=autocomplete.ModelSelect2(attrs={'placeholder':'Nuevo gasto...'}))
     class Meta:
         model = Pedidos
-        fields =  ['fecha','nombre_cliente','comentario']
+        fields =  ['fecha','client','comentario']
         widgets = {
             'fecha': DatePickerInput(),
-            'comentario':forms.Textarea(attrs={'rows':5}
-            )
+            'comentario':forms.Textarea(attrs={'rows':5}),
         }
 
 class Fecha(forms.Form):
@@ -23,6 +25,14 @@ class Filtrargastos(forms.Form):
     seleccionar_gasto = forms.ModelChoiceField(
         queryset=Tiposdegastos.objects.all(),
         widget=autocomplete.ModelSelect2(attrs={'placeholder':'Nuevo gasto...'}))
+
+class Nuevocliente(forms.ModelForm):
+    class Meta:
+        model = Clientes
+        fields = ['nombre_apellido']
+        widgets = {
+        'nombre_apellido':forms.Textarea(attrs={'cols':40,'rows':1})
+        }
 
 class Cargagasto(forms.ModelForm):
     class Meta:
@@ -38,3 +48,8 @@ class Formulario_del_gasto(forms.ModelForm):
     class Meta:
         model = Tiposdegastos
         fields = '__all__'
+
+class Filtrargastos(forms.Form):
+    seleccionar_gasto = forms.ModelChoiceField(
+        queryset=Tiposdegastos.objects.all(),
+        widget=autocomplete.ModelSelect2(attrs={'placeholder':'Nuevo gasto...'}))

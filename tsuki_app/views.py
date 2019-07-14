@@ -1,8 +1,8 @@
 from django.shortcuts import render,get_object_or_404
 from django.urls import reverse_lazy,reverse
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
-from .models import Pedidos,Listaprecios,Productosordenados,Tiposdegastos,Gastos
-from .forms import FormularioNuevoPedido,Fecha,Filtrargastos,Formulario_del_gasto,Cargagasto
+from .models import Pedidos,Listaprecios,Productosordenados,Tiposdegastos,Gastos,Clientes
+from .forms import FormularioNuevoPedido,Fecha,Filtrargastos,Formulario_del_gasto,Cargagasto,Nuevocliente
 from django.views.generic import (View,TemplateView,
                                 ListView,DetailView,
                                 CreateView,DeleteView,
@@ -31,7 +31,7 @@ carrito={}
 def pedidos(request,**kwargs):
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=date.today().day,
                                                             pedido__fecha__month=date.today().month,
-                                                            pedido__fecha__year=date.today().year).order_by("pedido")
+                                                            pedido__fecha__year=date.today().year).order_by('pedido__client__nombre_apellido')
     pedidostotales=Pedidos.objects.filter(fecha__day=date.today().day,
                                           fecha__month=date.today().month,
                                           fecha__year=date.today().year).count()
@@ -43,8 +43,6 @@ def pedidos(request,**kwargs):
 
         return HttpResponseRedirect(reverse('tsuki_app:filtrarporfecha',args=(day,month,year)))
 
-
-    carrito.clear()
     x=date.today()
     fecha=Fecha({'dia':x})
 
@@ -70,36 +68,90 @@ def filtrarfecha(request,**kwargs):
     carrito.clear()
     return render(request,'tsuki_app/pedidos_list.html',{'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
 
-def Index(request):
+def Index(request,**kwargs):
+    #Elimina el que se cancelo y el cliente, si no tiene ningun pedido
+    try:
+        id_pedido = kwargs['eliminar']
+        ultimo_pedido=Pedidos.objects.get(id=id_pedido)
+        cliente = Clientes.objects.get(id=ultimo_pedido.client.id)
+        Pedidos.objects.get(id=id_pedido).delete()
+        carrito.clear()
+        if Pedidos.objects.filter(client=cliente).count()==0:
+            cliente.delete()
+        else:
+            pass
+    except:
+        pass
     return render(request, 'tsuki_app/base.html',{})
 
-def empezarpedido(request):
-
+def empezarpedido(request,**kwargs):
     productos= Listaprecios.objects.all()
-    return render(request,'tsuki_app/nuevo_pedido.html',{'lista':productos,'carro':carrito})
+    pedido=kwargs['pk_pedido']
+    return render(request,'tsuki_app/agregar_productos.html',{'lista':productos,'carro':carrito,'pedido':pedido})
 
-def incorporandoitems(request,producto):
+def nuevo_pedido(request,**kwargs):
+    #Si el cliente esta en la lista de cliente lo elijo y creo un nuevo pedido
 
-    productos= Listaprecios.objects.all()
-
-    if producto in carrito:
-        carrito[producto]= carrito[producto] +  1
-
+    if request.method == "POST":
+        if 'Form1' in request.POST:
+            form = FormularioNuevoPedido(request.POST or None)
+            if form.is_valid:
+                form.save()
+                pk_pedido= Pedidos.objects.latest('id').id
+                return HttpResponseRedirect(reverse('tsuki_app:empezarpedido',args=(pk_pedido,)))
+        else:
+            form2 = Nuevocliente(request.POST or None)
+            if form2.is_valid:
+                form2.save()
+                pk_client=Clientes.objects.latest('id').id
+                return HttpResponseRedirect(reverse('tsuki_app:nuevopedido',args=(pk_client,)))
     else:
-        carrito[producto]=1
+        x=date.today()
+        form = FormularioNuevoPedido()
+        form2 = Nuevocliente(None)
+        #si no, creo un nuevo cliente, y automaticamente al crearlo me lo asigna para el proximo pedido
+        try:
+            cliente_reciencreado=Clientes.objects.get(id=kwargs['pk_client'])
+            form=FormularioNuevoPedido({'client':cliente_reciencreado,'fecha':x})
+        except:
+            pass
+        return render(request, 'tsuki_app/nuevo_pedido.html',{'form':form,'form2':form2})
 
-    return render(request,'tsuki_app/nuevo_pedido.html',{'lista':productos,'carro':carrito})
+def agregarproductos(request,**kwargs):
+    #Crea un carro en el que se van agregando productos. Una vez
+    # que finaliza el agregado de pedidos cuando postea el Usuario
+    # se crean todos los objetos juntos
+    a=kwargs['pk_producto']
+    productos= Listaprecios.objects.all()
+    if a in carrito:
+        carrito[a]= carrito[a] + 1
+    else:
+        carrito[a]=1
+    pedido=kwargs['pk_pedido']
+    if request.method =="POST":
+        ultimopedido=Pedidos.objects.get(id=pedido)
+        print(ultimopedido.id)
+        print('hola')
+        for i in carrito:
+            print(i)
+            prod=get_object_or_404(Listaprecios,id=i)
+            order_item = Productosordenados.objects.create(item=prod,cantidad=carrito[i],pedido=ultimopedido)
+            order_item.save()
+        carrito.clear()
+        return redirect('/tsuki_app/')
+
+    return render(request,'tsuki_app/agregar_productos.html',{'lista':productos,'carro':carrito,'pedido':pedido})
         # carrito[producto]=carrito[producto]+1
 
-def eliminarproducto(request,productoaeliminar):
-
+def eliminarproducto(request,**kwargs):
     productos= Listaprecios.objects.all()
-    if carrito[productoaeliminar] == 1:
-        del carrito[productoaeliminar]
+    b=kwargs['productoaeliminar']
+    if carrito[b] == 1:
+        del carrito[b]
     else:
-        carrito[productoaeliminar] = carrito[productoaeliminar]-1
-
-    return render(request,'tsuki_app/nuevo_pedido.html',{'lista':productos,'carro':carrito})
+        carrito[b] = carrito[b]-1
+    pedido=kwargs['pk_pedido']
+    return render(request,'tsuki_app/agregar_productos.html',{'pedido':pedido,'lista':productos,'carro':carrito})
 
 def modificarpedido(request,pk):
     productos= Listaprecios.objects.all()
@@ -147,42 +199,18 @@ def modificarpedido_agregar(request,pk_pedido,pk_item):
 
         return render(request,'tsuki_app/modificar_pedido.html',{'form':form,'lista':productos,'carro':carrito,'orden':orden})
 
-def confirmarpedido(request):
-
-    form = FormularioNuevoPedido(request.POST or None)
-    a= Listaprecios.objects.all()
-    pedidos= Pedidos.objects.all()
-
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        ultid= Pedidos.objects.latest('id')
-        ultimopedido= Pedidos.objects.get(id=ultid.id)
-
-        for i in carrito:
-                prod=get_object_or_404(Listaprecios,id=i)
-                order_item = Productosordenados.objects.create(item=prod, cantidad=carrito[i],pedido=ultimopedido)
-                order_item.save()
-
-        return HttpResponseRedirect('/tsuki_app/')
-    else:
-        return render(request, 'tsuki_app/confirmar_pedido.html',{'lista':a,'form':form, 'carro':carrito})
-
-    return render(request,'tsuki_app/confirmar_pedido.html',{'lista':a,'form':form, 'carro':carrito})
-
 def producciondeldia(request,**kwargs):
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=date.today().day,
                                                             pedido__fecha__month=date.today().month,
                                                             pedido__fecha__year=date.today().year)
-    categorias          = ["Clasicos","Simples","Especiales","Premium"]
     tablas              = ["Surtidos","Salmon","Puentes","Barcos"]
-    productossinarroz   = ["sugerencia","s_teriyaki","h_langreb","g_tsuki","g_sashimi","g_nigsalm","g_com"]
-    totalpiezasporprod  = productosdelasordenes.exclude(item__in=productossinarroz).annotate(total=Sum(F('cantidad') * F('item__cantidad_producto')))
+    productossinarroz   = ["Sugerencia","Salsa Teriyaki","Langostinos rebozados 3p","Geisha Tsuki 4p","Sashimi 5p","Niguiris de salmon 4p","Niguiris Ahumados 4p","Geisha comun"]
+    totalpiezasporprod  = productosdelasordenes.exclude(item__nombre_producto__in=productossinarroz).annotate(total=Sum(F('cantidad') * F('item__cantidad_producto')))
     totalparroz         = totalpiezasporprod.aggregate(supertotal=Sum('total'))['supertotal']
-    hotsalmon           = productosdelasordenes.filter(item='h_salm').aggregate(tsalm=Sum('cantidad'))['tsalm']
-    hotlangostinos      = productosdelasordenes.filter(item='h_lang').aggregate(tlang=Sum('cantidad'))['tlang']
-    langostinosrebozados= productosdelasordenes.filter(item='h_langreb').aggregate(tpinc=Sum('cantidad'))['tpinc']
-    rolles              = productosdelasordenes.filter(item__categoria_producto__in=categorias).order_by("item")
-    tablas              = productosdelasordenes.filter(item__categoria_producto__in=tablas).order_by("item")
+    hotsalmon           = productosdelasordenes.filter(item__nombre_producto='Hot Salmon').aggregate(tsalm=Sum('cantidad'))['tsalm']
+    hotlangostinos      = productosdelasordenes.filter(item__nombre_producto='Hot Langostinos').aggregate(tlang=Sum('cantidad'))['tlang']
+    langostinosrebozados= productosdelasordenes.filter(item__nombre_producto='Langostinos rebozados 3p').aggregate(tpinc=Sum('cantidad'))['tpinc']
+    rolles              = productosdelasordenes.filter(item__categoria_producto='rolls').annotate(Sum('cantidad'))
 
     dict={'totalppp':totalpiezasporprod,
           'totalparroz':totalparroz,
@@ -191,7 +219,6 @@ def producciondeldia(request,**kwargs):
           'hotlang':hotlangostinos,
           'lreboz':langostinosrebozados,
           'rolls':rolles,
-          'tablas':tablas,
     }
     return render(request,'tsuki_app/producciondiaria.html',dict)
 
@@ -248,81 +275,3 @@ def crear_nuevogasto(request):
             print(objetocreado.id)
             return HttpResponseRedirect(reverse('tsuki_app:presentar_gastos',args=(pk,)))
     return render(request,'tsuki_app/crear_gasto.html',{'form':form})
-
-def iniciobd(request):
-    return render(request,'tsuki_app/bd.html',{})
-
-def exportardata(request):
-    scope = ['https://www.googleapis.com/auth/drive']
-    creds = ServiceAccountCredentials.from_json_keyfile_name('googlesheet.json', scope)
-    client = gspread.authorize(creds)
-    archivo = client.open("Tsuki")
-    sheet_pedidos = archivo.worksheet('Pedidos')
-    sheet_gastos  = archivo.worksheet('Gastos')
-    sheet_prodordenados = archivo.worksheet('Productos ordenados')
-    max_id_pedido = sheet_pedidos.acell('A2').value
-    max_id_gasto  = sheet_gastos.acell('A2').value
-    max_id_prodordenados  = sheet_prodordenados.acell('A2').value
-    pedidos = Pedidos.objects.filter(id__gt=max_id_pedido)
-    gastos  = Gastos.objects.filter(id__gt=max_id_gasto)
-    prodordenados = Productosordenados.objects.filter(id__gt=max_id_prodordenados)
-    lst1=[]
-    lst2=[]
-    lst3=[]
-    for i in pedidos.values():
-        for key,value in i.items():
-            if key=='fecha':
-                lst1.append(str(value))
-            else:
-                lst1.append(value)
-        time.sleep(0.5)
-        sheet_pedidos.insert_row(lst1,2)
-        lst1=[]
-    for a in gastos.values():
-        for key,value in a.items():
-            if key=='fechacarga':
-                lst2.append(str(value))
-            else:
-                lst2.append(value)
-        time.sleep(0.5)
-        sheet_gastos.insert_row(lst2,2)
-        lst2=[]
-    for b in prodordenados.values():
-        for key,value in b.items():
-                lst3.append(value)
-        time.sleep(0.5)
-        sheet_prodordenados.insert_row(lst3,2)
-        lst3=[]
-    return render(request,'tsuki_app/bd.html',{})
-
-def actualizar_carta(request):
-    scope = ['https://www.googleapis.com/auth/drive']
-    creds = ServiceAccountCredentials.from_json_keyfile_name('googlesheet.json', scope)
-    client = gspread.authorize(creds)
-    archivo = client.open("Tsuki")
-    sheet_listadeprecios = archivo.worksheet('Lista de precios')
-    listaprecios = Listaprecios.objects.all()
-    lst4=[]
-    for i in listaprecios.values():
-        for key,value in i.items():
-                lst4.append(value)
-        time.sleep(1)
-        sheet_listadeprecios.insert_row(lst4,2)
-        lst4=[]
-    return render(request,'tsuki_app/bd.html',{})
-
-def actualizar_listagastos(request):
-    scope = ['https://www.googleapis.com/auth/drive']
-    creds = ServiceAccountCredentials.from_json_keyfile_name('googlesheet.json', scope)
-    client = gspread.authorize(creds)
-    archivo = client.open("Tsuki")
-    sheet_listadegastos = archivo.worksheet('Lista de gastos')
-    listagastos= Tiposdegastos.objects.all()
-    lst5=[]
-    for i in listagastos.values():
-        for key,value in i.items():
-                lst5.append(value)
-        time.sleep(0.5)
-        sheet_listadegastos.insert_row(lst5,2)
-        lst5=[]
-    return render(request,'tsuki_app/bd.html',{})

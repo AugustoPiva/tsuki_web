@@ -14,7 +14,7 @@
             </div>
             <div class="row">
               {% for prod in lista %}
-              {% if prod.categoria_producto == "Simples"%}
+              {% if prod.sub_categoria_producto == "simples"%}
                       <a class="btn btn-info" href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:5px;">{{prod.nombre_producto}}</a>
               {% endif %}
               {% endfor %}
@@ -25,8 +25,8 @@
             </div>
             <div class="row">
             {% for prod in lista %}
-            {% if prod.categoria_producto == "Clasicos"%}
-                    <a class="btn btn-primary" href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:5px;">{{prod.nombre_producto}}</a>
+            {% if prod.sub_categoria_producto == "clasicos"%}
+                    <a class="btn btn-primary" href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
             {% endif %}
             {% endfor %}
             </div>
@@ -36,7 +36,7 @@
             </div>
             <div class="row">
               {% for prod in lista %}
-              {% if prod.categoria_producto == "Especiales"%}
+              {% if prod.sub_categoria_producto == "especiales"%}
                       <a class="btn btn-secondary" href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
               {% endif %}
               {% endfor %}
@@ -47,7 +47,7 @@
                 </div>
                   <div class="row">
                     {% for prod in lista %}
-                    {% if prod.categoria_producto == "Premium"%}
+                    {% if prod.sub_categoria_producto == "premium"%}
                             <a class="btn btn-warning" href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:5px;">{{prod.nombre_producto}}</a>
                     {% endif %}
                     {% endfor %}
@@ -64,7 +64,7 @@
                         </button><br>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                           {% for prod in lista %}
-                                          {% if prod.categoria_producto == "Hot"%}
+                                          {% if prod.categoria_producto == "calientes"%}
                                     <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
                                           {% endif %}
                                           {% endfor %}
@@ -77,7 +77,7 @@
                 </button><br>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                           {% for prod in lista %}
-                          {% if prod.categoria_producto == "Geishas-Nigiris-Sash"%}
+                          {% if prod.sub_categoria_producto == "bocados"%}
                             <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
                           {% endif %}
                           {% endfor %}
@@ -90,7 +90,7 @@
                              </button><br>
                                      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                        {% for prod in lista %}
-                                       {% if prod.categoria_producto == "Salsas"%}
+                                       {% if prod.sub_categoria_producto == "salsa"%}
                                          <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
                                        {% endif %}
                                        {% endfor %}
@@ -109,7 +109,7 @@
               </button><br>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                 {% for prod in lista %}
-                                {% if prod.categoria_producto == "Surtidos"%}
+                                {% if prod.categoria_producto == "laja" and prod.sub_categoria_producto == "surtido" %}
                           <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
                                 {% endif %}
                                 {% endfor %}
@@ -123,7 +123,7 @@
                           </button><br>
                                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                     {% for prod in lista %}
-                                    {% if prod.categoria_producto == "Salmon"%}
+                                    {% if prod.categoria_producto == "laja" and prod.sub_categoria_producto == "salmon" %}
                                       <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
                                     {% endif %}
                                     {% endfor %}
@@ -136,7 +136,7 @@
               </button><br>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                         {% for prod in lista %}
-                        {% if prod.categoria_producto == "Puentes"%}
+                        {% if prod.categoria_producto == "puentes"%}
                           <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
                         {% endif %}
                         {% endfor %}
@@ -149,7 +149,7 @@
               </button><br>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                         {% for prod in lista %}
-                        {% if prod.categoria_producto == "Barcos"%}
+                        {% if prod.categoria_producto == "barcos"%}
                           <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
                         {% endif %}
                         {% endfor %}
@@ -197,7 +197,7 @@
           <h6>Nombre cliente</h6>
           </div>
           <div class="row">
-                {{form.nombre_cliente}}
+                {{form.client}}
           </div>
         <div class="row">
           <h6>Comentarios</h6>
@@ -215,10 +215,10 @@
               {{form.fecha}}
             </div>
             <div class="row">
-                <input class = 'btn btn-primary' type="submit" value="Terminar modificacion">
+                <input style = "margin-top:10px;" class = 'btn btn-primary' type="submit" value="Terminar modificacion">
             </div>
           </div>
-          
+
           </form>
             </div>
 

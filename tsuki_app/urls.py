@@ -6,11 +6,13 @@ app_name = 'tsuki_app'
 urlpatterns = [
     # en este path se van a ver todos los pedidos del dia
     path('',views.pedidos,name='pedidos'),
+    path('<int:eliminar>',views.Index,name='cancelarpedido'),
     # en este path se van a crear un nuevo pedido
-    path('nuevopedido/',views.empezarpedido,name='empezarpedido'),
-    path('nuevopedido/<slug:producto>/',views.incorporandoitems,name='incorporando'),
-    path('eliminarproducto/<slug:productoaeliminar>/',views.eliminarproducto,name='eliminarproducto'),
-    path('confirmarpedido/',views.confirmarpedido ,name='confirmarpedido'),
+    path('nuevopedido/',views.nuevo_pedido ,name='nuevopedido'),
+    path('nuevopedido/<int:pk_client>',views.nuevo_pedido ,name='nuevopedido'),
+    path('agregarproductos/<int:pk_pedido>',views.empezarpedido,name='empezarpedido'),
+    path('agregarproductos/<int:pk_pedido>/<int:pk_producto>/',views.agregarproductos,name='incorporando'),
+    path('eliminarproducto/<int:pk_pedido>/<int:productoaeliminar>/',views.eliminarproducto,name='eliminarproducto'),
     path('modificarpedido/<int:pk>/',views.modificarpedido ,name='modificarpedido'),
     path('modificarpedido/agregar/<int:pk_pedido>/<slug:pk_item>/',views.modificarpedido_agregar ,name='agregarproducto'),
     path('modificarpedido/quitar/<int:pk_pedido>/<slug:pk_item>/',views.modificarpedido_quitar ,name='quitarproducto'),
@@ -22,12 +24,4 @@ urlpatterns = [
     path('cargargasto/<slug:pk>/',views.cargar_gastos,name='presentar_gastos'),
     path('cargargasto/eliminargasto/<slug:eliminar>',views.cargar_gastos,name='eliminar_gasto'),
     path('cargargasto/creargasto',views.crear_nuevogasto,name='crear_gasto'),
-    path('actualizar',views.iniciobd,name='iniciobd'),
-    path('actualizar/gastosypedidos',views.exportardata,name='exportardata'),
-    path('actualizar/listadeprecios',views.actualizar_carta,name='actualizar_carta'),
-    path('actualizar/listadegastos',views.actualizar_listagastos,name='actualizar_listagastos')
-#     #asi se asocian las CreatViews.as_view(),name='create'),
-#     #si voy a update y al nombre de la pk de la escuela
-#     path('update/<int:pk>/',views.SchoolUpdateView.as_view(),name='update'),
-#     path('delete/<int:pk>/',views.SchoolDeleteView.as_view(),name='delete')
  ]

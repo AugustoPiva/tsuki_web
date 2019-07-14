@@ -5,15 +5,59 @@ from django.db.models import Sum
 from datetime import datetime,date
 
 # Create your models here.
+class Clientes(models.Model):
+    nombre_apellido      = models.CharField(max_length=40,unique=True)
+    fecha_creacion       = models.DateField(default=date.today)
 
+    def __str__(self):
+        return self.nombre_apellido
+
+class Pedidos(models.Model):
+
+    client            = models.ForeignKey(Clientes, on_delete=models.CASCADE)
+    fecha             = models.DateField(default=date.today)
+    comentario        = models.CharField(max_length=256,null=True,blank=True)
+
+    def __str__(self):
+        return self.client.nombre_apellido
+
+    def get_total(self):
+        totaal = 0
+        for order_item in Productosordenados.objects.filter(pedido=self.id):
+            totaal += order_item.precio_total()
+        return totaal
 
 class Listaprecios(models.Model):
-    id                     = models.SlugField(primary_key = True, max_length =256)
-    nombre_producto        = models.CharField(max_length=256,null=True)
-    precio_producto        = models.IntegerField(null=True)
-    categoria_producto     = models.CharField(max_length=20,null=True)
-    cantidad_producto      = models.IntegerField(null=True)
-    # subcategoria_producto  = models.CharField(max_length=20,null=True,default=' ')
+    LISTA_CATEGORIAS = [
+            ('rolls','Rolls'),
+            ('calientes','Calientes'),
+            ('barcos','Barcos'),
+            ('puentes','Puentes'),
+            ('bd','Barcos descartables'),
+            ('laja','Lajas'),
+            ('varios','Varios')
+    ]
+
+    SUBLISTA_CATEGORIAS =[
+            ('hotroll', 'Hot Rolls'),
+            ('otros', 'Otros'),
+            ('simples','Simples'),
+            ('clasicos','Clasicos'),
+            ('especiales','Especiales'),
+            ('premiums','Premiums'),
+            ('salsa','Salsas'),
+            ('bocados','Bocados'),
+            ('surtido','Surtido'),
+            ('salmon','Salmon'),
+            ('veggie','Veggie'),
+            ('premium','Premium')
+    ]
+
+    nombre_producto        = models.CharField(max_length=256)
+    precio_producto        = models.IntegerField()
+    categoria_producto     = models.CharField(max_length=20,choices=LISTA_CATEGORIAS)
+    sub_categoria_producto = models.CharField(max_length=20,choices=SUBLISTA_CATEGORIAS)
+    cantidad_producto      = models.IntegerField()
 
     def __str__(self):
         return self.nombre_producto
@@ -33,22 +77,8 @@ class Listaprecios(models.Model):
                 'id': self.id
             })
 
-class Pedidos(models.Model):
-    fecha             = models.DateField(default=date.today)
-    nombre_cliente    = models.CharField(max_length=256,null=True)
-    comentario        = models.CharField(max_length=256,null=True)
-
-    def __str__(self):
-        return self.nombre_cliente
-
-    def get_total(self):
-        totaal = 0
-        for order_item in Productosordenados.objects.filter(pedido=self.id):
-            totaal += order_item.precio_total()
-        return totaal
-
 class Productosordenados(models.Model):
-# user = models.ForeignKey(Pedidos, on_delete=models.CASCADE)
+    # user = models.ForeignKey(Pedidos, on_delete=models.CASCADE)
     # ordered         = models.BooleanField(default=False)
     item            = models.ForeignKey(Listaprecios, on_delete=models.CASCADE)
     pedido          = models.ForeignKey(Pedidos, on_delete=models.CASCADE)
@@ -66,8 +96,16 @@ class Productosordenados(models.Model):
 class Tiposdegastos(models.Model):
     LISTA_CATEGORIAS_GASTOS =[
     ('servicios','Servicios'),
-    ('insumos','Insumos'),
-    ('mp','Materia prima'),
+    ('personal','Personal'),
+    ('productos','Productos'),
+    ('impuestos','Impuestos'),
+    ]
+    LISTA_SUB_CATEGORIAS_GASTOS =[
+    ('verduleria','Verduleria'),
+    ('descartable','Descartables'),
+    ('cong/frios','Congelados/Frios'),
+    ('secos/conservas','Secos/Conservas'),
+    ('otros','Otros'),
     ]
     LISTA_MEDICION =[
     ('kg','Kg'),
@@ -75,7 +113,8 @@ class Tiposdegastos(models.Model):
     ]
     descripcion     = models.CharField(max_length=42)
     unidadmedicion  = models.CharField(max_length=30,choices=LISTA_MEDICION)
-    categoria       = models.CharField(max_length=40,choices=LISTA_CATEGORIAS_GASTOS)
+    categoria       = models.CharField(max_length=40,choices=LISTA_CATEGORIAS_GASTOS,null=True)
+    sub_categoria   = models.CharField(max_length=40,choices=LISTA_SUB_CATEGORIAS_GASTOS,null=True)
     stockeable      = models.BooleanField()
 
     def __str__(self):
