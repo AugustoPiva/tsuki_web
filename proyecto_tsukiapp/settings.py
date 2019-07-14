@@ -28,7 +28,7 @@ SECRET_KEY = '38=k%d8^xc@yo(qmn=9tk=*y1+)@s%^slr8ji+0_1(9gl&1$v!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["tsuki-243915.appspot.com","127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1","67.207.89.247"]
 
 
 # Application definition
@@ -97,17 +97,25 @@ DATABASES = {
 #
 #     }
 # }
-'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'defaultdb',
-        'USER': 'doadmin',
-        'PASSWORD': 'zorh0ezr5emk1o8m',
-        'HOST': 'db-postgresql-nyc1-08518-do-user-6349564-0.db.ondigitalocean.com',
-        'PORT': '25060',
-        'OPTIONS': {'sslmode': 'require'},
+# 'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'defaultdb',
+#         'USER': 'doadmin',
+#         'PASSWORD': 'zorh0ezr5emk1o8m',
+#         'HOST': 'db-postgresql-nyc1-08518-do-user-6349564-0.db.ondigitalocean.com',
+#         'PORT': '25060',
+#         'OPTIONS': {'sslmode': 'require'},
+#     }
+# }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'myproject',
+        'USER': 'augusto',
+        'PASSWORD': 'augustopiva1234',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
-
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
