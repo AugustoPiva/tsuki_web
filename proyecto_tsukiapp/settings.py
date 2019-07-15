@@ -97,25 +97,25 @@ DATABASES = {
 #
 #     }
 # }
-# 'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'defaultdb',
-#         'USER': 'doadmin',
-#         'PASSWORD': 'zorh0ezr5emk1o8m',
-#         'HOST': 'db-postgresql-nyc1-08518-do-user-6349564-0.db.ondigitalocean.com',
-#         'PORT': '25060',
-#         'OPTIONS': {'sslmode': 'require'},
-#     }
-# }
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'myproject',
-        'USER': 'augusto',
-        'PASSWORD': 'augustopiva1234',
-        'HOST': 'localhost',
-        'PORT': '',
+'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'defaultdb',
+        'USER': 'doadmin',
+        'PASSWORD': 'zorh0ezr5emk1o8m',
+        'HOST': 'db-postgresql-nyc1-08518-do-user-6349564-0.db.ondigitalocean.com',
+        'PORT': '25060',
+        'OPTIONS': {'sslmode': 'require'},
     }
 }
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'myproject',
+#         'USER': 'augusto',
+#         'PASSWORD': 'augustopiva1234',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
