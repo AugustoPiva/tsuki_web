@@ -17,6 +17,7 @@ class Pedidos(models.Model):
     client            = models.ForeignKey(Clientes, on_delete=models.CASCADE)
     fecha             = models.DateField(default=date.today)
     comentario        = models.CharField(max_length=256,null=True,blank=True)
+    fecha_creacion    = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.client.nombre_apellido
