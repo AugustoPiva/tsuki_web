@@ -80,22 +80,7 @@ WSGI_APPLICATION = 'proyecto_tsukiapp.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-# 'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'tsukidb',
-#         'USER': 'augusto',
-#         'PASSWORD': 'Padregenesio436',
-#         # https://console.cloud.google.com/sql/instances
-#         'HOST': '35.198.27.70',
-#         'PORT': '5432',
-#
-#     }
-# }
+
 'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'defaultdb',
@@ -106,15 +91,6 @@ DATABASES = {
         'OPTIONS': {'sslmode': 'require'},
     }
 }
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'myproject',
-#         'USER': 'augusto',
-#         'PASSWORD': 'augustopiva1234',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 
