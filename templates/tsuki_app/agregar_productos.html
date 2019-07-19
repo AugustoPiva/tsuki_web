@@ -1,8 +1,22 @@
-{% extends "tsuki_app/base.html" %}
+<!DOCTYPE html>
+
+{% load static %}
+{% load staticfiles %}
 {% load my_extras %}
 
-<!-- Aca se crea un pedido nuevo -->
-{% block body_block %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title></title>
+
+    {# https://bootswatch.com/#}
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type = "text/css" href="{% static "/css/FuentesyEstilos.css" %}">
+    <!-- <script src="{% static "javascript/javaparanuevopedido.js" %}"> </script> -->
+  </head>
+
+  <body>
 
 
     <div class="jumbotron">
@@ -149,7 +163,7 @@
                               </button><br>
                                       <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                         {% for prod in lista %}
-                                        {% if prod.categoria_producto == "laja" and prod.sub_categoria_producto == "salmon" %}
+                                        {% if prod.categoria_producto == "lajas" and prod.sub_categoria_producto == "salmon" %}
                                           <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' pk_pedido=pedido pk_producto=prod.id %}">{{prod.nombre_producto}}</a>
                                           <script type="text/javascript">
                                           listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
@@ -249,4 +263,5 @@
   $('#total').html(' $ '+ total);
 </script>
 
-{% endblock %}
+  </body>
+</html>
