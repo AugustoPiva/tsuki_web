@@ -82,10 +82,10 @@ WSGI_APPLICATION = 'proyecto_tsukiapp.wsgi.application'
 DATABASES = {
 
 'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'defaultdb',
-        'USER': 'doadmin',
-        'PASSWORD': 'zorh0ezr5emk1o8m',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'tsukidb',
+        'USER': 'augusto',
+        'PASSWORD': 'augustopiva1234',
         'HOST': 'db-postgresql-nyc1-08518-do-user-6349564-0.db.ondigitalocean.com',
         'PORT': '25060',
         'OPTIONS': {'sslmode': 'require'},
