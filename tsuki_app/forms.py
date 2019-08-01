@@ -12,12 +12,12 @@ class FormularioNuevoPedido(forms.ModelForm):
         model = Pedidos
         fields =  ['fecha','client','comentario']
         widgets = {
-            'fecha': DatePickerInput(),
+            'fecha': DatePickerInput(options = {"disableMobile": "true"}),
             'comentario':forms.Textarea(attrs={'rows':5}),
         }
 
 class Fecha(forms.Form):
-    dia= forms.DateField(widget=DatePickerInput())
+    dia= forms.DateField(widget=DatePickerInput(options = {"disableMobile": "true"}))
     # options={"dateFormat":""}
 
 
@@ -41,7 +41,7 @@ class Cargagasto(forms.ModelForm):
         widgets = {
             'cantidades':forms.Textarea(attrs={'cols':3,'rows':1}),
             'total_gasto':forms.Textarea(attrs={'cols':8,'rows':1}),
-            'fechacarga':DatePickerInput()
+            'fechacarga':DatePickerInput(options = {"disableMobile": "true"})
         }
 
 class Formulario_del_gasto(forms.ModelForm):
