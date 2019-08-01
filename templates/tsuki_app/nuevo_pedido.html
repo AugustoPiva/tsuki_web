@@ -7,64 +7,58 @@
 <!-- Cargar precios -->
 
 <!-- {% for prod in lista %}
-        <script type="text/javascript">
-        listadoprecios.{{prod.id}} = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
-     </script>
+<script type="text/javascript">
+listadoprecios.{{prod.id}} = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
+</script>
 {% endfor %} -->
 
 <div class="jumbotron">
+  <!-- Primera fila contiene la lista con los productos seleccionados, nombre fecha y comentarios -->
+  <form method="post">
+    {% csrf_token %}
 
-      <!-- Primera fila contiene la lista con los productos seleccionados, nombre fecha y comentarios -->
-<form method="post">
-  {% csrf_token %}
-
-  <div class="row col-12">
+    <div class="row col-12">
       <div class="row col-4">
-          <!--Primera columna -->
-            <div class="row col-12">
-            <h5>Nombre cliente</h5>
-          </div><br><br>
-            <div class="row col-12">
-                {{form.client}}
-            </div><br><br>
-            <div class="row col-12">
-              <p>Agendar como "Mostrador" si compra en el local</p>
-            </div>
-            <div class="row col-12">
-              <h5>Comentario</h5>
-            </div><br><br>
-             <div class="row col-12">
-                {{ form.media }}
-                {{form.comentario}}
-            </div><br><br>
-            <div class="row col-12">
-              <h5> </h5>
-            </div>
-                <div class="row col-12">
-                 <h5>Fecha</h5><br>
-                  {{form.fecha}}
-                </div><br><br>
-                  <!-- Seccion boton confirmar pedido y modificar -->
-                   <br><br><div class="row">
-                        <input name='Form1' class = 'btn btn-primary' type="submit" value="Crear pedido">
-                     </div>
-                      </div>
-  </form>
-      <!-- Segunda columna -->
-        <div class="row col-8">
-          <div class="row col-3">
-            <h5>Nuevo cliente</h5>
-              </div>
-        <div class="row col-5">
-            <form method="post">
-              {{form2.nombre_apellido}}
-              {% csrf_token %}
-              <input name='Form2' class = 'btn btn-primary' type="submit" value="Crear cliente">
-            </form>
-           </div>
-        <div class="row col-4">
-          <p>Agendar con mismo nombre Whatsapp</p>
+        <!--Primera columna -->
+        <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;" class="row col-12">
+          <h5 style="margin-top: 5px;margin-left: auto;margin-right: auto;">Nombre cliente</h5>
+          {{form.client}}
+          <p>Agendar como "Mostrador" si compra en el local</p>
+        </div><br><br><br>
+
+        <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;padding-bottom:10px" class="row col-12">
+          <h5 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:30%">Comentario</h5>
+          {{ form.media }}
+          {{form.comentario}}
+        </div><br><br><br>
+        <div class="row col-12">
+          <h5> </h5>
         </div>
+        <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;padding-bottom:10px;" class="row col-12">
+          <h5 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%">Fecha</h5><br>
+          {{form.fecha}}
+        </div>
+        <!-- Seccion boton confirmar pedido y modificar -->
+        <div style="margin-top:10px;" class="row">
+          <input name='Form1' class = 'btn-lg btn-primary' type="submit" value="Crear pedido">
+        </div>
+      </div>
+    </form>
+    <!-- Segunda columna -->
+    <div style="background-color: white;border:1px solid black;margin-right:0px;margin-left:10px;margin-top:15px;margin-bottom:3px;padding-bottom:10px;max-height:200px;" class="row col-3">
+      <div class="row col-12">
+        <h5>Nuevo cliente</h5>
+      </div>
+      <div class="row col-12">
+        <form method="post">
+          {{form2.nombre_apellido}}
+          {% csrf_token %}
+          <input name='Form2' class = 'btn-lg btn-primary' type="submit" value="Crear cliente">
+        </form>
+      </div>
+      <div class="row col-12">
+        <p>Agendar con mismo nombre Whatsapp</p>
+      </div>
     </div>
   </div>
 </div>
@@ -74,19 +68,19 @@
 <script type="text/javascript">
 
   for (var i in productospedidos){
-      total = total + productospedidos[i]*listadoprecios[i][0];
-      $('#'+i+'.N').text(''+listadoprecios[i][1]);
-      $('#'+i+'.T').text('$ '+listadoprecios[i][0]*productospedidos[i]);
+    total = total + productospedidos[i]*listadoprecios[i][0];
+    $('#'+i+'.N').text(''+listadoprecios[i][1]);
+    $('#'+i+'.T').text('$ '+listadoprecios[i][0]*productospedidos[i]);
 
-    };
+  };
 
-var dateObj = new Date();
-var month = dateObj.getUTCMonth() + 1; //months from 1-12
-var day = dateObj.getUTCDate();
-var year = dateObj.getUTCFullYear();
+  var dateObj = new Date();
+  var month = dateObj.getUTCMonth() + 1; //months from 1-12
+  var day = dateObj.getUTCDate();
+  var year = dateObj.getUTCFullYear();
 
   $('#total').html(' $ '+ total);
 
- </script>
-</form>
+</script>
+
 {% endblock %}

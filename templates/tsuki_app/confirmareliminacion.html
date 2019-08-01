@@ -5,7 +5,7 @@
 <div class="jumbotron">
 <h2> Confirmar para eliminar pedido de: </h2><br>
 <div class="jumbotron bg-white text-dark">
-<h2>{{pedidoaeliminar.cliente}}</h2>
+<h2>{{pedidoaeliminar.client}}</h2>
 <br>
 {% for i in prods %}
   <ul>
@@ -18,7 +18,7 @@
       {% csrf_token %}
     <input class = 'btn btn-primary' type="submit" value="Confirmar eliminacion">
 
-      <a class = 'btn btn-warning' href="{% url 'tsuki_app:empezarpedido' %}"> Cancelar </a>
+      <a class = 'btn btn-warning' href="{% url 'tsuki_app:pedidos' %}"> Cancelar </a>
   </form>
 </div>
 

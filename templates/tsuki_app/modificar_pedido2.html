@@ -1,0 +1,216 @@
+{% extends "tsuki_app/base.html" %}
+{% load my_extras %}
+
+<!-- Aca se crea un pedido nuevo -->
+{% block body_block %}
+
+<div class="jumbotron">
+  <div class="row">
+    <!-- Primer columna de la pagina -->
+    <div class="col-6">
+      <!-- Rolls Clasicos -->
+        <div class="row">
+          <h6 class='textosrolls'>Clasicos</h6>
+        </div>
+        <div class="row">
+          {% for prod in lista %}
+          {% if prod.sub_categoria_producto == "clasicos"%}
+          <a class="btn btn-primary" href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+          {% endif %}
+          {% endfor %}
+        </div>
+      <!-- Rolls Especiales -->
+      <div class="row">
+        <h6 class='textosrolls'>Especiales</h6>
+      </div>
+      <div class="row">
+        {% for prod in lista %}
+        {% if prod.sub_categoria_producto == "especiales"%}
+        <a class="btn btn-secondary" href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+        {% endif %}
+        {% endfor %}
+      </div>
+      <!-- Rolls Premium -->
+      <div class="row">
+        <h6 class='textosrolls'>Premium</h6>
+      </div>
+      <div class="row">
+        {% for prod in lista %}
+        {% if prod.sub_categoria_producto == "premiums"%}
+        <a class="btn btn-warning" href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:5px;">{{prod.nombre_producto}}</a>
+        {% endif %}
+        {% endfor %}
+      </div>
+      <!-- Rolls Veggies -->
+      <div class="row">
+        <h6 class='textosrolls'>Veggies</h6>
+      </div>
+      <div class="row">
+        {% for prod in lista %}
+        {% if prod.sub_categoria_producto == "veggies"%}
+        <a class="btn btn-success" href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:5px;">{{prod.nombre_producto}}</a>
+        {% endif %}
+        {% endfor %}
+      </div>
+      <!-- Division en dos columnas para barquitos por un lado y puentes barcos hots y demas por otro -->
+      <div class="row">
+        <!-- Seccion barquitos -->
+        <div class="row col-6">
+          <div class="row col-12">
+            <h6 id='combinados'>Barquitos</h6>
+          </div><br>
+          <div class="row">
+            {% for prod in lista %}
+            {% if prod.categoria_producto == "bd" %}
+            <a class="btn-lg btn-primary"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:10px;margin-top:10px;">{{prod.nombre_producto}}</a>
+            {% endif %}
+            {% endfor %}
+            <span></span>
+          </div>
+        </div>
+        <!-- Seccion puentes y barcos, hots, demas -->
+        <div class="row col-6">
+          <div class="row">
+            <!-- Dropdown de Puentes -->
+            <div class="col-6">
+              <button class="btn-lg btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Puentes
+              </button><br>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                {% for prod in lista %}
+                {% if prod.categoria_producto == "puentes"%}
+                <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
+                {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            <!-- Dropdown de Barcos -->
+            <div class="col-6">
+              <button class="btn-lg btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Barcos
+              </button><br>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                {% for prod in lista %}
+                {% if prod.categoria_producto == "barcos"%}
+                <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
+                {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <!-- Hots y Otras piezas -->
+          <div class="row">
+            <!-- Hots -->
+            <div class="col-4">
+              <button class="btn-lg btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:20px;margin-top:20px;">
+                Hots
+              </button><br>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                {% for prod in lista %}
+                {% if prod.categoria_producto == "calientes"%}
+                <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
+                {% endif %}
+                {% endfor %}
+                <span></span>
+              </div>
+            </div>
+            <!-- Otras piezas -->
+            <div class="col-4">
+              <button class="btn-lg btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:20px;margin-top:20px;">
+                Otras piezas
+              </button><br>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                {% for prod in lista %}
+                {% if prod.categoria_producto == "varios"%}
+                <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
+                {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <!-- Salsa  -->
+            <div class="col-4">
+              <button class="btn-lg btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:20px;margin-top:20px;">
+                Salsas
+              </button><br>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                {% for prod in lista %}
+                {% if prod.sub_categoria_producto == "salsa"%}
+                <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
+                {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Segunda columna de la pagina -->
+    <div class="col-6">
+      <!-- Tabla de rolls y tablas seleccionados -->
+      <div id="carro" class="row">
+        <table id="tabla-carro" class="table">
+          <thead>
+            <tr>
+              <th scope="col">Producto</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Precio</th>
+              <th scope="col">Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for producto in carro %}
+            <tr>
+              <td><p>{{producto.item.nombre_producto}}</p></td>
+              <td>{{producto.cantidad}}</td>
+              <td><p>$ {{producto.precio_total}} </p></td>
+              <td><a class="btn btn-primary" href= "{% url 'tsuki_app:quitarproducto' pk_item=producto.id pk_pedido=orden.id %}" >X</a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <!-- Fila para poner total -->
+      <div style="margin-top: 10px;margin-bottom: 10px; background-color: white;border:1px solid black;" class="row">
+        <h4 style="margin-left: 10px;margin-top: 10px;margin-bottom: 10px;"id="totalcarrito">Total:</h4>
+        <h4 style="margin-left: 10px;margin-top: 10px;margin-bottom: 10px;"id="total">$ {{orden.get_total}}</h4>
+      </div>
+      <!-- Fila para poner boton Terminar modificacion-->
+
+      <div class="row">
+        <div class="col-6">
+          <form method="post">
+            {% csrf_token %}
+            <div class="row">
+              <h6>Nombre cliente</h6>
+            </div>
+            <div class="row">
+              {{form.client}}
+            </div>
+            <div class="row">
+              <h6>Comentarios</h6>
+            </div>
+            <div class="row">
+              {{form.comentario}}
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row">
+              <h6>Fecha</h6>
+            </div>
+            <div class="row">
+              {{form.media}}
+              {{form.fecha}}
+            </div>
+            <div class="row">
+              <input style = "margin-top:10px;" class = 'btn btn-primary' type="submit" value="Terminar modificacion">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

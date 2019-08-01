@@ -1,0 +1,10 @@
+2019-07-25 11:10:43.468 -03 [504] LOG:  listening on IPv6 address "::1", port 5432
+2019-07-25 11:10:43.468 -03 [504] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2019-07-25 11:10:43.549 -03 [10104] LOG:  database system was shut down at 2019-07-25 11:10:39 -03
+2019-07-25 11:10:43.603 -03 [504] LOG:  database system is ready to accept connections
+2019-07-25 11:10:46.726 -03 [8856] ERROR:  canceling statement due to user request
+2019-07-25 11:10:46.729 -03 [504] LOG:  received fast shutdown request
+2019-07-25 11:10:46.761 -03 [504] LOG:  aborting any active transactions
+2019-07-25 11:10:46.763 -03 [504] LOG:  background worker "logical replication launcher" (PID 8856) exited with exit code 1
+2019-07-25 11:10:46.784 -03 [6304] LOG:  shutting down
+2019-07-25 11:10:46.952 -03 [504] LOG:  database system is shut down

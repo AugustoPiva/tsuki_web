@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title></title>
 
-    {# Bootstrap and CSS (Probably would want downloaded files in your real projects)#}
+
     {# https://bootswatch.com/#}
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" type = "text/css" href="{% static "/css/FuentesyEstilos.css" %}">
@@ -22,11 +22,13 @@
   <!-- El name que va al final de cada url es el que se pone al lado de tsuki_app:  -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="navbar-nav">
-          <a class="navbar-brand" > <img src="{% static "images/tsuki.png" %}" width="100" height="50" alt="Uh Oh, didn't show!"> </a>
-          <a class="nav-item nav-link" href="{% url 'tsuki_app:pedidos' %}">Pedidos</a>
-          <a class="nav-item nav-link" href="{% url 'tsuki_app:nuevopedido' %}">Nuevo Pedido</a>
-          <a class="nav-item nav-link" href="{% url 'tsuki_app:producciondiaria' %}"> Produccion del dia</a>
-          <a class="nav-item nav-link" href="{% url 'tsuki_app:cargar_gastos' %}"> Control gastos</a>
+          <a class="navbar-brand" > <img src="{% static "images/tsuki.png" %}" width="120" height="50" alt="Uh Oh, didn't show!"> </a>
+          <h4 style="margin-top: 14px;">|</h4>
+          <a style="margin-top: 10px;margin-left:8px;" class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:pedidos' %}">Pedidos</a><h4 style="margin-right:8px;margin-top: 14px;">|</h4>
+          <a style="margin-top: 10px;" class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:nuevopedido' %}">Nuevo Pedido</a>  <h4 style="margin-right:8px;margin-top: 14px;">|</h4>
+          <a style="margin-top: 10px;" class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:producciondiaria' %}"> Produccion del dia</a>  <h4 style="margin-right:8px;margin-top: 14px;">|</h4>
+          <a style="margin-top: 10px;" class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:cargar_gastos' %}"> Control gastos</a>  <h4 style="margin-right:8px;margin-top: 14px;">|</h4>
+          <a style="margin-top: 10px;" class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:soporte_compras' %}"> Soporte para compras</a>
         </div>
     </nav>
 

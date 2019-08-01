@@ -25,7 +25,7 @@ STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 SECRET_KEY = '38=k%d8^xc@yo(qmn=9tk=*y1+)@s%^slr8ji+0_1(9gl&1$v!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["tsuki-app.com","127.0.0.1","67.207.89.247","67.207.89.247:8000"]
 
@@ -81,21 +81,17 @@ WSGI_APPLICATION = 'proyecto_tsukiapp.wsgi.application'
 
 DATABASES = {
 #
-# 'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'defaultdb',
-#         'USER': 'doadmin',
-#         'PASSWORD': 'zorh0ezr5emk1o8m',
-#         'HOST': 'db-postgresql-nyc1-08518-do-user-6349564-0.db.ondigitalocean.com',
-#         'PORT': '25060',
-#         'OPTIONS': {'sslmode': 'require'},
-#     }
-# }
-    'default': {
-    'ENGINE': 'django.db.backends.sqlite3',
-    'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
+'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'defaultdb',
+        'USER': 'doadmin',
+        'PASSWORD': 'zorh0ezr5emk1o8m',
+        'HOST': 'db-postgresql-nyc1-08518-do-user-6349564-0.db.ondigitalocean.com',
+        'PORT': '25060',
+        'OPTIONS': {'sslmode': 'require'},
+    }
 }
+
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
 

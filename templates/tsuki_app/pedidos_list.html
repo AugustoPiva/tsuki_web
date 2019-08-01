@@ -25,7 +25,6 @@
       </div>
      </div>
   </div>
-
 </form>
 
 </div>
@@ -44,13 +43,13 @@
             <div class="row">
               <div class="col-6">
                 <h5 class="mb-0">
-                  <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  <button class="btn-lg mb-0" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                     {{ pedido.grouper }}
                   </button>
                 </h5>
               </div>
-              <div class="col-6">
-                  Total: $ {{pedido.grouper.get_total}}
+              <div style="margin-top:10px;" class="col-6">
+                  <h5>Total: $ {{pedido.grouper.get_total}}</h5>
               </div>
             </div>
           </div>

@@ -14,6 +14,8 @@ from django.core.paginator import Paginator
 from itertools import chain
 import gspread
 import time
+import locale
+locale.setlocale(locale.LC_ALL, 'es_ES')
 from oauth2client.service_account import ServiceAccountCredentials
 global pedido_max
 global gasto_max
@@ -32,7 +34,7 @@ carrito={}
 def pedidos(request,**kwargs):
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=date.today().day,
                                                             pedido__fecha__month=date.today().month,
-                                                            pedido__fecha__year=date.today().year).order_by('pedido__client__nombre_apellido')
+                                                            pedido__fecha__year=date.today().year).order_by('pedido__client__nombre_apellido','pedido__id')
     pedidostotales=Pedidos.objects.filter(fecha__day=date.today().day,
                                           fecha__month=date.today().month,
                                           fecha__year=date.today().year).count()
@@ -87,7 +89,7 @@ def Index(request,**kwargs):
 
 def empezarpedido(request,**kwargs):
     productos= Listaprecios.objects.all()
-    pedido=kwargs['pk_pedido']
+    pedido=Pedidos.objects.get(id=kwargs['pk_pedido'])
     return render(request,'tsuki_app/agregar_productos.html',{'lista':productos,'carro':carrito,'pedido':pedido})
 
 def nuevo_pedido(request,**kwargs):
@@ -122,27 +124,23 @@ def agregarproductos(request,**kwargs):
     #Crea un carro en el que se van agregando productos. Una vez
     # que finaliza el agregado de pedidos cuando postea el Usuario
     # se crean todos los objetos juntos
-    a=kwargs['pk_producto']
     productos= Listaprecios.objects.all()
-    if a in carrito:
-        carrito[a]= carrito[a] + 1
-    else:
-        carrito[a]=1
-    pedido=kwargs['pk_pedido']
+    ped=kwargs['pk_pedido']
+    pedido=Pedidos.objects.get(id=ped)
     if request.method =="POST":
-        ultimopedido=Pedidos.objects.get(id=pedido)
-        print(ultimopedido.id)
-        print('hola')
+        ultimopedido=Pedidos.objects.get(id=ped)
         for i in carrito:
-            print(i)
             prod=get_object_or_404(Listaprecios,id=i)
             order_item = Productosordenados.objects.create(item=prod,cantidad=carrito[i],pedido=ultimopedido)
             order_item.save()
         carrito.clear()
         return redirect('/tsuki_app/')
-
+    a=kwargs['pk_producto']
+    if a in carrito:
+        carrito[a]= carrito[a] + 1
+    else:
+        carrito[a]=1
     return render(request,'tsuki_app/agregar_productos.html',{'lista':productos,'carro':carrito,'pedido':pedido})
-        # carrito[producto]=carrito[producto]+1
 
 def eliminarproducto(request,**kwargs):
     productos= Listaprecios.objects.all()
@@ -151,7 +149,7 @@ def eliminarproducto(request,**kwargs):
         del carrito[b]
     else:
         carrito[b] = carrito[b]-1
-    pedido=kwargs['pk_pedido']
+    pedido=Pedidos.objects.get(id=kwargs['pk_pedido'])
     return render(request,'tsuki_app/agregar_productos.html',{'pedido':pedido,'lista':productos,'carro':carrito})
 
 def modificarpedido(request,pk):
@@ -273,20 +271,57 @@ def crear_nuevogasto(request):
             form.save()
             objetocreado=Tiposdegastos.objects.get(descripcion=request.POST['descripcion'])
             pk=objetocreado.id
-            print(objetocreado.id)
             return HttpResponseRedirect(reverse('tsuki_app:presentar_gastos',args=(pk,)))
     return render(request,'tsuki_app/crear_gasto.html',{'form':form})
 
 def decision_compra(request,**kwargs):
+    def myFunc(e):
+        return e['fecha']
     #Brindar las cantidades vendidas de los dias anteriores
-    insumo=kwargs[0]
-    if insumo == "Salmon":
-        #agrupamos por dia de la semana
-        piezas_salmon       = productosdelasordenes.filter(item__sub_categoria_producto='salmon',
-                                                        pedido__fecha__month__gte=datetime.now().month-1).values('fecha__day').annotate(total=Sum(F('cantidad')*F('item__cantidad_producto')))
-        piezas_sin_salmon   = productosdelasordenes.filter(item__sub_categoria_producto='surtido',
-                                                        pedido__fecha__month__gte=datetime.now().month-1).values('fecha__day').annotate(total=Sum(F('cantidad')*F('item__cantidad_producto'))/2)
-        hots_salmon         = productosdelasordenes.filter(item__nombre_producto='Hot salmon',
-                                                        pedido__fecha__month__gte=datetime.now().month-1).values('fecha__day').annotate(total=Sum(F('cantidad')*8))
-        total_piezas_salmon_porfecha = list(chain(piezas_salmon,piezas_sin_salmon,hots_salmon))
-        total_piezas_salmon_pordiadesemana = total_piezas_salmon_porfecha.annotate(promedio=Avg('total'),desviacionestandar=StdDev('total'))
+    form = Filtrargastos()
+    if request.method =='POST':
+        pk=request.POST['seleccionar_gasto']
+        return HttpResponseRedirect(reverse('tsuki_app:soporte_compras_item',args=(pk)))
+    try:
+        insumo=Tiposdegastos.objects.get(id=kwargs['pk']).descripcion
+        if insumo == "Salmon":
+            #agrupamos informacion por fechas con anterioridad a inicios del mes pasado
+            piezas_salmon       = Productosordenados.objects.filter(item__sub_categoria_producto='salmon',pedido__fecha__month__gte=datetime.now().month-1).values('pedido__fecha').annotate(total=Sum(F('cantidad')*F('item__cantidad_producto')))
+            piezas_sin_salmon   = Productosordenados.objects.filter(item__sub_categoria_producto='surtido',pedido__fecha__month__gte=datetime.now().month-1).values('pedido__fecha').annotate(total=Sum(F('cantidad')*F('item__cantidad_producto'))/2)
+            hots_salmon         = Productosordenados.objects.filter(item__nombre_producto='Hot salmon',pedido__fecha__month__gte=datetime.now().month-1).values('pedido__fecha').annotate(total=Sum(F('cantidad')*8))
+            # print(piezas_salmon)
+            # print(piezas_sin_salmon)
+            # print(hots_salmon)
+            #piezas_todas_las_fuentes es un objeto que tiene fechas como llaves y las cantidades provenientes de combinados all salmon, sin salmon y hots y rolls
+            piezas_todas_las_fuentes=piezas_salmon.union(piezas_sin_salmon,hots_salmon)
+            #agrupo por fecha en total_xfecha para eliminar las fuentes y hacer una unica
+            total_xfecha= {}
+            for i in piezas_todas_las_fuentes:
+                if i['pedido__fecha'] in total_xfecha:
+                    total_xfecha[i['pedido__fecha']]+=int(i['total'])
+                else:
+                    total_xfecha[i['pedido__fecha']]=int(i['total'])
+
+             # guardas por fecha una lista de datos a los que llamas--> 1:total piezas salmon del dia,2:dia de la semana,3:numero de la semana
+            lista_fecha = []
+            for x in total_xfecha:
+                lista_fecha.append({'fecha':x,'datos':[total_xfecha[x],x.strftime("%A"),x.isocalendar()[1]]})
+            #ordenar de forma ascendente en fecha
+            lista_fecha.sort(key=myFunc)
+            #separo las cantidades de la semana pasada para generar un cuadro informativo
+            pedidos_semana_pasada={'martes':0,'miércoles':0,'jueves':0,'viernes':0,'sábado':0}
+            for u in lista_fecha:
+                if u['fecha'].isocalendar()[1] == datetime.now().isocalendar()[1]-1:
+                    pedidos_semana_pasada[u['fecha'].strftime("%A")]=u['datos'][0]
+                else:
+                    pass
+            form=Filtrargastos()
+            print(pedidos_semana_pasada)
+            return render(request,'tsuki_app/decision_compra.html',{'form':form,'lista':lista_fecha,'sempas':pedidos_semana_pasada,'insumo':insumo})
+    except:
+        # reseteo la los pedidos de la semana pasada
+        pedidos_semana_pasada={'martes':0,'miércoles':0,'jueves':0,'viernes':0,'sábado':0}
+        pass
+
+        insumo = 'sinelegir'
+        return render(request,'tsuki_app/decision_compra.html',{'form':form,'insumo':insumo})

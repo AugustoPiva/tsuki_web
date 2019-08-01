@@ -42,16 +42,14 @@ class Listaprecios(models.Model):
     SUBLISTA_CATEGORIAS =[
             ('hotroll', 'Hot Rolls'),
             ('otros', 'Otros'),
-            ('simples','Simples'),
             ('clasicos','Clasicos'),
             ('especiales','Especiales'),
             ('premiums','Premiums'),
+            ('veggies','Veggies'),
             ('salsa','Salsas'),
             ('bocados','Bocados'),
             ('surtido','Surtido'),
             ('salmon','Salmon'),
-            ('veggie','Veggie'),
-            ('premium','Premium')
     ]
 
     nombre_producto        = models.CharField(max_length=256)

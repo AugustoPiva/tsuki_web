@@ -3,37 +3,62 @@
 {% block body_block %}
 
   <div class="jumbotron">
-  <h2> Crear nuevo gasto:</h2><br>
+  <h2> Consultar producto:</h2><br>
   <div class="jumbotron bg-white text-dark">
   <div class="row col-12">
   <div class="row col-6">
     <form method="post">
         {% csrf_token %}
         {{form.as_p}}
-      <input class = 'btn btn-primary' type="submit" value="Crear gasto">
-
-        <a class = 'btn btn-warning' href="{% url 'tsuki_app:cargar_gastos' %}"> Cancelar </a>
+        {{form.media}}
+      <input class = 'btn btn-primary' type="submit" value="Consultar">
     </form>
   </div>
   <div class="row col-6">
-      <p style="margin-right:70%;margin-bottom:0px">Nota para crear un gasto:</p>
-      <h6>Ejemplos:</h6>
-      <table class="table">
+    {% if insumo == 'Salmon' %}
+    <h5>Compra de salmon:</h5>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>  </th>
+      {% for i in sempas %}
+          <th>{{i}}</th>
+      {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cantidades semana pasada</td>
+      {% for e in sempas.values %}
+          <td>{{e}}</td>
+        {% endfor %}
+        </tr>
+        <tr>
+          <td>Equivalencia en KG y merma 23%</td>
+        {% for e,a in sempas.items %}
+          <td><p id="{{e}}"></p></td>
+          <script type="text/javascript">
+              totalsalmonxdia={{a}}*0.007/0.77;
+              $('#'+'{{e}}').text(''+totalsalmonxdia.toFixed(2));
+            </script>
+              {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+    {% else %}
+    {% endif %}
+      <!-- <table class="table">
         <thead>
           <tr>
             <th>Gasto</th>
-            <th>Unidad de medicion</th>
-            <th>Categoria</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Caja Vinagre Mitzukan 710 ml x 12 un</td>
-            <td>Unidad</td>
-            <td>Materias primas</td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
   </div>
   </div>
 

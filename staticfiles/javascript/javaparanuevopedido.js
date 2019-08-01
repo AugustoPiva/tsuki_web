@@ -9,7 +9,3 @@ var total = 0;
 // Objeto que obtiene los productos (rolls y combinados)
 // para poder mostrarlos mientras se van agregando
 var productospedidos = {};
-
-
-
- // href="+JSON.stringify({% url 'tsuki_app:incorporando' +'producto=z'+seleccion+ '%})'

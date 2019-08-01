@@ -13,7 +13,14 @@
     {# https://bootswatch.com/#}
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" type = "text/css" href="{% static "/css/FuentesyEstilos.css" %}">
-    <!-- <script src="{% static "javascript/javaparanuevopedido.js" %}"> </script> -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+  <script src="{% static "javascript/javaparanuevopedido.js" %}"> </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   </head>
 
   <body>
@@ -21,242 +28,231 @@
 
     <div class="jumbotron">
       <div class="row">
-      <!-- Primer columna de la pagina -->
+        <!-- Primer columna de la pagina -->
         <div class="col-6">
-            <!--Rolls simples  -->
-              <div class="row">
-                  <h6 class='textosrolls'>Simples</h6>
-                </div>
-                <div class="row">
-                  {% for prod in lista %}
-                  {% if prod.sub_categoria_producto == "simples"%}
-                          <a class="btn btn-info" href="{% url 'tsuki_app:incorporando' pk_pedido=pedido pk_producto=prod.id %}" style="margin-right:5px;">{{prod.nombre_producto}}</a>
-                          <script type="text/javascript">
-                                listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-                          </script>
-                  {% endif %}
-                  {% endfor %}
-                </div>
-            <!-- Rolss Clasicos -->
-              <div class="row">
-                  <h6 class='textosrolls'>Clasicos</h6>
-                </div>
-                <div class="row">
+          <!-- Rolss Clasicos -->
+          <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:0px;margin-bottom:3px;" class="row">
+            <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Clasicos</h6>
+          </div>
+          <div class="row">
+            {% for prod in lista %}
+            {% if prod.sub_categoria_producto == "clasicos"%}
+            <a class="btn btn-primary" href="{% url 'tsuki_app:incorporando' pk_pedido=pedido.id pk_producto=prod.id %}" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+            <script type="text/javascript">
+            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+            </script>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <!-- Rolls Especiales -->
+          <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;" class="row">
+            <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Especiales</h6>
+          </div>
+          <div class="row">
+            {% for prod in lista %}
+            {% if prod.sub_categoria_producto == "especiales"%}
+            <a class="btn btn-secondary" href="{% url 'tsuki_app:incorporando' pk_pedido=pedido.id pk_producto=prod.id %}" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+            <script type="text/javascript">
+            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+            </script>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <!-- Rolls Premium -->
+          <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;" class="row">
+            <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Premium</h6>
+          </div>
+          <div class="row">
+            {% for prod in lista %}
+            {% if prod.sub_categoria_producto == "premiums"%}
+            <a class="btn btn-warning" href="{% url 'tsuki_app:incorporando' pk_pedido=pedido.id pk_producto=prod.id %}" style="margin-right:5px;margin-top:5px">{{prod.nombre_producto}}</a>
+            <script type="text/javascript">
+            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+            </script>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <!--Rolls Veggies  -->
+          <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;" class="row">
+            <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Veggies</h6>
+          </div>
+          <div style="margin-bottom:15px;"class="row">
+            {% for prod in lista %}
+            {% if prod.sub_categoria_producto == "veggies"%}
+            <a class="btn btn-success" href="{% url 'tsuki_app:incorporando' pk_pedido=pedido.id pk_producto=prod.id %}" style="margin-right:5px;margin-top:5px">{{prod.nombre_producto}}</a>
+            <script type="text/javascript">
+            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+            </script>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <!-- Division en dos columnas para barquitos por un lado y puentes barcos hots y demas por otro -->
+          <div class="row">
+            <!-- Seccion barquitos -->
+            <div class="row col-6">
+              <div style="background-color: white;border:1px solid black;margin-left:0px;margin-right:0px;margin-top:5px;margin-bottom:5px;" class="row col-12">
+                <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Barquitos</h6>
+              </div>
+              <div style="margin-left: 0px;" class="row">
                 {% for prod in lista %}
-                {% if prod.sub_categoria_producto == "clasicos"%}
-                        <a class="btn btn-primary" href="{% url 'tsuki_app:incorporando' pk_pedido=pedido pk_producto=prod.id %}" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
-                        <script type="text/javascript">
-                              listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-                        </script>
+                {% if prod.categoria_producto == "bd" %}
+                <a class="btn-lg btn-primary"  href="{% url 'tsuki_app:incorporando' pk_pedido=pedido.id pk_producto=prod.id %}" style="margin-right:10px;margin-top:10px;">{{prod.nombre_producto}}</a>
+                <script type="text/javascript">
+                listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
+                </script>
                 {% endif %}
                 {% endfor %}
-                </div>
-            <!-- Rolls Especiales -->
+                <span></span>
+              </div>
+            </div>
+            <!-- Seccion puentes y barcos, hots, demas -->
+            <div style="margin-left: 5px;margin-top:5px;" class="row col-6">
               <div class="row">
-                  <h6 class='textosrolls'>Especiales</h6>
-                </div>
-                <div class="row">
-                  {% for prod in lista %}
-                  {% if prod.sub_categoria_producto == "especiales"%}
-                          <a class="btn btn-secondary" href="{% url 'tsuki_app:incorporando' pk_pedido=pedido pk_producto=prod.id %}" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
-                          <script type="text/javascript">
-                                listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-                          </script>
-                  {% endif %}
-                  {% endfor %}
-                </div>
-            <!-- Rolls Premium -->
-              <div class="row">
-                    <h6 class='textosrolls'>Premium</h6>
-                    </div>
-                      <div class="row">
-                        {% for prod in lista %}
-                        {% if prod.sub_categoria_producto == "premium"%}
-                                <a class="btn btn-warning" href="{% url 'tsuki_app:incorporando' pk_pedido=pedido pk_producto=prod.id %}" style="margin-right:5px;">{{prod.nombre_producto}}</a>
-                                <script type="text/javascript">
-                                      listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-                                </script>
-                        {% endif %}
-                        {% endfor %}
-                      </div>
-            <!-- Hots y Otras piezas -->
-              <div class="row">
-                          <h6 id='combinados'>Otros</h6>
-                          </div>
-                          <div class="row">
-                            <!-- Hots -->
-                          <div class="col-3">
-                                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Hots
-                                      </button><br>
-                                              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                                        {% for prod in lista %}
-                                                        {% if prod.sub_categoria_producto == "hotrolls"%}
-                                                  <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' pk_pedido=pedido pk_producto=prod.id %}">{{prod.nombre_producto}}</a>
-                                                          <script type="text/javascript">
-                                                                listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-                                                          </script>
-                                                        {% endif %}
-                                                        {% endfor %}
-                                                        <span></span>
-                                              </div>
-                                    </div>
-                          <!-- Otras piezas -->
-                          <div class="col-3">
-                                                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Otras piezas
-                                                  </button><br>
-                                                          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                                            {% for prod in lista %}
-                                                            {% if prod.sub_categoria_producto == "bocados"%}
-                                                              <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' pk_pedido=pedido pk_producto=prod.id %}">{{prod.nombre_producto}}</a>
-                                                              <script type="text/javascript">
-                                                                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-                                                              </script>
-                                                            {% endif %}
-                                                            {% endfor %}
-                                                          </div>
-                                    </div>
-                          <!-- Salsa  -->
-                          <div class="col-3">
-                                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            Salsas
-                                                            </button><br>
-                                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                                                      {% for prod in lista %}
-                                                                      {% if prod.sub_categoria_producto == "salsa"%}
-                                                                        <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' pk_pedido=pedido pk_producto=prod.id %}">{{prod.nombre_producto}}</a>
-                                                                        <script type="text/javascript">
-                                                                              listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-                                                                        </script>
-                                                                      {% endif %}
-                                                                      {% endfor %}
-                                                                    </div>
-                                              </div>
-                         </div>
-            <!-- Combinados -->
-              <div class="row">
-                <h6 id='combinados'>Combinados</h6>
-                </div>
-                <div class="row">
-                  <!-- Dropdown de surtidas -->
-                <div class="col-3">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Surtidos
-                  </button><br>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    {% for prod in lista %}
-                                    {% if prod.categoria_producto == "laja" and prod.sub_categoria_producto == "surtido" %}
-                              <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' pk_pedido=pedido pk_producto=prod.id %}">{{prod.nombre_producto}}</a>
-                              <script type="text/javascript">
-                                  listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
-                                  </script>
-                                    {% endif %}
-                                    {% endfor %}
-                                    <span></span>
-                          </div>
-                </div>
-                  <!-- Dropdown de salmon -->
-                <div class="col-3">
-                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Salmon
-                              </button><br>
-                                      <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                        {% for prod in lista %}
-                                        {% if prod.categoria_producto == "lajas" and prod.sub_categoria_producto == "salmon" %}
-                                          <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' pk_pedido=pedido pk_producto=prod.id %}">{{prod.nombre_producto}}</a>
-                                          <script type="text/javascript">
-                                          listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
-                                          </script>
-                                        {% endif %}
-                                        {% endfor %}
-                                      </div>
-                </div>
-                 <!-- Dropdown de Puentes -->
-                <div class="col-3">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <!-- Dropdown de Puentes -->
+                <div class="col-6">
+                  <button class="btn-lg btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Puentes
                   </button><br>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                            {% for prod in lista %}
-                            {% if prod.categoria_producto == "puentes"%}
-                              <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' pk_pedido=pedido pk_producto=prod.id %}">{{prod.nombre_producto}}</a>
-                              <script type="text/javascript">
-                              listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
-                              </script>
-                            {% endif %}
-                            {% endfor %}
-                          </div>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    {% for prod in lista %}
+                    {% if prod.categoria_producto == "puentes"%}
+                    <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' pk_pedido=pedido.id pk_producto=prod.id %}">{{prod.nombre_producto}}</a>
+                    <script type="text/javascript">
+                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
+                    </script>
+                    {% endif %}
+                    {% endfor %}
+                  </div>
                 </div>
                 <!-- Dropdown de Barcos -->
-                <div class="col-3">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="col-6">
+                  <button class="btn-lg btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Barcos
                   </button><br>
-                          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                            {% for prod in lista %}
-                            {% if prod.categoria_producto == "barcos"%}
-                              <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' pk_pedido=pedido pk_producto=prod.id %}">{{prod.nombre_producto}}</a>
-                              <script type="text/javascript">
-                              listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
-                              </script>
-                            {% endif %}
-                            {% endfor %}
-                          </div>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    {% for prod in lista %}
+                    {% if prod.categoria_producto == "barcos"%}
+                    <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' pk_pedido=pedido.id pk_producto=prod.id %}">{{prod.nombre_producto}}</a>
+                    <script type="text/javascript">
+                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
+                    </script>
+                    {% endif %}
+                    {% endfor %}
+                  </div>
                 </div>
-               </div>
-        </div>
-      <!-- Segunda columna de la pagina -->
-        <div class="col-6">
-           <!-- Tabla de rolls y tablas seleccionados -->
-          <div id="carro" class="row">
-           <table id="tabla-carro" class="table">
-            <thead>
-              <tr>
-                <th scope="col">Producto</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Precio</th>
-                <th scope="col">Eliminar</th>
-              </tr>
-            </thead>
-            <tbody>
-            {% for producto in carro %}
-            <tr>
-              <td><p id ="{{producto}}" class = "N" ></p></td>
-              <td>{{carro|tomar_valor:producto}}</td>
-              <td><p id ="{{producto}}" class= "T" ></p> </td>
-              <td><a class="btn btn-primary" href= "{% url 'tsuki_app:eliminarproducto' pk_pedido=pedido productoaeliminar=producto %}" >X</a></td>
-            </tr>
-            <!-- Este script me carga los productos pedidos en el dict para usar en javascript -->
-            <script type="text/javascript">
-            productospedidos[{{producto}}] = {{carro|tomar_valor:producto}};
-            </script>
-            {% endfor %}
-
-          </tbody>
-              </table>
-                     </div>
-                   <!-- Fila para poenr total -->
-                      <div class="row">
-                  <h6 id="totalcarrito">Total:</h6>
-                  <h6 id="total"></h6>
+              </div>
+              <!-- Hots y Otras piezas -->
+              <div class="row">
+                <!-- Hots -->
+                <div class="col-4">
+                  <button class="btn-lg btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:20px;margin-top:20px;">
+                    Hots
+                  </button><br>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    {% for prod in lista %}
+                    {% if prod.categoria_producto == "calientes"%}
+                    <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' pk_pedido=pedido.id pk_producto=prod.id %}">{{prod.nombre_producto}}</a>
+                    <script type="text/javascript">
+                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                    </script>
+                    {% endif %}
+                    {% endfor %}
+                    <span></span>
+                  </div>
                 </div>
-                  <!-- Fila para poner botones cancelar y siguiente -->
-                      <div class="row">
-                        <form method="post">
-                          {% csrf_token %}
-                          <input id= "Siguiente" class = 'btn btn-primary' type="submit" value="Crear pedido">
-                        </form>
-                          <a class = 'btn btn-danger' href="{% url 'tsuki_app:cancelarpedido' eliminar=pedido %}"> Cancelar </a>
+                <!-- Otras piezas -->
+                <div class="col-4">
+                  <button class="btn-lg btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:20px;margin-top:20px;">
+                    Otras piezas
+                  </button><br>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    {% for prod in lista %}
+                    {% if prod.categoria_producto == "varios"%}
+                    <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' pk_pedido=pedido.id pk_producto=prod.id %}">{{prod.nombre_producto}}</a>
+                    <script type="text/javascript">
+                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                    </script>
+                    {% endif %}
+                    {% endfor %}
+                  </div>
                 </div>
+              </div>
+              <div class="row">
+                <!-- Salsa  -->
+                <div class="col-4">
+                  <button class="btn-lg btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:20px;margin-top:20px;">
+                    Salsas
+                  </button><br>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                    {% for prod in lista %}
+                    {% if prod.sub_categoria_producto == "salsa"%}
+                    <a class = "dropdown-item"  href="{% url 'tsuki_app:incorporando' pk_pedido=pedido.id pk_producto=prod.id %}">{{prod.nombre_producto}}</a>
+                    <script type="text/javascript">
+                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                    </script>
+                    {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+        <!-- Segunda columna de la pagina -->
+        <div class="col-6">
+          <!-- Nombre cliente -->
+          <div class="row" style="background-color: white;border:1px solid black;">
+            <h4 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%">{{ pedido.client }}</h4>
+          </div>
+          <!-- Tabla de rolls y tablas seleccionados -->
+          <div id="carro" class="row">
+            <table id="tabla-carro" class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Producto</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Precio</th>
+                  <th scope="col">Eliminar</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for producto in carro %}
+                <tr>
+                  <td><p id ="{{producto}}" class = "N"  ></p></td>
+                  <td>{{carro|tomar_valor:producto}}</td>
+                  <td><p id ="{{producto}}" class= "T" ></p> </td>
+                  <td><a class="btn btn-primary" href= "{% url 'tsuki_app:eliminarproducto' pk_pedido=pedido.id productoaeliminar=producto %}" >X</a></td>
+                </tr>
+                <!-- Este script me carga los productos pedidos en el dict para usar en javascript -->
+                <script type="text/javascript">
+                productospedidos[{{producto}}] = {{carro|tomar_valor:producto}};
+                </script>
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+          <!-- Fila para poner total -->
+          <div style="margin-top: 10px;margin-bottom: 10px; background-color: white;border:1px solid black;" class="row">
+            <h4 style="margin-left: 10px;margin-top: 10px;margin-bottom: 10px;"id="totalcarrito">Total:</h4>
+            <h4 style="margin-left: 10px;margin-top: 10px;margin-bottom: 10px;"id="total"></h4>
+          </div>
+          <!-- Fila para poner botones cancelar y siguiente -->
+          <div class="row">
+            <form method="post">
+              {% csrf_token %}
+              <input id= "Siguiente" class = 'btn btn-primary' type="submit" value="Crear pedido">
+            </form>
+            <a class = 'btn btn-danger' href="{% url 'tsuki_app:cancelarpedido' eliminar=pedido.id %}"> Cancelar </a>
+          </div>
+        </div>
       </div>
     </div>
 
 <!-- Este script pega el nombre y el precio total de la cantidad de producto por su precio, en la tabla del carrito -->
-<script type="text/javascript">
+<script type ="text/javascript">
   for (var i in productospedidos){
-      total = total + productospedidos[i]*listadoprecios[i][0];
+      total  = total + productospedidos[i]*listadoprecios[i][0];
       $('#'+i+'.N').text(''+listadoprecios[i][1]);
       $('#'+i+'.T').text('$ '+listadoprecios[i][0]*productospedidos[i]);
         };

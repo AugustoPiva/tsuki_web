@@ -24,4 +24,6 @@ urlpatterns = [
     path('cargargasto/<slug:pk>/',views.cargar_gastos,name='presentar_gastos'),
     path('cargargasto/eliminargasto/<slug:eliminar>',views.cargar_gastos,name='eliminar_gasto'),
     path('cargargasto/creargasto',views.crear_nuevogasto,name='crear_gasto'),
+    path('decision_compra',views.decision_compra,name='soporte_compras'),
+    path('decision_compra/<slug:pk>/',views.decision_compra,name='soporte_compras_item'),
  ]
