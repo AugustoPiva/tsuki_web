@@ -1,0 +1,43 @@
+{% extends "tsuki_app/base.html" %}
+
+{% block body_block %}
+
+  <div class="jumbotron">
+  <h2> Crear nuevo gasto:</h2><br>
+  <div class="jumbotron bg-white text-dark">
+  <div class="row col-12">
+  <div class="row col-6">
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+      <input class = 'btn btn-primary' type="submit" value="Crear gasto">
+
+        <a class = 'btn btn-warning' href="{% url 'tsuki_app:cargar_gastos' %}"> Cancelar </a>
+    </form>
+  </div>
+  <div class="row col-6">
+      <p style="margin-right:70%;margin-bottom:0px">Nota para crear un gasto:</p>
+      <h6>Ejemplos:</h6>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Gasto</th>
+            <th>Unidad de medicion</th>
+            <th>Categoria</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Caja Vinagre Mitzukan 710 ml x 12 un</td>
+            <td>Unidad</td>
+            <td>Materias primas</td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
+  </div>
+
+  </div>
+  </div>
+
+{% endblock %}

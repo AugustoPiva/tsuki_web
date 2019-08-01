@@ -7,10 +7,11 @@ from django.views.generic import (View,TemplateView,
                                 ListView,DetailView,
                                 CreateView,DeleteView,
                                 UpdateView)
-from django.db.models import Sum,F,Max
+from django.db.models import Sum,F,Max,Avg,StdDev
 from datetime import datetime,date
 from django.shortcuts import redirect
 from django.core.paginator import Paginator
+from itertools import chain
 import gspread
 import time
 from oauth2client.service_account import ServiceAccountCredentials
@@ -54,7 +55,7 @@ def filtrarfecha(request,**kwargs):
     fecha=Fecha({'dia':x})
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=kwargs['day'],
                                                             pedido__fecha__month=kwargs['month'],
-                                                            pedido__fecha__year=kwargs['year'])
+                                                            pedido__fecha__year=kwargs['year']).order_by('pedido__client__nombre_apellido')
     pedidostotales=Pedidos.objects.filter(fecha__day=kwargs['day'],
                                           fecha__month=kwargs['month'],
                                           fecha__year=kwargs['year']).count()
@@ -275,3 +276,17 @@ def crear_nuevogasto(request):
             print(objetocreado.id)
             return HttpResponseRedirect(reverse('tsuki_app:presentar_gastos',args=(pk,)))
     return render(request,'tsuki_app/crear_gasto.html',{'form':form})
+
+def decision_compra(request,**kwargs):
+    #Brindar las cantidades vendidas de los dias anteriores
+    insumo=kwargs[0]
+    if insumo == "Salmon":
+        #agrupamos por dia de la semana
+        piezas_salmon       = productosdelasordenes.filter(item__sub_categoria_producto='salmon',
+                                                        pedido__fecha__month__gte=datetime.now().month-1).values('fecha__day').annotate(total=Sum(F('cantidad')*F('item__cantidad_producto')))
+        piezas_sin_salmon   = productosdelasordenes.filter(item__sub_categoria_producto='surtido',
+                                                        pedido__fecha__month__gte=datetime.now().month-1).values('fecha__day').annotate(total=Sum(F('cantidad')*F('item__cantidad_producto'))/2)
+        hots_salmon         = productosdelasordenes.filter(item__nombre_producto='Hot salmon',
+                                                        pedido__fecha__month__gte=datetime.now().month-1).values('fecha__day').annotate(total=Sum(F('cantidad')*8))
+        total_piezas_salmon_porfecha = list(chain(piezas_salmon,piezas_sin_salmon,hots_salmon))
+        total_piezas_salmon_pordiadesemana = total_piezas_salmon_porfecha.annotate(promedio=Avg('total'),desviacionestandar=StdDev('total'))
