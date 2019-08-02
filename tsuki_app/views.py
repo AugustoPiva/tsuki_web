@@ -168,7 +168,6 @@ def modificarpedido_quitar(request,pk_pedido,pk_item):
     orden=Pedidos.objects.get(id=pk_pedido)
     form = FormularioNuevoPedido(request.POST or None , instance=orden)
     if request.method=="POST" and form.is_valid:
-        form.save()
         return redirect('/tsuki_app/')
     else:
         Productosordenados.objects.get(id=pk_item).delete()
