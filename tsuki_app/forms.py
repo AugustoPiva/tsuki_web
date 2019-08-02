@@ -12,7 +12,7 @@ class FormularioNuevoPedido(forms.ModelForm):
         model = Pedidos
         fields =  ['fecha','client','comentario']
         widgets = {
-            'fecha': DatePickerInput(options = {"disableMobile": "true"}),
+            'fecha': DatePickerInput(options = {"disableMobile": "true"},attrs={'stlye':'margin-top:20px;'}),
             'comentario':forms.Textarea(attrs={'rows':5}),
         }
 

@@ -20,12 +20,10 @@ listadoprecios.{{prod.id}} = [{{prod.precio_producto  }},"{{prod.nombre_producto
     <div class="row col-12">
       <div class="row col-4">
         <!--Primera columna -->
-        <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;" class="row col-12">
+        <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;padding-bottom:10px;" class="row col-12">
           <h5 style="margin-top: 5px;margin-left: auto;margin-right: auto;">Nombre cliente</h5>
           {{form.client}}
-          <p>Agendar como "Mostrador" si compra en el local</p>
         </div><br><br><br>
-
         <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;padding-bottom:10px" class="row col-12">
           <h5 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:30%">Comentario</h5>
           {{ form.media }}
@@ -45,10 +43,9 @@ listadoprecios.{{prod.id}} = [{{prod.precio_producto  }},"{{prod.nombre_producto
       </div>
     </form>
     <!-- Segunda columna -->
-    <div style="background-color: white;border:1px solid black;margin-right:0px;margin-left:10px;margin-top:15px;margin-bottom:3px;padding-bottom:10px;max-height:200px;" class="row col-3">
-      <div class="row col-12">
-        <h5>Nuevo cliente</h5>
-      </div>
+    <div class="row col-5">
+      <div class="row col-12" style="background-color: white;border:1px solid black;margin-right:0px;margin-left:10px;margin-top:15px;margin-bottom:3px;padding-bottom:10px;max-height:200px;">
+        <h5 style="margin-top:10px;">Nuevo cliente</h5>
       <div class="row col-12">
         <form method="post">
           {{form2.nombre_apellido}}
@@ -56,8 +53,15 @@ listadoprecios.{{prod.id}} = [{{prod.precio_producto  }},"{{prod.nombre_producto
           <input name='Form2' class = 'btn-lg btn-primary' type="submit" value="Crear cliente">
         </form>
       </div>
-      <div class="row col-12">
-        <p>Agendar con mismo nombre Whatsapp</p>
+        </div>
+      <div class="row col-12" style="background-color: white;border:1px solid black;margin-right:0px;margin-left:10px;margin-top:30px;margin-bottom:3px;padding-bottom:10px;">
+        <h5 style='margin-top:10px;margin-left: auto;margin-right: auto;width:70%'>Nota para toma de pedidos:</h5><br>
+        <ul>
+          <li>Pedidos por Whatsapp: agendar con nombre y apellido/segundo nombre/otro y crear cliente en la APP tal y como esta agendado en el celu!</li><br>
+          <li>Si el pedido entro por otro lado y no se tiene el numero, agendarlo como mostrador y poner el nombre del cliente como comentario</li><br>
+          <li>NO CREAR un cliente si no esta agendado en el celular!</li><br>
+          <li>No se pueden crear clientes con mismo nombre y apellido. En todo caso crear tipo Carlos Piva 2</li>
+        </ul>
       </div>
     </div>
   </div>
