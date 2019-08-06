@@ -30,8 +30,6 @@ global gasto_max
 #         context['injectme']= 'BASIC INJECTION'
 #         return context
 #
-def prueba(request):
-    return render(request, 'tsuki_app/navbar.html',{})
 
 def pedidos(request,**kwargs):
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=date.today().day,

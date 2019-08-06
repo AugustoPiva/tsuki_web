@@ -9,7 +9,6 @@ urlpatterns = [
     path('<int:eliminar>',views.Index,name='cancelarpedido'),
     # en este path se van a crear un nuevo pedido
     path('nuevopedido/',views.nuevo_pedido ,name='nuevopedido'),
-    path('prueba/',views.prueba, name='hola'),
     path('nuevopedido/<int:pk_client>',views.nuevo_pedido ,name='nuevopedido'),
     path('agregarproductos/<int:pk_pedido>',views.agregarproductos, name='agregarproductos'),
     path('modificarpedido/<int:pk>/',views.modificarpedido ,name='modificarpedido'),
