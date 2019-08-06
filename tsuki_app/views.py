@@ -30,6 +30,9 @@ global gasto_max
 #         context['injectme']= 'BASIC INJECTION'
 #         return context
 #
+def prueba(request):
+    return render(request, 'tsuki_app/navbar.html',{})
+
 def pedidos(request,**kwargs):
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=date.today().day,
                                                             pedido__fecha__month=date.today().month,
@@ -75,7 +78,6 @@ def Index(request,**kwargs):
         ultimo_pedido=Pedidos.objects.get(id=id_pedido)
         cliente = Clientes.objects.get(id=ultimo_pedido.client.id)
         Pedidos.objects.get(id=id_pedido).delete()
-        carrito.clear()
         if Pedidos.objects.filter(client=cliente).count()==0:
             cliente.delete()
         else:

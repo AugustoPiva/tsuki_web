@@ -17,20 +17,28 @@
     <!-- <script src="{% static "javascript/javaparanuevopedido.js" %}"> </script> -->
   </head>
 
-  <body>
+<body>
 
   <!-- El name que va al final de cada url es el que se pone al lado de tsuki_app:  -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="navbar-nav">
-          <a class="navbar-brand" > <img src="{% static "images/tsuki.png" %}" width="120" height="50" alt="Uh Oh, didn't show!"> </a>
-          <h4 style="margin-top: 14px;">|</h4>
-          <a style="margin-top: 10px;margin-left:8px;" class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:pedidos' %}">Pedidos</a><h4 style="margin-right:8px;margin-top: 14px;">|</h4>
-          <a style="margin-top: 10px;" class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:nuevopedido' %}">Nuevo Pedido</a>  <h4 style="margin-right:8px;margin-top: 14px;">|</h4>
-          <a style="margin-top: 10px;" class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:producciondiaria' %}"> Produccion del dia</a>  <h4 style="margin-right:8px;margin-top: 14px;">|</h4>
-          <a style="margin-top: 10px;" class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:cargar_gastos' %}"> Control gastos</a>  <h4 style="margin-right:8px;margin-top: 14px;">|</h4>
-          <a style="margin-top: 10px;" class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:soporte_compras' %}"> Soporte para compras</a>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" > <img src="{% static "images/tsuki.png" %}" width="120" height="50" alt="Uh Oh, didn't show!"> </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-controls="bs-example-navbar-collapse-1" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <div class="navbar-nav">
+        <a class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:pedidos' %}">Pedidos</a>
+        <a class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:nuevopedido' %}">Nuevo Pedido</a>
+        <a class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:producciondiaria' %}"> Produccion del dia</a>
+        <a class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:cargar_gastos' %}"> Control gastos</a>
+        <a class="navbar-brand mb-0 h1" href="{% url 'tsuki_app:soporte_compras' %}"> Soporte para compras</a>
         </div>
-    </nav>
+        <div class="navbar-nav ml-auto">
+          <a class="nav-item nav-link" href="#"></a>
+        </div> <!-- /.navbar-nav, right-hand content -->
+
+      </div>
+  </nav>
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
