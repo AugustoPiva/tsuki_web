@@ -24,6 +24,45 @@
   </head>
 
   <body>
+
+    <script type="text/javascript">
+        // Objeto que obtiene todos los rolls con sus precio y nombre
+        // ,utilizado para vincular los botones de cada roll
+        // cuando el usuario hace click
+        var listadoprecios = {};
+        // Acumulador para calcular costo total
+        var total = {{orden.get_total}};
+        // Objeto que obtiene los productos (rolls y combinados)
+        // para poder mostrarlos mientras se van agregando
+        var fila = 'fila';
+        var productospedidos = {};
+        function agregarFila(producto){
+          if (producto in productospedidos){
+            productospedidos[producto]++;
+            $('#'+producto+'.c').text(''+productospedidos[producto]);
+            $('#'+producto+'.t').text('$'+productospedidos[producto]*listadoprecios[producto][0]);
+          }else{
+            $('#tabla-carro').append('<tr id='+producto+'class='+fila+'><td>'+listadoprecios[producto][1]+'</td><td id='+producto+' class=c >1</td><td id='+producto+' class=t > $'+listadoprecios[producto][0]+'</td><td><a class="btn btn-primary" onclick="eliminarProducto('+producto+');return false;">X</a></td></tr>');
+            productospedidos[producto]=1;
+          }
+          total  = total + listadoprecios[producto][0];
+          $('#total').html(' $ '+ total);
+          $('#productos').val(JSON.stringify(productospedidos));
+        }
+        function eliminarProducto(producto){
+          if (productospedidos[producto]==1){
+            delete productospedidos[producto];
+            $('#'+producto+'.fila').remove();
+          }else{
+            productospedidos[producto]--;
+            $('#'+producto+'.c').text(''+productospedidos[producto]);
+            $('#'+producto+'.t').text('$'+productospedidos[producto]*listadoprecios[producto][0]);
+          }
+          total  = total - listadoprecios[producto][0];
+          $('#total').html(' $ '+ total);
+          $('#productos').val(JSON.stringify(productospedidos));
+        }
+    </script>
     <div class="jumbotron">
       <div class="row">
         <!-- Primer columna de la pagina -->
@@ -35,7 +74,11 @@
             <div class="row">
               {% for prod in lista %}
               {% if prod.sub_categoria_producto == "clasicos"%}
-              <a class="btn btn-primary" href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+              <a class="btn btn-primary" onclick="agregarFila({{prod.id}});return false;" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+              <script type="text/javascript">
+              // listadoprecios={idproducto:[$, Nombre producto]}
+              listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+              </script>
               {% endif %}
               {% endfor %}
             </div>
@@ -46,7 +89,11 @@
           <div class="row">
             {% for prod in lista %}
             {% if prod.sub_categoria_producto == "especiales"%}
-            <a class="btn btn-secondary" href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+            <a class="btn btn-secondary" onclick="agregarFila({{prod.id}});return false;" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+            <script type="text/javascript">
+            // listadoprecios={idproducto:[$, Nombre producto]}
+            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+            </script>
             {% endif %}
             {% endfor %}
           </div>
@@ -57,7 +104,11 @@
           <div class="row">
             {% for prod in lista %}
             {% if prod.sub_categoria_producto == "premiums"%}
-            <a class="btn btn-warning" href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+            <a class="btn btn-warning" onclick="agregarFila({{prod.id}});return false;" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+            <script type="text/javascript">
+            // listadoprecios={idproducto:[$, Nombre producto]}
+            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+            </script>
             {% endif %}
             {% endfor %}
           </div>
@@ -68,7 +119,11 @@
           <div class="row">
             {% for prod in lista %}
             {% if prod.sub_categoria_producto == "veggies"%}
-            <a class="btn btn-success" href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+            <a class="btn btn-success" onclick="agregarFila({{prod.id}});return false;" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+            <script type="text/javascript">
+            // listadoprecios={idproducto:[$, Nombre producto]}
+            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+            </script>
             {% endif %}
             {% endfor %}
           </div>
@@ -82,7 +137,11 @@
               <div style="margin-left: 0px;" class="row">
                 {% for prod in lista %}
                 {% if prod.categoria_producto == "bd" %}
-                <a class="btn-lg btn-primary"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}" style="margin-right:10px;margin-top:10px;">{{prod.nombre_producto}}</a>
+                <a class="btn-lg btn-primary"  onclick="agregarFila({{prod.id}});return false;" style="margin-right:10px;margin-top:10px;">{{prod.nombre_producto}}</a>
+                <script type="text/javascript">
+                // listadoprecios={idproducto:[$, Nombre producto]}
+                listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                </script>
                 {% endif %}
                 {% endfor %}
                 <span></span>
@@ -99,7 +158,11 @@
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                     {% for prod in lista %}
                     {% if prod.categoria_producto == "puentes"%}
-                    <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
+                    <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+                    <script type="text/javascript">
+                    // listadoprecios={idproducto:[$, Nombre producto]}
+                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                    </script>
                     {% endif %}
                     {% endfor %}
                   </div>
@@ -112,7 +175,11 @@
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                     {% for prod in lista %}
                     {% if prod.categoria_producto == "barcos"%}
-                    <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
+                    <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+                    <script type="text/javascript">
+                    // listadoprecios={idproducto:[$, Nombre producto]}
+                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                    </script>
                     {% endif %}
                     {% endfor %}
                   </div>
@@ -128,7 +195,11 @@
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                     {% for prod in lista %}
                     {% if prod.categoria_producto == "calientes"%}
-                    <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
+                    <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+                    <script type="text/javascript">
+                    // listadoprecios={idproducto:[$, Nombre producto]}
+                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                    </script>
                     {% endif %}
                     {% endfor %}
                     <span></span>
@@ -142,7 +213,11 @@
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                     {% for prod in lista %}
                     {% if prod.categoria_producto == "varios"%}
-                    <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
+                    <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+                    <script type="text/javascript">
+                    // listadoprecios={idproducto:[$, Nombre producto]}
+                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                    </script>
                     {% endif %}
                     {% endfor %}
                   </div>
@@ -157,7 +232,11 @@
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                     {% for prod in lista %}
                     {% if prod.sub_categoria_producto == "salsa"%}
-                    <a class = "dropdown-item"  href="{% url 'tsuki_app:agregarproducto' pk_item=prod.id pk_pedido=orden.id %}">{{prod.nombre_producto}}</a>
+                    <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+                    <script type="text/javascript">
+                    // listadoprecios={idproducto:[$, Nombre producto]}
+                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                    </script>
                     {% endif %}
                     {% endfor %}
                   </div>
@@ -185,11 +264,15 @@
               </thead>
               <tbody>
                 {% for producto in carro %}
-                <tr>
+                <tr id="{{producto.item.id}}" class='fila'>
+                  <script type="text/javascript">
+                    productospedidos[{{producto.item.id}}]={{producto.cantidad}};
+                    console.log(productospedidos);
+                  </script>
                   <td><p>{{producto.item.nombre_producto}}</p></td>
-                  <td>{{producto.cantidad}}</td>
-                  <td><p>$ {{producto.precio_total}} </p></td>
-                  <td><a class="btn btn-primary" href= "{% url 'tsuki_app:quitarproducto' pk_item=producto.id pk_pedido=orden.id %}" >X</a></td>
+                  <td id='{{producto.item.id}}' class='c'>{{producto.cantidad}}</td>
+                  <td id='{{producto.item.id}}' class='t'>$ {{producto.precio_total}}</td>
+                  <td><a class="btn btn-primary" onclick="eliminarProducto({{producto.item.id}});return false;">X</a></td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -200,8 +283,8 @@
             <h4 style="margin-left: 10px;margin-top: 10px;margin-bottom: 10px;"id="totalcarrito">Total:</h4>
             <h4 style="margin-left: 10px;margin-top: 10px;margin-bottom: 10px;"id="total">$ {{orden.get_total}}</h4>
           </div>
-          <!-- Fila para poner boton Terminar modificacion-->
 
+          <!-- Fila para poner boton Terminar modificacion con la opcio de modificar nombre, fecha y comentario-->
           <div class="row">
             <div class="col-6">
               <form method="post">
@@ -228,6 +311,7 @@
                   {{form.fecha}}
                 </div>
                 <div class="row">
+                  <input id='productos' type="hidden" name="Productos" value='{}'>
                   <input style = "margin-top:10px;" class = 'btn btn-primary' type="submit" value="Terminar modificacion">
                 </div>
               </div>

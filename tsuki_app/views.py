@@ -17,11 +17,10 @@ import time
 import locale
 locale.setlocale(locale.LC_ALL, 'es_ES')
 from oauth2client.service_account import ServiceAccountCredentials
+import json
 global pedido_max
 global gasto_max
-global carrito
 
-carrito={}
 #si queres usar template views
 # class PruebaTemplateView(TemplateView):
 #     template_name = 'algo.html
@@ -67,8 +66,6 @@ def filtrarfecha(request,**kwargs):
         year  = int(request.POST['dia'][0:4])
 
         return HttpResponseRedirect(reverse('tsuki_app:filtrarporfecha',args=(day,month,year)))
-
-    carrito.clear()
     return render(request,'tsuki_app/pedidos_list.html',{'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
 
 def Index(request,**kwargs):
@@ -87,11 +84,6 @@ def Index(request,**kwargs):
         pass
     return render(request, 'tsuki_app/base.html',{})
 
-def empezarpedido(request,**kwargs):
-    productos= Listaprecios.objects.all()
-    pedido=Pedidos.objects.get(id=kwargs['pk_pedido'])
-    return render(request,'tsuki_app/agregar_productos.html',{'lista':productos,'carro':carrito,'pedido':pedido})
-
 def nuevo_pedido(request,**kwargs):
     #Si el cliente esta en la lista de cliente lo elijo y creo un nuevo pedido
 
@@ -101,7 +93,7 @@ def nuevo_pedido(request,**kwargs):
             if form.is_valid:
                 form.save()
                 pk_pedido= Pedidos.objects.latest('id').id
-                return HttpResponseRedirect(reverse('tsuki_app:empezarpedido',args=(pk_pedido,)))
+                return HttpResponseRedirect(reverse('tsuki_app:agregarproductos',args=(pk_pedido,)))
         else:
             form2 = Nuevocliente(request.POST or None)
             if form2.is_valid:
@@ -121,81 +113,62 @@ def nuevo_pedido(request,**kwargs):
         return render(request, 'tsuki_app/nuevo_pedido.html',{'form':form,'form2':form2})
 
 def agregarproductos(request,**kwargs):
-    #Crea un carro en el que se van agregando productos. Una vez
-    # que finaliza el agregado de pedidos cuando postea el Usuario
-    # se crean todos los objetos juntos
     productos= Listaprecios.objects.all()
     ped=kwargs['pk_pedido']
     pedido=Pedidos.objects.get(id=ped)
     if request.method =="POST":
-        ultimopedido=Pedidos.objects.get(id=ped)
-        for i in carrito:
-            prod=get_object_or_404(Listaprecios,id=i)
-            order_item = Productosordenados.objects.create(item=prod,cantidad=carrito[i],pedido=ultimopedido)
-            order_item.save()
-        carrito.clear()
-        return redirect('/tsuki_app/')
-    a=kwargs['pk_producto']
-    if a in carrito:
-        carrito[a]= carrito[a] + 1
-    else:
-        carrito[a]=1
-    return render(request,'tsuki_app/agregar_productos.html',{'lista':productos,'carro':carrito,'pedido':pedido})
-
-def eliminarproducto(request,**kwargs):
-    productos= Listaprecios.objects.all()
-    b=kwargs['productoaeliminar']
-    if carrito[b] == 1:
-        del carrito[b]
-    else:
-        carrito[b] = carrito[b]-1
-    pedido=Pedidos.objects.get(id=kwargs['pk_pedido'])
-    return render(request,'tsuki_app/agregar_productos.html',{'pedido':pedido,'lista':productos,'carro':carrito})
+        if request.POST['Productos'] !='{}':
+            productos_ordenados=json.loads(request.POST['Productos'])
+            for i in productos_ordenados:
+                prod=get_object_or_404(Listaprecios,id=i)
+                order_item = Productosordenados.objects.create(item=prod,cantidad=productos_ordenados[i],pedido=pedido)
+                order_item.save()
+            return redirect('/tsuki_app/')
+        else:
+            pass
+    return render(request,'tsuki_app/agregar_productos.html',{'lista':productos,'pedido':pedido})
 
 def modificarpedido(request,pk):
     productos= Listaprecios.objects.all()
     orden=Pedidos.objects.get(id=pk)
     carrito=Productosordenados.objects.filter(pedido=pk)
+    # extraigo todos los codigos que tiene la orden actual con sus cantidades en el dict orden_Actual
+    orden_actual=list(carrito.values('item__id','cantidad').values_list('item__id','cantidad'))
+    #Cargo el formulario con info del cliente, comentario y fecha
     form = FormularioNuevoPedido(request.POST or None , instance=orden)
-
     if request.method=="POST" and form.is_valid:
+        productos_ordenados=json.loads(request.POST['Productos'])
+        #si la lista ni se toco no se modifica nada
+        if productos_ordenados=={}:
+            pass
+        else:
+            #consulto todos los productos de la orden actual para chequear modificaciones en cantidad o si fueron eliminados
+            for prod in orden_actual:
+                    # si prod sigue estando en la orden actual...
+                if str(prod[0]) in productos_ordenados:
+                    #...y si coinciden las cantidades, no modifico nada y (*)
+                    if prod[1]==productos_ordenados[str(prod[0])]:
+                        pass
+                    #si no coinciden actualizo valores
+                    else:
+                        prod_a_actualizar=Productosordenados.objects.get(pedido__id=pk,item__id=prod[0])
+                        prod_a_actualizar.cantidad=productos_ordenados[str(prod[0])]
+                        prod_a_actualizar.save()
+                #...(*)lo descarto para crear un nuevo producto pedido
+                    productos_ordenados.pop(str(prod[0]), None)
+                #si no existe lo elimino
+                else:
+                    instancia=Listaprecios.objects.get(id=prod[0])
+                    Productosordenados.objects.get(item=instancia,pedido=orden).delete()
+                #luego agrego productos nuevos de productos_ordenados
+            for nuevo in productos_ordenados:
+                nuevo_producto=get_object_or_404(Listaprecios,id=int(nuevo))
+                order_item = Productosordenados.objects.create(item=nuevo_producto,cantidad=productos_ordenados[nuevo],pedido=orden)
         form.save()
         return redirect('/tsuki_app/')
-
+    else:
+        pass
     return render(request,'tsuki_app/modificar_pedido.html',{'form':form,'lista':productos,'carro':carrito,'orden':orden})
-
-def modificarpedido_quitar(request,pk_pedido,pk_item):
-    orden=Pedidos.objects.get(id=pk_pedido)
-    form = FormularioNuevoPedido(request.POST or None , instance=orden)
-    if request.method=="POST" and form.is_valid:
-        return redirect('/tsuki_app/')
-    else:
-        Productosordenados.objects.get(id=pk_item).delete()
-        productos= Listaprecios.objects.all()
-        carrito=Productosordenados.objects.filter(pedido=pk_pedido)
-
-        return render(request,'tsuki_app/modificar_pedido.html',{'form':form,'lista':productos,'carro':carrito,'orden':orden})
-
-def modificarpedido_agregar(request,pk_pedido,pk_item):
-    carrito=Productosordenados.objects.filter(pedido=pk_pedido)
-    orden=Pedidos.objects.get(id=pk_pedido)
-    productos= Listaprecios.objects.all()
-    form = FormularioNuevoPedido(request.POST or None , instance=orden)
-
-    if request.method=="POST" and form.is_valid:
-        form.save()
-        return redirect('/tsuki_app/')
-    else:
-        try:
-            product = carrito.get(item=pk_item)
-            product.cantidad += 1
-            product.save()
-        except:
-            itemagregar= Listaprecios.objects.get(id=pk_item)
-            newproduct = Productosordenados.objects.create(item=itemagregar, pedido=orden)
-            newproduct.save()
-
-        return render(request,'tsuki_app/modificar_pedido.html',{'form':form,'lista':productos,'carro':carrito,'orden':orden})
 
 def producciondeldia(request,**kwargs):
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=date.today().day,

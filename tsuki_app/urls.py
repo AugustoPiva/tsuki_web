@@ -10,12 +10,8 @@ urlpatterns = [
     # en este path se van a crear un nuevo pedido
     path('nuevopedido/',views.nuevo_pedido ,name='nuevopedido'),
     path('nuevopedido/<int:pk_client>',views.nuevo_pedido ,name='nuevopedido'),
-    path('agregarproductos/<int:pk_pedido>',views.empezarpedido,name='empezarpedido'),
-    path('agregarproductos/<int:pk_pedido>/<int:pk_producto>/',views.agregarproductos,name='incorporando'),
-    path('eliminarproducto/<int:pk_pedido>/<int:productoaeliminar>/',views.eliminarproducto,name='eliminarproducto'),
+    path('agregarproductos/<int:pk_pedido>',views.agregarproductos, name='agregarproductos'),
     path('modificarpedido/<int:pk>/',views.modificarpedido ,name='modificarpedido'),
-    path('modificarpedido/agregar/<int:pk_pedido>/<slug:pk_item>/',views.modificarpedido_agregar ,name='agregarproducto'),
-    path('modificarpedido/quitar/<int:pk_pedido>/<slug:pk_item>/',views.modificarpedido_quitar ,name='quitarproducto'),
     path('<int:pk>/',views.pedidos,name='eliminarpedido'),
     path('<int:day>/<int:month>/<int:year>/',views.filtrarfecha,name='filtrarporfecha'),
     path('producciondeldia',views.producciondeldia,name='producciondiaria'),
