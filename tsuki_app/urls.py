@@ -22,4 +22,6 @@ urlpatterns = [
     path('cargargasto/creargasto',views.crear_nuevogasto,name='crear_gasto'),
     path('decision_compra',views.decision_compra,name='soporte_compras'),
     path('decision_compra/<slug:pk>/',views.decision_compra,name='soporte_compras_item'),
+    path('deudores_vajilla',views.puentesybarcos,name='puentesybarcos'),
+    path('deudores_vajilla/<slug:pk>/',views.puentesybarcos,name='puentesybarcos2'),
  ]

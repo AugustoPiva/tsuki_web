@@ -82,6 +82,7 @@ class Productosordenados(models.Model):
     item            = models.ForeignKey(Listaprecios, on_delete=models.CASCADE)
     pedido          = models.ForeignKey(Pedidos, on_delete=models.CASCADE)
     cantidad        = models.IntegerField(default=1)
+    lotienen        = models.BooleanField(default=False, null=True)
 
     def __str__(self):
         return f"{self.cantidad} - {self.item.nombre_producto}"

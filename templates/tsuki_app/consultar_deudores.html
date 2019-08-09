@@ -1,0 +1,59 @@
+{% extends "tsuki_app/base.html" %}
+{% load my_extras %}
+
+<!-- Aca se crea un pedido nuevo -->
+{% block body_block %}
+
+<div class="container">
+
+  {% regroup lista by pedido as pedido_list %}
+  <div id="accordion">
+    {% for pedido in pedido_list %}
+    <script type="text/javascript">
+      console.log("{{pedido.grouper}}");
+    </script>
+    <div class="card">
+      <div class="card-header" id="headingOne">
+        <div class="row">
+          <div class="col-6">
+            <div class="row">
+              <div class="col-6">
+                <h5 class="mb-0">
+                  <button class="btn-lg mb-0" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    {{ pedido.grouper }}
+                  </button>
+                </h5>
+              </div>
+              <div style="margin-top:10px;" class="col-12 col-sm-6">
+                <h5> Fecha: {{pedido.grouper.fecha.day}}/{{pedido.grouper.fecha.month}}</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="row">
+                <a class = 'btn-lg btn-success' href="{% url 'tsuki_app:puentesybarcos2' pk=pedido.grouper.id %}">Devolvió</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-6">
+              {% for producto in pedido.list  %}
+              <li> {{producto.cantidad}} - {{ producto.item.nombre_producto }}</li>
+              {% endfor %}
+            </div>
+            <div class="col-6">
+              {{pedido.grouper.comentario}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+
+{% endblock %}

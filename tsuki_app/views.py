@@ -122,6 +122,10 @@ def agregarproductos(request,**kwargs):
             for i in productos_ordenados:
                 prod=get_object_or_404(Listaprecios,id=i)
                 order_item = Productosordenados.objects.create(item=prod,cantidad=productos_ordenados[i],pedido=pedido)
+                if order_item.item.categoria_producto == 'barcos' or order_item.item.categoria_producto == 'puentes':
+                    order_item.lotienen=True
+                else:
+                    pass
                 order_item.save()
             return redirect('/tsuki_app/')
         else:
@@ -297,3 +301,15 @@ def decision_compra(request,**kwargs):
 
         insumo = 'sinelegir'
         return render(request,'tsuki_app/decision_compra.html',{'form':form,'insumo':insumo})
+
+def puentesybarcos(request, **kwargs):
+    try:
+        devolvio= kwargs['pk']
+        vajilla_devuelta= Productosordenados.objects.filter(pedido__id=devolvio)
+        for i in vajilla_devuelta:
+            i.lotienen=False
+            i.save()
+    except:
+        pass
+    lista_deudores_vajilla= Productosordenados.objects.filter(lotienen=True).order_by('pedido__id','pedido__fecha')
+    return render(request,'tsuki_app/consultar_deudores.html',{'lista':lista_deudores_vajilla})
