@@ -1,22 +1,33 @@
 {% extends "tsuki_app/base.html" %}
 
 <!-- Aca se enlistan los pedidos del dia de la fecha -->
-{% block body_block %}
 
+
+{% block body_block %}
+<!-- Previene de imprimir todas las comandas al pedo -->
+<script type="text/javascript">
+  function detener(event){
+    if (confirm("Va a imprimir todos las comandas del dia! Presiona Aceptar para continuar")){
+    }else{
+      event.preventDefault();
+      }
+    };
+</script>
 
 <div class="jumbotron">
 <div id="primerfila"class="row">
   <div class="col-12">
     <div class="row">
-    <div class="col-3">
-     <form method="post">
-       {% csrf_token %}
+    <div class="col-4">
+      <form method="post">
+        {% csrf_token %}
       {{fecha.media}}
       {{fecha.dia}}
       </form>
+      <button style="margin-top:5px;" class = 'btn btn-primary' type="submit" name="button"> Buscar </button>
       </div>
-    <div class="col-3">
-      <button class = 'btn btn-primary' type="submit" name="button"> Buscar </button>
+      <div class="col-2">
+      <a class = 'btn btn-secondary' href="{% url 'tsuki_app:imprimirtodos' %}" onclick="detener(event)">Imprimir todos</a>
       </div>
       <div class="col-3">
        <h5>{{x|date:"l"}}, {{x|date:"j"}} de {{x|date:"F"}} </h5>
@@ -26,17 +37,10 @@
       </div>
      </div>
   </div>
-
-
 </div>
-
 {% regroup productosdeordenes by pedido as pedido_list %}
-
   <div id="accordion">
       {% for pedido in pedido_list %}
-      <script type="text/javascript">
-           console.log("{{pedido.grouper}}");
-            </script>
     <div class="card">
       <div class="card-header" id="headingOne">
         <div class="row">
@@ -57,13 +61,12 @@
         <div class="col-6">
             <div class="row">
               <div class="col-3">
-
               </div>
               <div class="col-3">
                   <a class = 'btn btn-primary' href="{% url 'tsuki_app:modificarpedido' pk=pedido.grouper.id %}">Modificar</a>
               </div>
               <div class="col-3">
-                  <a class = 'btn btn-secondary' href="">Imprimir</a>
+                  <a class = 'btn btn-secondary' href="{% url 'tsuki_app:imprimir' pk=pedido.grouper.id %}">Imprimir</a>
               </div>
               <div class="col-3">
                   <a class = 'btn btn-danger' href="{% url 'tsuki_app:confirmareliminar' pk=pedido.grouper.id %}">Eliminar</a>
@@ -89,6 +92,6 @@
       </div>
     </div>
     {% endfor %}
-
+</div>
 </div>
 {% endblock %}

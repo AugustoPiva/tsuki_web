@@ -4,16 +4,16 @@
 
 <div class="jumbotron">
   <div class="row col">
+    <form method="post">
+      {% csrf_token %}
     <div class="col-5">
-      <form method="post">
-        {% csrf_token %}
         {{form.as_p}}
         {{ form.media }}
     </div>
     <div class="col-3">
       <input class = 'btn btn-primary' type="submit" name = 'Form1' value="Buscar gasto">
     </div>
-      </form>
+        </form>
     <div class="col-3">
       <a class = 'btn btn-warning' href="{% url 'tsuki_app:crear_gasto' %}"> Crear nuevo gasto </a><p>(si no existe en lista "seleccionar gasto")</p>
     </div>
