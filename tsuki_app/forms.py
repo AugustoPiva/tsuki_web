@@ -1,8 +1,17 @@
 from flatpickr import DatePickerInput
 from django import forms
 from .models import Pedidos,Tiposdegastos,Gastos,Clientes
+# ,UserProfileInfo
 from datetime import datetime,date
 from dal import autocomplete
+from django.contrib.auth.models import User
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    class Meta():
+        model = User
+        fields = ('username','password')
 
 class FormularioNuevoPedido(forms.ModelForm):
     client =forms.ModelChoiceField(

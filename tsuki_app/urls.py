@@ -6,13 +6,15 @@ app_name = 'tsuki_app'
 urlpatterns = [
     # en este path se van a ver todos los pedidos del dia
     path('',views.pedidos,name='pedidos'),
+    path('imprimir/<slug:pk>',views.pedidos,name='imprimir'),
+    path('<int:pk>/',views.pedidos,name='eliminarpedido'),
+    path('imprimirtodos',views.pedidos,name='imprimirtodos'),
     path('<int:eliminar>',views.Index,name='cancelarpedido'),
     # en este path se van a crear un nuevo pedido
     path('nuevopedido/',views.nuevo_pedido ,name='nuevopedido'),
     path('nuevopedido/<int:pk_client>',views.nuevo_pedido ,name='nuevopedido'),
     path('agregarproductos/<int:pk_pedido>',views.agregarproductos, name='agregarproductos'),
     path('modificarpedido/<int:pk>/',views.modificarpedido ,name='modificarpedido'),
-    path('<int:pk>/',views.pedidos,name='eliminarpedido'),
     path('<int:day>/<int:month>/<int:year>/',views.filtrarfecha,name='filtrarporfecha'),
     path('producciondeldia',views.producciondeldia,name='producciondiaria'),
     path('confirmareliminarpedido/<int:pk>/',views.confirmareliminar,name='confirmareliminar'),

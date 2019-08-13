@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404
-from django.urls import reverse_lazy,reverse
+from django.urls import reverse_lazy,reverse,resolve
 from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
 from .models import Pedidos,Listaprecios,Productosordenados,Tiposdegastos,Gastos,Clientes
 from .forms import FormularioNuevoPedido,Fecha,Filtrargastos,Formulario_del_gasto,Cargagasto,Nuevocliente
@@ -7,9 +7,11 @@ from django.views.generic import (View,TemplateView,
                                 ListView,DetailView,
                                 CreateView,DeleteView,
                                 UpdateView)
+# from django.contrib.auth.decorators import login_required
 from django.db.models import Sum,F,Max,Avg,StdDev
 from datetime import datetime,date
 from django.shortcuts import redirect
+# from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator
 from itertools import chain
 import gspread
@@ -20,6 +22,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import json
 global pedido_max
 global gasto_max
+from escpos import *
 
 #si queres usar template views
 # class PruebaTemplateView(TemplateView):
@@ -32,12 +35,36 @@ global gasto_max
 #
 
 def pedidos(request,**kwargs):
+    #imprimir la comanda
+    current_url = resolve(request.path_info).url_name
+    try:
+        imprimir=Pedidos.objects.get(id=kwargs['pk'])
+        p = printer.Network("192.168.0.175")
+        p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
+        p.text(str(imprimir.client))
+        p.set(width=2, height=2)
+        p.text("\n------------------------\n")
+        produc_ord = Productosordenados.objects.filter(pedido=imprimir)
+        #imprimo todos los productos
+        for i in produc_ord:
+            p.text(str(i))
+            p.text("\n")
+        p.text("------------------------\n")
+        p.text("Total: $ ")
+        p.text(str(imprimir.get_total()))
+        p.text("\n------------------------\n")
+        p.text(str(imprimir.comentario))
+        p.cut()
+    except:
+        pass
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=date.today().day,
                                                             pedido__fecha__month=date.today().month,
                                                             pedido__fecha__year=date.today().year).order_by('pedido__client__nombre_apellido','pedido__id')
-    pedidostotales=Pedidos.objects.filter(fecha__day=date.today().day,
+    todoslospedidosdeldia=Pedidos.objects.filter(fecha__day=date.today().day,
                                           fecha__month=date.today().month,
-                                          fecha__year=date.today().year).count()
+                                          fecha__year=date.today().year)
+    pedidostotales=todoslospedidosdeldia.count()
+
     if request.method == "POST":
 
         day   = int(request.POST['dia'][8:10])
@@ -48,8 +75,40 @@ def pedidos(request,**kwargs):
 
     x=date.today()
     fecha=Fecha({'dia':x})
+    # si quiero imprimir todos de una:
+    if current_url == 'imprimirtodos':
+        for u in todoslospedidosdeldia:
+            p = printer.Network("192.168.0.175")
+            p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
+            p.text(str(u.client))
+            p.set(width=2, height=2)
+            p.text("\n------------------------\n")
+            produc_ord = Productosordenados.objects.filter(pedido=u)
+            #imprimo todos los productos
+            for i in produc_ord:
+                p.text(str(i))
+                p.text("\n")
+            p.text("------------------------\n")
+            p.text("Total: $ ")
+            p.text(str(u.get_total()))
+            p.text("\n------------------------\n")
+            p.text(str(u.comentario))
+            p.cut()
+            time.sleep(0.5)
+    else:
+        pass
 
     return render(request,'tsuki_app/pedidos_list.html',{'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
+
+def confirmareliminar(request,pk):
+    # alerta al usuario si quiere eliminar el pedido mostrandole detalles de la orden
+    if request.method == "POST":
+        Pedidos.objects.get(id=pk).delete()
+        return HttpResponseRedirect('/tsuki_app/')
+    else:
+        s = Pedidos.objects.get(id=pk)
+        items =Productosordenados.objects.filter(pedido=pk)
+        return render(request,'tsuki_app/confirmareliminacion.html',{'pedidoaeliminar':s,'prods':items})
 
 def filtrarfecha(request,**kwargs):
 
@@ -70,6 +129,7 @@ def filtrarfecha(request,**kwargs):
     return render(request,'tsuki_app/pedidos_list.html',{'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
 
 def Index(request,**kwargs):
+
     #Elimina el que se cancelo y el cliente, si no tiene ningun pedido
     try:
         id_pedido = kwargs['eliminar']
@@ -122,6 +182,7 @@ def agregarproductos(request,**kwargs):
             for i in productos_ordenados:
                 prod=get_object_or_404(Listaprecios,id=i)
                 order_item = Productosordenados.objects.create(item=prod,cantidad=productos_ordenados[i],pedido=pedido)
+                #si el pedido tiene presentacion activar la variable booleana de vajilla
                 if order_item.item.categoria_producto == 'barcos' or order_item.item.categoria_producto == 'puentes':
                     order_item.lotienen=True
                 else:
@@ -196,15 +257,6 @@ def producciondeldia(request,**kwargs):
           'rolls':rolles,
     }
     return render(request,'tsuki_app/producciondiaria.html',dict)
-
-def confirmareliminar(request,pk):
-    if request.method == "POST":
-        Pedidos.objects.get(id=pk).delete()
-        return HttpResponseRedirect('/tsuki_app/')
-    else:
-        s = Pedidos.objects.get(id=pk)
-        items =Productosordenados.objects.filter(pedido=pk)
-        return render(request,'tsuki_app/confirmareliminacion.html',{'pedidoaeliminar':s,'prods':items})
 
 def cargar_gastos(request,**kwargs):
     gastos_list = Gastos.objects.all().order_by('-fechacarga')
