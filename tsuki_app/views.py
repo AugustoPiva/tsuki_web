@@ -39,7 +39,7 @@ def pedidos(request,**kwargs):
     current_url = resolve(request.path_info).url_name
     try:
         imprimir=Pedidos.objects.get(id=kwargs['pk'])
-        p = printer.Network("192.168.0.175")
+        p = printer.Network("200.127.194.17:80")
         p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
         p.text(str(imprimir.client))
         p.set(width=2, height=2)
