@@ -66,13 +66,10 @@ def pedidos(request,**kwargs):
     pedidostotales=todoslospedidosdeldia.count()
 
     if request.method == "POST":
-
         day   = int(request.POST['dia'][8:10])
         month = int(request.POST['dia'][5:7])
         year  = int(request.POST['dia'][0:4])
-
         return HttpResponseRedirect(reverse('tsuki_app:filtrarporfecha',args=(day,month,year)))
-
     x=date.today()
     fecha=Fecha({'dia':x})
     # si quiero imprimir todos de una:

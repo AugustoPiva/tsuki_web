@@ -23,8 +23,8 @@
         {% csrf_token %}
       {{fecha.media}}
       {{fecha.dia}}
+      <button style="margin-top:5px;" class = 'btn btn-primary' type="submit" name="button"> Buscar </button>
       </form>
-      <button href="{% url 'tsuki_app:filtrarporfecha' %}" style="margin-top:5px;" class = 'btn btn-primary' type="submit" name="button"> Buscar </button>
       </div>
       <div class="col-2">
       <a class = 'btn btn-secondary' href="{% url 'tsuki_app:imprimirtodos' %}" onclick="detener(event)">Imprimir todos</a>
