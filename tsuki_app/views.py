@@ -43,8 +43,8 @@ def pedidos(request,**kwargs):
         else:
             ip = request.META.get('REMOTE_ADDR')
         return ip
-
     current_url = resolve(request.path_info).url_name
+
     try:
         ip_address = get_client_ip(request)
         imprimir=Pedidos.objects.get(id=kwargs['pk'])
