@@ -36,12 +36,18 @@ from escpos import *
 #
 
 def pedidos(request,**kwargs):
-    #imprimir la comanda
-    ip_address = socket.gethostbyname(socket.gethostname())
+    def get_client_ip(request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
+
     current_url = resolve(request.path_info).url_name
     try:
+        ip_address = get_client_ip(request)
         imprimir=Pedidos.objects.get(id=kwargs['pk'])
-        ip_address = socket.gethostbyname(socket.gethostname())
         p = printer.Network(str(ip_address))
         p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
         p.text(str(imprimir.client))
