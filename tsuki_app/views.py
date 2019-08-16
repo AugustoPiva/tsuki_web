@@ -20,6 +20,7 @@ import locale
 locale.setlocale(locale.LC_ALL, 'es_ES')
 from oauth2client.service_account import ServiceAccountCredentials
 import json
+import socket
 global pedido_max
 global gasto_max
 from escpos import *
@@ -39,7 +40,8 @@ def pedidos(request,**kwargs):
     current_url = resolve(request.path_info).url_name
     try:
         imprimir=Pedidos.objects.get(id=kwargs['pk'])
-        p = printer.Network("200.127.194.17")
+        ip_address = socket.gethostbyname(socket.gethostname())
+        p = printer.Network(ip_address)
         p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
         p.text(str(imprimir.client))
         p.set(width=2, height=2)
@@ -74,8 +76,9 @@ def pedidos(request,**kwargs):
     fecha=Fecha({'dia':x})
     # si quiero imprimir todos de una:
     if current_url == 'imprimirtodos':
+        ip_address = socket.gethostbyname(socket.gethostname())
+        p = printer.Network(ip_address)
         for u in todoslospedidosdeldia:
-            p = printer.Network("200.127.194.17")
             p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
             p.text(str(u.client))
             p.set(width=2, height=2)
