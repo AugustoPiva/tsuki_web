@@ -42,7 +42,7 @@ def pedidos(request,**kwargs):
     try:
         imprimir=Pedidos.objects.get(id=kwargs['pk'])
         ip_address = socket.gethostbyname(socket.gethostname())
-        p = printer.Network(ip_address)
+        p = printer.Network(str(ip_address))
         p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
         p.text(str(imprimir.client))
         p.set(width=2, height=2)
