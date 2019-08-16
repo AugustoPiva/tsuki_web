@@ -105,7 +105,7 @@ def pedidos(request,**kwargs):
     else:
         pass
 
-    return render(request,'tsuki_app/pedidos_list.html',{'ip_address':ip,'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
+    return render(request,'tsuki_app/pedidos_list.html',{'ip':ip_address,'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
 
 def confirmareliminar(request,pk):
     # alerta al usuario si quiere eliminar el pedido mostrandole detalles de la orden
