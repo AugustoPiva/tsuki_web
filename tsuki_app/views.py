@@ -84,7 +84,7 @@ def pedidos(request,**kwargs):
     # si quiero imprimir todos de una:
     if current_url == 'imprimirtodos':
         ip_address = get_client_ip(request)
-        p = printer.Network(ip_address)
+        p = printer.Network(str(ip_address))
         for u in todoslospedidosdeldia:
             p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
             p.text(str(u.client))
