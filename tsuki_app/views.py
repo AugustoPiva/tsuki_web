@@ -37,6 +37,7 @@ from escpos import *
 
 def pedidos(request,**kwargs):
     #imprimir la comanda
+    ip_address = socket.gethostbyname(socket.gethostname())
     current_url = resolve(request.path_info).url_name
     try:
         imprimir=Pedidos.objects.get(id=kwargs['pk'])
@@ -98,7 +99,7 @@ def pedidos(request,**kwargs):
     else:
         pass
 
-    return render(request,'tsuki_app/pedidos_list.html',{'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
+    return render(request,'tsuki_app/pedidos_list.html',{'ip':ip_address,'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
 
 def confirmareliminar(request,pk):
     # alerta al usuario si quiere eliminar el pedido mostrandole detalles de la orden
