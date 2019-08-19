@@ -189,6 +189,7 @@ def agregarproductos(request,**kwargs):
             for i in productos_ordenados:
                 prod=get_object_or_404(Listaprecios,id=i)
                 order_item = Productosordenados.objects.create(item=prod,cantidad=productos_ordenados[i],pedido=pedido)
+                order_item.total=order_item.precio_total()
                 #si el pedido tiene presentacion activar la variable booleana de vajilla
                 if order_item.item.categoria_producto == 'barcos' or order_item.item.categoria_producto == 'puentes':
                     order_item.lotienen=True
@@ -225,6 +226,7 @@ def modificarpedido(request,pk):
                     else:
                         prod_a_actualizar=Productosordenados.objects.get(pedido__id=pk,item__id=prod[0])
                         prod_a_actualizar.cantidad=productos_ordenados[str(prod[0])]
+                        prod_a_actualizar.total=prod_a_actualizar.precio_total()
                         prod_a_actualizar.save()
                 #...(*)lo descarto para crear un nuevo producto pedido
                     productos_ordenados.pop(str(prod[0]), None)
@@ -236,6 +238,7 @@ def modificarpedido(request,pk):
             for nuevo in productos_ordenados:
                 nuevo_producto=get_object_or_404(Listaprecios,id=int(nuevo))
                 order_item = Productosordenados.objects.create(item=nuevo_producto,cantidad=productos_ordenados[nuevo],pedido=orden)
+                order_item.total=order_item.precio_total()
         form.save()
         return redirect('/tsuki_app/')
     else:
@@ -351,7 +354,6 @@ def decision_compra(request,**kwargs):
                 else:
                     pass
             form=Filtrargastos()
-            print(pedidos_semana_pasada)
             return render(request,'tsuki_app/decision_compra.html',{'form':form,'lista':lista_fecha,'sempas':pedidos_semana_pasada,'insumo':insumo})
     except:
         # reseteo la los pedidos de la semana pasada
