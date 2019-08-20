@@ -3,15 +3,8 @@ from django.urls import reverse
 from django.conf import settings
 from django.db.models import Sum
 from datetime import datetime,date
-from django.contrib.auth.models import User
-# Create your models here.
-# class UserProfileInfo(models.Model):
 
-    # Create relationship (don't inherit from User!)
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     def __str__(self):
-#         # Built-in attribute of django.contrib.auth.models.User !
-#         return self.user.username
+# Create your models here.
 
 class Clientes(models.Model):
     nombre_apellido      = models.CharField(max_length=40,unique=True)

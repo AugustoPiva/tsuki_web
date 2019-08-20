@@ -10,6 +10,7 @@ urlpatterns = [
     path('<int:pk>/',views.pedidos,name='eliminarpedido'),
     path('imprimirtodos',views.pedidos,name='imprimirtodos'),
     path('<int:eliminar>',views.Index,name='cancelarpedido'),
+    path('user_login/',views.user_login,name='user_login'),
     # en este path se van a crear un nuevo pedido
     path('nuevopedido/',views.nuevo_pedido ,name='nuevopedido'),
     path('nuevopedido/<int:pk_client>',views.nuevo_pedido ,name='nuevopedido'),

@@ -7,11 +7,11 @@ from django.views.generic import (View,TemplateView,
                                 ListView,DetailView,
                                 CreateView,DeleteView,
                                 UpdateView)
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
 from django.db.models import Sum,F,Max,Avg,StdDev
 from datetime import datetime,date
 from django.shortcuts import redirect
-# from django.core.urlresolvers import reverse
 from django.core.paginator import Paginator
 from itertools import chain
 import gspread
@@ -35,6 +35,25 @@ from escpos import *
 #         return context
 #
 
+def user_login(request):
+
+    if request.method == 'POST':
+        # agarras lo que dice el label del html
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username,password=password)
+        if user:
+            if user.is_active:
+                login(request,user)
+                return HttpResponseRedirect(reverse('tsuki_app:pedidos'))
+            else:
+                return HttpResponseRedirect("tsuki_app:user_login")
+        else:
+            pass
+    else:
+        return render(request,'tsuki_app/login.html',{})
+
+@login_required
 def pedidos(request,**kwargs):
     def get_client_ip(request):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -107,6 +126,7 @@ def pedidos(request,**kwargs):
 
     return render(request,'tsuki_app/pedidos_list.html',{'ip':ip_address,'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
 
+@login_required
 def confirmareliminar(request,pk):
     # alerta al usuario si quiere eliminar el pedido mostrandole detalles de la orden
     if request.method == "POST":
@@ -117,6 +137,7 @@ def confirmareliminar(request,pk):
         items =Productosordenados.objects.filter(pedido=pk)
         return render(request,'tsuki_app/confirmareliminacion.html',{'pedidoaeliminar':s,'prods':items})
 
+@login_required
 def filtrarfecha(request,**kwargs):
 
     x= datetime(kwargs['year'],kwargs['month'],kwargs['day'])
@@ -151,6 +172,7 @@ def Index(request,**kwargs):
         pass
     return render(request, 'tsuki_app/base.html',{})
 
+@login_required
 def nuevo_pedido(request,**kwargs):
     #Si el cliente esta en la lista de cliente lo elijo y creo un nuevo pedido
 
@@ -179,6 +201,7 @@ def nuevo_pedido(request,**kwargs):
             pass
         return render(request, 'tsuki_app/nuevo_pedido.html',{'form':form,'form2':form2})
 
+@login_required
 def agregarproductos(request,**kwargs):
     productos= Listaprecios.objects.all()
     ped=kwargs['pk_pedido']
@@ -201,6 +224,7 @@ def agregarproductos(request,**kwargs):
             pass
     return render(request,'tsuki_app/agregar_productos.html',{'lista':productos,'pedido':pedido})
 
+@login_required
 def modificarpedido(request,pk):
     productos= Listaprecios.objects.all()
     orden=Pedidos.objects.get(id=pk)
@@ -245,6 +269,7 @@ def modificarpedido(request,pk):
         pass
     return render(request,'tsuki_app/modificar_pedido.html',{'form':form,'lista':productos,'carro':carrito,'orden':orden})
 
+@login_required
 def producciondeldia(request,**kwargs):
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=date.today().day,
                                                             pedido__fecha__month=date.today().month,
@@ -268,6 +293,7 @@ def producciondeldia(request,**kwargs):
     }
     return render(request,'tsuki_app/producciondiaria.html',dict)
 
+@login_required
 def cargar_gastos(request,**kwargs):
     gastos_list = Gastos.objects.all().order_by('-fechacarga')
     paginator = Paginator(gastos_list, 8)
@@ -301,6 +327,7 @@ def cargar_gastos(request,**kwargs):
         pass
     return render(request,'tsuki_app/control_gastos.html',{'form':form,'gastos':gastos})
 
+@login_required
 def crear_nuevogasto(request):
     form = Formulario_del_gasto(request.POST or None)
     if request.method == 'POST':
@@ -312,6 +339,7 @@ def crear_nuevogasto(request):
             return HttpResponseRedirect(reverse('tsuki_app:presentar_gastos',args=(pk,)))
     return render(request,'tsuki_app/crear_gasto.html',{'form':form})
 
+@login_required
 def decision_compra(request,**kwargs):
     def myFunc(e):
         return e['fecha']
@@ -363,6 +391,7 @@ def decision_compra(request,**kwargs):
         insumo = 'sinelegir'
         return render(request,'tsuki_app/decision_compra.html',{'form':form,'insumo':insumo})
 
+@login_required
 def puentesybarcos(request, **kwargs):
     try:
         devolvio= kwargs['pk']

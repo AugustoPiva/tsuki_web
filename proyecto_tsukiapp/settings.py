@@ -146,7 +146,7 @@ USE_TZ = True
 STATIC_URL = '/staticfiles/'
 # este directorio tiene q ver con media
 # STATICFILES_DIRS=[STATIC_DIR,]
-# LOGIN_URL = '/t'
+LOGIN_URL = '/tsuki_app/user_login'
 # DIRECTORIOS MEDIA_DIR
 # MEDIA_ROOT = MEDIA_DIR
 # MEDIA_URL ='/media/'
