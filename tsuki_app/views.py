@@ -274,13 +274,12 @@ def producciondeldia(request,**kwargs):
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=date.today().day,
                                                             pedido__fecha__month=date.today().month,
                                                             pedido__fecha__year=date.today().year)
-    tablas              = ["Surtidos","Salmon","Puentes","Barcos"]
-    productossinarroz   = ["Sugerencia","Salsa Teriyaki","Langostinos rebozados 3p","Geisha Tsuki 4p","Sashimi 5p","Niguiris de salmon 4p","Niguiris Ahumados 4p","Geisha comun"]
-    totalpiezasporprod  = productosdelasordenes.exclude(item__nombre_producto__in=productossinarroz).annotate(total=Sum(F('cantidad') * F('item__cantidad_producto')))
-    totalparroz         = totalpiezasporprod.aggregate(supertotal=Sum('total'))['supertotal']
+    productossinarroz   = ["Salsa Tsuki","Salsa Teriyaki","Langostinos rebozados 6p","Geisha Tsuki 4p","Geisha caviar 4p","Geisha palta 4p","Sashimi 5p","Niguiris de salmon 4p","Niguiris Ahumados 4p","Geisha comun"]
+    totalpiezasporprod  = productosdelasordenes.exclude(item__nombre_producto__in=productossinarroz).annotate(totall=Sum(F('cantidad') * F('item__cantidad_producto')))
+    totalparroz         = totalpiezasporprod.aggregate(supertotal=Sum('totall'))['supertotal']
     hotsalmon           = productosdelasordenes.filter(item__nombre_producto='Hot Salmon').aggregate(tsalm=Sum('cantidad'))['tsalm']
     hotlangostinos      = productosdelasordenes.filter(item__nombre_producto='Hot Langostinos').aggregate(tlang=Sum('cantidad'))['tlang']
-    langostinosrebozados= productosdelasordenes.filter(item__nombre_producto='Langostinos rebozados 3p').aggregate(tpinc=Sum('cantidad'))['tpinc']
+    langostinosrebozados= productosdelasordenes.filter(item__nombre_producto='Langostinos Rebozados 6p').aggregate(tpinc=Sum('cantidad'))['tpinc']
     rolles              = productosdelasordenes.filter(item__categoria_producto='rolls').annotate(Sum('cantidad'))
 
     dict={'totalppp':totalpiezasporprod,
