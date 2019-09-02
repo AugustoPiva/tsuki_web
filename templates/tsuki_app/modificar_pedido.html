@@ -42,7 +42,7 @@
             $('#'+producto+'.c').text(''+productospedidos[producto]);
             $('#'+producto+'.t').text('$'+productospedidos[producto]*listadoprecios[producto][0]);
           }else{
-            $('#tabla-carro').append('<tr id='+producto+'class='+fila+'><td>'+listadoprecios[producto][1]+'</td><td id='+producto+' class=c >1</td><td id='+producto+' class=t > $'+listadoprecios[producto][0]+'</td><td><a class="btn btn-primary" onclick="eliminarProducto('+producto+');return false;">X</a></td></tr>');
+            $('#tabla-carro').append('<tr id='+producto+' class='+fila+'><td>'+listadoprecios[producto][1]+'</td><td id='+producto+' class=c >1</td><td id='+producto+' class=t > $'+listadoprecios[producto][0]+'</td><td><a class="btn btn-primary" onclick="eliminarProducto('+producto+');return false;">X</a></td></tr>');
             productospedidos[producto]=1;
           }
           total  = total + listadoprecios[producto][0];
