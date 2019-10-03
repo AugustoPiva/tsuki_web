@@ -55,6 +55,7 @@ def user_login(request):
 
 @login_required
 def pedidos(request,**kwargs):
+    #Obtener la impresora
     def get_client_ip(request):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
@@ -64,6 +65,7 @@ def pedidos(request,**kwargs):
         return ip
     current_url = resolve(request.path_info).url_name
 
+    #Si la url tiene el pedido del cliente imprimir el ticket
     try:
         ip_address = get_client_ip(request)
         imprimir=Pedidos.objects.get(id=kwargs['pk'])
@@ -203,10 +205,20 @@ def nuevo_pedido(request,**kwargs):
 
 @login_required
 def agregarproductos(request,**kwargs):
+    def get_client_ip(request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
+    current_url = resolve(request.path_info).url_name
+
     productos= Listaprecios.objects.all()
     ped=kwargs['pk_pedido']
     pedido=Pedidos.objects.get(id=ped)
     if request.method =="POST":
+        #Si no es un carrito vacio...
         if request.POST['Productos'] !='{}':
             productos_ordenados=json.loads(request.POST['Productos'])
             for i in productos_ordenados:
@@ -219,6 +231,30 @@ def agregarproductos(request,**kwargs):
                 else:
                     pass
                 order_item.save()
+                if datetime.datetime.now().hour >= 15 and order_item.fecha__day == date.today().day:
+                    try:
+                        ip_address = get_client_ip(request)
+                        imprimir=Pedidos.objects.get(id=kwargs['pk'])
+                        p = printer.Network(str(ip_address))
+                        p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
+                        p.text(str(imprimir.client))
+                        p.set(width=2, height=2)
+                        p.text("\n------------------------\n")
+                        produc_ord = Productosordenados.objects.filter(pedido=imprimir)
+                        #imprimo todos los productos
+                        for i in produc_ord:
+                            p.text(str(i))
+                            p.text("\n")
+                        p.text("------------------------\n")
+                        p.text("Total: $ ")
+                        p.text(str(imprimir.get_total()))
+                        p.text("\n------------------------\n")
+                        p.text(str(imprimir.comentario))
+                        p.cut()
+                    except:
+                        pass
+                else:
+                    pass
             return redirect('/tsuki_app/')
         else:
             pass
