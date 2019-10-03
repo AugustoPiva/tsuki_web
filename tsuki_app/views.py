@@ -231,10 +231,10 @@ def agregarproductos(request,**kwargs):
                 else:
                     pass
                 order_item.save()
-                if datetime.datetime.now().hour >= 15 and order_item.fecha__day == date.today().day:
+                if datetime.now().hour >= 15 and pedido.fecha.day == date.today().day:
                     try:
                         ip_address = get_client_ip(request)
-                        imprimir=Pedidos.objects.get(id=kwargs['pk'])
+                        imprimir=pedido
                         p = printer.Network(str(ip_address))
                         p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
                         p.text(str(imprimir.client))
