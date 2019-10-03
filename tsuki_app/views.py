@@ -231,7 +231,7 @@ def agregarproductos(request,**kwargs):
                 else:
                     pass
                 order_item.save()
-            if datetime.now().hour >= 18 and pedido.fecha.day == date.today().day:
+            if pedido.fecha.day == date.today().day:
                 try:
                     ip_address = get_client_ip(request)
                     imprimir=pedido
