@@ -231,30 +231,30 @@ def agregarproductos(request,**kwargs):
                 else:
                     pass
                 order_item.save()
-                if datetime.now().hour >= 15 and pedido.fecha.day == date.today().day:
-                    try:
-                        ip_address = get_client_ip(request)
-                        imprimir=pedido
-                        p = printer.Network(str(ip_address))
-                        p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
-                        p.text(str(imprimir.client))
-                        p.set(width=2, height=2)
-                        p.text("\n------------------------\n")
-                        produc_ord = Productosordenados.objects.filter(pedido=imprimir)
-                        #imprimo todos los productos
-                        for i in produc_ord:
-                            p.text(str(i))
-                            p.text("\n")
-                        p.text("------------------------\n")
-                        p.text("Total: $ ")
-                        p.text(str(imprimir.get_total()))
-                        p.text("\n------------------------\n")
-                        p.text(str(imprimir.comentario))
-                        p.cut()
-                    except:
-                        pass
-                else:
+            if datetime.now().hour >= 18 and pedido.fecha.day == date.today().day:
+                try:
+                    ip_address = get_client_ip(request)
+                    imprimir=pedido
+                    p = printer.Network(str(ip_address))
+                    p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
+                    p.text(str(imprimir.client))
+                    p.set(width=2, height=2)
+                    p.text("\n------------------------\n")
+                    produc_ord = Productosordenados.objects.filter(pedido=imprimir)
+                    #imprimo todos los productos
+                    for i in produc_ord:
+                        p.text(str(i))
+                        p.text("\n")
+                    p.text("------------------------\n")
+                    p.text("Total: $ ")
+                    p.text(str(imprimir.get_total()))
+                    p.text("\n------------------------\n")
+                    p.text(str(imprimir.comentario))
+                    p.cut()
+                except:
                     pass
+            else:
+                pass
             return redirect('/tsuki_app/')
         else:
             pass
