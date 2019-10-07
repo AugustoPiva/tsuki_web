@@ -23,6 +23,7 @@ import json
 import socket
 global pedido_max
 global gasto_max
+global limitador
 from escpos import *
 
 #si queres usar template views
@@ -64,11 +65,10 @@ def pedidos(request,**kwargs):
             ip = request.META.get('REMOTE_ADDR')
         return ip
     current_url = resolve(request.path_info).url_name
-
     #Si la url tiene el pedido del cliente imprimir el ticket
     try:
         ip_address = get_client_ip(request)
-        imprimir=Pedidos.objects.get(id=kwargs['pk'])
+        imprimir = Pedidos.objects.get(id=kwargs['pk'])
         p = printer.Network(str(ip_address))
         p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
         p.text(str(imprimir.client))
@@ -85,6 +85,15 @@ def pedidos(request,**kwargs):
         p.text("\n------------------------\n")
         p.text(str(imprimir.comentario))
         p.cut()
+        loscalientes=produc_ord.filter(item__categoria_producto="calientes")
+        if loscalientes.count()>0:
+            p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
+            p.text(str(imprimir.client))
+            p.set(width=2, height=2)
+            p.text("\n------------------------\n")
+            for i in loscalientes:
+                p.text(str(i))
+                p.text("\n")
     except:
         pass
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=date.today().day,
@@ -103,7 +112,8 @@ def pedidos(request,**kwargs):
     x=date.today()
     fecha=Fecha({'dia':x})
     # si quiero imprimir todos de una:
-    if current_url == 'imprimirtodos':
+    if current_url == 'imprimirtodos' and limitador==0:
+        limitador=1
         ip_address = get_client_ip(request)
         p = printer.Network(str(ip_address))
         for u in todoslospedidosdeldia:
@@ -122,10 +132,19 @@ def pedidos(request,**kwargs):
             p.text("\n------------------------\n")
             p.text(str(u.comentario))
             p.cut()
+            loscalientes=produc_ord.filter(item__categoria_producto="calientes")
+            if loscalientes.count()>0:
+                p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
+                p.text(str(imprimir.client))
+                p.set(width=2, height=2)
+                p.text("\n------------------------\n")
+                for i in loscalientes:
+                    p.text(str(i))
+                    p.text("\n")
             time.sleep(0.5)
+            p.cut()
     else:
         pass
-
     return render(request,'tsuki_app/pedidos_list.html',{'ip':ip_address,'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
 
 @login_required
@@ -176,8 +195,8 @@ def Index(request,**kwargs):
 
 @login_required
 def nuevo_pedido(request,**kwargs):
+    limitador=0
     #Si el cliente esta en la lista de cliente lo elijo y creo un nuevo pedido
-
     if request.method == "POST":
         if 'Form1' in request.POST:
             form = FormularioNuevoPedido(request.POST or None)
@@ -251,6 +270,15 @@ def agregarproductos(request,**kwargs):
                     p.text("\n------------------------\n")
                     p.text(str(imprimir.comentario))
                     p.cut()
+                    loscalientes=produc_ord.filter(item__categoria_producto="calientes")
+                    if loscalientes.count()>0:
+                        p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
+                        p.text(str(imprimir.client))
+                        p.set(width=2, height=2)
+                        p.text("\n------------------------\n")
+                        for i in loscalientes:
+                            p.text(str(i))
+                            p.text("\n")
                 except:
                     pass
             else:
@@ -300,6 +328,7 @@ def modificarpedido(request,pk):
                 order_item = Productosordenados.objects.create(item=nuevo_producto,cantidad=productos_ordenados[nuevo],pedido=orden)
                 order_item.total=order_item.precio_total()
         form.save()
+
         return redirect('/tsuki_app/')
     else:
         pass
