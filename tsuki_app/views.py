@@ -94,6 +94,7 @@ def pedidos(request,**kwargs):
             for i in loscalientes:
                 p.text(str(i))
                 p.text("\n")
+            p.cut()
     except:
         pass
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=date.today().day,
@@ -279,6 +280,7 @@ def agregarproductos(request,**kwargs):
                         for i in loscalientes:
                             p.text(str(i))
                             p.text("\n")
+                        p.cut()
                 except:
                     pass
             else:
