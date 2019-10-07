@@ -123,7 +123,7 @@ class Tiposdegastos(models.Model):
 
 class Gastos(models.Model):
     gasto           = models.ForeignKey(Tiposdegastos,on_delete=models.CASCADE)
-    cantidades      = models.IntegerField()
+    cantidades      = models.DecimalField(max_digits=5, decimal_places=2)
     fechacarga      = models.DateField(default=date.today)
     total_gasto     = models.IntegerField(null=True)
 

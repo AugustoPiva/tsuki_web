@@ -371,6 +371,7 @@ def cargar_gastos(request,**kwargs):
     gastos = paginator.get_page(page)
     form = Filtrargastos()
     formulariocantidad=Cargagasto()
+    #si busco un gasto lo cargo para cargar cantidad fecha y monto por compra
     if request.method == "POST":
         if 'Form1' in request.POST:
             pk=request.POST['seleccionar_gasto']
