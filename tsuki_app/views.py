@@ -24,6 +24,7 @@ import socket
 global pedido_max
 global gasto_max
 global limitador
+limitador=0
 from escpos import *
 
 #si queres usar template views
