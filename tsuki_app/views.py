@@ -23,7 +23,6 @@ import json
 import socket
 global pedido_max
 global gasto_max
-global limitador
 from escpos import *
 
 #si queres usar template views
@@ -56,6 +55,7 @@ def user_login(request):
 
 @login_required
 def pedidos(request,**kwargs):
+    limitador=0
     #Obtener la impresora
     def get_client_ip(request):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -196,7 +196,6 @@ def Index(request,**kwargs):
 
 @login_required
 def nuevo_pedido(request,**kwargs):
-    limitador=0
     #Si el cliente esta en la lista de cliente lo elijo y creo un nuevo pedido
     if request.method == "POST":
         if 'Form1' in request.POST:
