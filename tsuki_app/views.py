@@ -21,7 +21,6 @@ locale.setlocale(locale.LC_ALL, 'es_ES')
 from oauth2client.service_account import ServiceAccountCredentials
 import json
 import socket
-global limitador
 global pedido_max
 global gasto_max
 from escpos import *
@@ -35,6 +34,48 @@ from escpos import *
 #         context['injectme']= 'BASIC INJECTION'
 #         return context
 #
+
+def imprimiendotodo(request):
+    def get_client_ip(request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
+    ip_address = get_client_ip(request)
+    p = printer.Network(str(ip_address))
+    todoslospedidosdeldia=Pedidos.objects.filter(fecha__day=date.today().day,
+                                          fecha__month=date.today().month,
+                                          fecha__year=date.today().year)
+    for u in todoslospedidosdeldia:
+        p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
+        p.text(str(u.client))
+        p.set(width=2, height=2)
+        p.text("\n------------------------\n")
+        produc_ord = Productosordenados.objects.filter(pedido=u)
+        #imprimo todos los productos
+        for i in produc_ord:
+            p.text(str(i))
+            p.text("\n")
+        p.text("------------------------\n")
+        p.text("Total: $ ")
+        p.text(str(u.get_total()))
+        p.text("\n------------------------\n")
+        p.text(str(u.comentario))
+        p.cut()
+        loscalientes=produc_ord.filter(item__categoria_producto="calientes")
+        if loscalientes.count()>0:
+            p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
+            p.text(str(u.client))
+            p.set(width=2, height=2)
+            p.text("\n------------------------\n")
+            for i in loscalientes:
+                p.text(str(i))
+                p.text("\n")
+            p.cut()
+        time.sleep(0.5)
+    return pedidos(request)
 
 def user_login(request):
 
@@ -57,7 +98,6 @@ def user_login(request):
 @login_required
 def pedidos(request,**kwargs):
     #Obtener la impresora
-    limitador=0
     def get_client_ip(request):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
@@ -114,40 +154,6 @@ def pedidos(request,**kwargs):
     x=date.today()
     fecha=Fecha({'dia':x})
     # si quiero imprimir todos de una:
-    if current_url == 'imprimirtodos' and limitador==0:
-        limitador=1
-        ip_address = get_client_ip(request)
-        p = printer.Network(str(ip_address))
-        for u in todoslospedidosdeldia:
-            p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
-            p.text(str(u.client))
-            p.set(width=2, height=2)
-            p.text("\n------------------------\n")
-            produc_ord = Productosordenados.objects.filter(pedido=u)
-            #imprimo todos los productos
-            for i in produc_ord:
-                p.text(str(i))
-                p.text("\n")
-            p.text("------------------------\n")
-            p.text("Total: $ ")
-            p.text(str(u.get_total()))
-            p.text("\n------------------------\n")
-            p.text(str(u.comentario))
-            p.cut()
-            loscalientes=produc_ord.filter(item__categoria_producto="calientes")
-            if loscalientes.count()>0:
-                p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
-                p.text(str(u.client))
-                p.set(width=2, height=2)
-                p.text("\n------------------------\n")
-                for i in loscalientes:
-                    p.text(str(i))
-                    p.text("\n")
-                p.cut()
-            time.sleep(0.5)
-
-    else:
-        pass
     return render(request,'tsuki_app/pedidos_list.html',{'ip':ip_address,'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
 
 @login_required
@@ -198,7 +204,6 @@ def Index(request,**kwargs):
 
 @login_required
 def nuevo_pedido(request,**kwargs):
-    limitador=0
     #Si el cliente esta en la lista de cliente lo elijo y creo un nuevo pedido
     if request.method == "POST":
         if 'Form1' in request.POST:

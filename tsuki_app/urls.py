@@ -8,7 +8,7 @@ urlpatterns = [
     path('',views.pedidos,name='pedidos'),
     path('imprimir/<slug:pk>',views.pedidos,name='imprimir'),
     path('<int:pk>/',views.pedidos,name='eliminarpedido'),
-    path('imprimirtodos',views.pedidos,name='imprimirtodos'),
+    path('imprimirtodos',views.imprimiendotodo,name='imprimirtodos'),
     path('<int:eliminar>',views.Index,name='cancelarpedido'),
     path('user_login/',views.user_login,name='user_login'),
     # en este path se van a crear un nuevo pedido
