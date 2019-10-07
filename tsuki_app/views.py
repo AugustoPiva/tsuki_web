@@ -142,8 +142,9 @@ def pedidos(request,**kwargs):
                 for i in loscalientes:
                     p.text(str(i))
                     p.text("\n")
+                p.cut()
             time.sleep(0.5)
-            p.cut()
+
     else:
         pass
     return render(request,'tsuki_app/pedidos_list.html',{'ip':ip_address,'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
