@@ -23,8 +23,6 @@ import json
 import socket
 global pedido_max
 global gasto_max
-global limitador
-limitador=0
 from escpos import *
 
 #si queres usar template views
@@ -50,7 +48,7 @@ def imprimiendotodo(request):
     todoslospedidosdeldia=Pedidos.objects.filter(fecha__day=date.today().day,
                                           fecha__month=date.today().month,
                                           fecha__year=date.today().year)
-    for u in todoslospedidosdeldia and limitador==0:
+    for u in todoslospedidosdeldia:
         p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
         p.text(str(u.client))
         p.set(width=2, height=2)
@@ -77,7 +75,6 @@ def imprimiendotodo(request):
                 p.text("\n")
             p.cut()
         time.sleep(0.5)
-    limitador=1
     return pedidos(request)
 
 def user_login(request):
@@ -100,7 +97,6 @@ def user_login(request):
 
 @login_required
 def pedidos(request,**kwargs):
-    limitador=0
     #Obtener la impresora
     def get_client_ip(request):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -242,8 +238,6 @@ def agregarproductos(request,**kwargs):
         else:
             ip = request.META.get('REMOTE_ADDR')
         return ip
-    current_url = resolve(request.path_info).url_name
-
     productos= Listaprecios.objects.all()
     ped=kwargs['pk_pedido']
     pedido=Pedidos.objects.get(id=ped)
