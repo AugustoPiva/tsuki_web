@@ -23,6 +23,7 @@ import json
 import socket
 global pedido_max
 global gasto_max
+global limitador
 from escpos import *
 
 #si queres usar template views
@@ -155,7 +156,6 @@ def pedidos(request,**kwargs):
         return HttpResponseRedirect(reverse('tsuki_app:filtrarporfecha',args=(day,month,year)))
     x=date.today()
     fecha=Fecha({'dia':x})
-    # si quiero imprimir todos de una:
     return render(request,'tsuki_app/pedidos_list.html',{'ip':ip_address,'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
 
 @login_required
