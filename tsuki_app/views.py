@@ -136,7 +136,7 @@ def pedidos(request,**kwargs):
             loscalientes=produc_ord.filter(item__categoria_producto="calientes")
             if loscalientes.count()>0:
                 p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
-                p.text(str(imprimir.client))
+                p.text(str(u.client))
                 p.set(width=2, height=2)
                 p.text("\n------------------------\n")
                 for i in loscalientes:
