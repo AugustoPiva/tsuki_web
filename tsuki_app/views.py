@@ -348,6 +348,10 @@ def producciondeldia(request,**kwargs):
     productossinarroz   = ["Salsa Tsuki","Salsa Teriyaki","Langostinos rebozados 6p","Geisha Tsuki 4p","Geisha caviar 4p","Geisha palta 4p","Sashimi 5p","Niguiris de salmon 4p","Niguiris Ahumados 4p","Geisha comun"]
     totalpiezasporprod  = productosdelasordenes.exclude(item__nombre_producto__in=productossinarroz).annotate(totall=Sum(F('cantidad') * F('item__cantidad_producto')))
     totalparroz         = totalpiezasporprod.aggregate(supertotal=Sum('totall'))['supertotal']
+    psurtidas           = productosdelasordenes.filter(item__sub_categoria_producto='surtido').aggregate(tsurtidas=Sum(F('cantidad') * F('item__cantidad_producto')))['tsurtidas']
+    rollssurtidos       = round((psurtidas/8)/2)
+    psalmon             = productosdelasordenes.filter(item__sub_categoria_producto='salmon').aggregate(tsalmon=Sum(F('cantidad') * F('item__cantidad_producto')))['tsalmon']
+    rollssalmon         = round((psalmon*0.9)/8 + (psurtidas/8)/2)
     hotsalmon           = productosdelasordenes.filter(item__nombre_producto='Hot Salmon').aggregate(tsalm=Sum('cantidad'))['tsalm']
     hotlangostinos      = productosdelasordenes.filter(item__nombre_producto='Hot Langostinos').aggregate(tlang=Sum('cantidad'))['tlang']
     langostinosrebozados= productosdelasordenes.filter(item__nombre_producto='Langostinos Rebozados 6p').aggregate(tpinc=Sum('cantidad'))['tpinc']
@@ -360,6 +364,8 @@ def producciondeldia(request,**kwargs):
           'hotlang':hotlangostinos,
           'lreboz':langostinosrebozados,
           'rolls':rolles,
+          'rsalmon':rollssalmon,
+          'rsurtidos':rollssurtidos,
     }
     return render(request,'tsuki_app/producciondiaria.html',dict)
 
