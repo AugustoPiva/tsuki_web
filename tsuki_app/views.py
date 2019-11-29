@@ -333,6 +333,7 @@ def modificarpedido(request,pk):
                 nuevo_producto=get_object_or_404(Listaprecios,id=int(nuevo))
                 order_item = Productosordenados.objects.create(item=nuevo_producto,cantidad=productos_ordenados[nuevo],pedido=orden)
                 order_item.total=order_item.precio_total()
+                order_item.save()
         form.save()
 
         return redirect('/tsuki_app/')
