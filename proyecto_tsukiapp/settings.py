@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tsuki_app',
+    'import_export',
     'flatpickr'
 ]
 
