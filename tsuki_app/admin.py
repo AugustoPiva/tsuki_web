@@ -29,7 +29,7 @@ class ClientesResource(resources.ModelResource):
         model = Clientes
 
 class ClientesAdmin(ImportExportModelAdmin):
-    resource_class = Clientes
+    resource_class = ClientesResource
 
 # Register your models here.
 admin.site.register(Listaprecios,ListapreciosAdmin)
