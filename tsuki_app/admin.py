@@ -24,9 +24,16 @@ class ProductosordenadosResource(resources.ModelResource):
 class ProductosordenadosAdmin(ImportExportModelAdmin):
     resource_class = ProductosordenadosResource
 
+class ClientesResource(resources.ModelResource):
+    class Meta:
+        model = Clientes
+
+class ClientesAdmin(ImportExportModelAdmin):
+    resource_class = Clientes
+
 # Register your models here.
 admin.site.register(Listaprecios,ListapreciosAdmin)
-admin.site.register(Clientes)
+admin.site.register(Clientes,ClientesAdmin)
 admin.site.register(Pedidos,PedidosAdmin)
 admin.site.register(Productosordenados,ProductosordenadosAdmin)
 admin.site.register(Gastos)
