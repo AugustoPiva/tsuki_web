@@ -346,7 +346,7 @@ def producciondeldia(request,**kwargs):
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=date.today().day,
                                                             pedido__fecha__month=date.today().month,
                                                             pedido__fecha__year=date.today().year)
-    productossinarroz   = ["Salsa Tsuki","Salsa Teriyaki","Langostinos rebozados 6p","Geisha Tsuki 4p","Geisha caviar 4p","Geisha palta 4p","Sashimi 5p","Niguiris de salmon 4p","Niguiris Ahumados 4p","Geisha comun"]
+    productossinarroz   = ["Salsa Tsuki","Salsa Teriyaki","Langostinos Rebozados 6p","Geisha Tsuki 4p","Geisha caviar 4p","Geisha palta 4p","Sashimi 5p","Niguiris de salmon 4p","Niguiris Ahumados 4p","Geisha comun"]
     totalpiezasporprod  = productosdelasordenes.exclude(item__nombre_producto__in=productossinarroz).annotate(totall=Sum(F('cantidad') * F('item__cantidad_producto')))
     totalparroz         = totalpiezasporprod.aggregate(supertotal=Sum('totall'))['supertotal']
     totalpiezasdeldia   = productosdelasordenes.aggregate(total=Sum(F('cantidad') * F('item__cantidad_producto')))['total']
