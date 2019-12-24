@@ -349,7 +349,7 @@ def producciondeldia(request,**kwargs):
     productossinarroz   = ["Salsa Tsuki","Salsa Teriyaki","Langostinos rebozados 6p","Geisha Tsuki 4p","Geisha caviar 4p","Geisha palta 4p","Sashimi 5p","Niguiris de salmon 4p","Niguiris Ahumados 4p","Geisha comun"]
     totalpiezasporprod  = productosdelasordenes.exclude(item__nombre_producto__in=productossinarroz).annotate(totall=Sum(F('cantidad') * F('item__cantidad_producto')))
     totalparroz         = totalpiezasporprod.aggregate(supertotal=Sum('totall'))['supertotal']
-    totalpiezasdeldia   = productosdelasordenes.aggregate(total=Sum('cantidad'))['total']
+    totalpiezasdeldia   = productosdelasordenes.aggregate(total=Sum(F('cantidad') * F('item__cantidad_producto')))['total']
     psurtidas           = productosdelasordenes.filter(item__sub_categoria_producto='surtido').aggregate(tsurtidas=Sum(F('cantidad') * F('item__cantidad_producto')))['tsurtidas']
     rollssurtidos       = round((psurtidas/8)/2)
     psalmon             = productosdelasordenes.filter(item__sub_categoria_producto='salmon').aggregate(tsalmon=Sum(F('cantidad') * F('item__cantidad_producto')))['tsalmon']
