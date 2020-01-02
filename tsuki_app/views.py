@@ -75,7 +75,7 @@ def imprimiendotodo(request):
                 p.text("\n")
             p.cut()
         time.sleep(0.5)
-    return pedidos(request)
+    return HttpResponseRedirect(reverse('tsuki_app:pedidos'))
 
 def user_login(request):
 
@@ -136,6 +136,7 @@ def pedidos(request,**kwargs):
                 p.text(str(i))
                 p.text("\n")
             p.cut()
+        return HttpResponseRedirect(reverse('tsuki_app:pedidos'))
     except:
         pass
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=date.today().day,
