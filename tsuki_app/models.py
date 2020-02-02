@@ -80,7 +80,7 @@ class Listaprecios(models.Model):
 class Productosordenados(models.Model):
     # user = models.ForeignKey(Pedidos, on_delete=models.CASCADE)
     # ordered         = models.BooleanField(default=False)
-    item            = models.ForeignKey(Listaprecios, on_delete=models.DO_NOTHING)
+    item            = models.ForeignKey(Listaprecios, on_delete=models.DO_NOTHING, null=True)
     pedido          = models.ForeignKey(Pedidos, on_delete=models.CASCADE)
     cantidad        = models.IntegerField(default=1)
     lotienen        = models.BooleanField(default=False, null=True)
