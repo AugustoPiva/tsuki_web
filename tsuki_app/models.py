@@ -37,7 +37,8 @@ class Listaprecios(models.Model):
             ('puentes','Puentes'),
             ('bd','Barcos descartables'),
             ('laja','Lajas'),
-            ('varios','Varios')
+            ('varios','Varios'),
+            ('eliminados',"Eliminados")
     ]
 
     SUBLISTA_CATEGORIAS =[
