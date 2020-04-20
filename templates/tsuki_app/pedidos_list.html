@@ -33,7 +33,12 @@
        <h5>{{x|date:"l"}}, {{x|date:"j"}} de {{x|date:"F"}} </h5>
       </div>
       <div class="col-3">
-       <h5>Total pedidos: {{pedidostotales}}</h5>
+        <div class="col-12">
+           <h5>Total pedidos: {{pedidostotales}}</h5>
+        </div>
+        <div class="col-12">
+           <h5>Total Envios: {{envios}}</h5>
+        </div>
       </div>
      </div>
   </div>
@@ -84,8 +89,14 @@
             {% endfor %}
             </div>
             <div class="col-6">
-              {{pedido.grouper.comentario}}
-
+              <div class="col-12">
+                {{pedido.grouper.comentario}}
+              </div>
+              {% if pedido.grouper.direnvio !="" %}
+              <div class="col-12">
+                {{pedido.grouper.direnvio}}
+              </div>
+              {% endif %}
             </div>
           </div>
         </div>

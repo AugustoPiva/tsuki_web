@@ -63,6 +63,9 @@ def imprimiendotodo(request):
         p.text(str(u.get_total()))
         p.text("\n------------------------\n")
         p.text(str(u.comentario))
+        if u.direnvio !="":
+            p.text("\n------------------------\n")
+            p.text("CON ENVIO")
         p.cut()
         loscalientes=produc_ord.filter(item__categoria_producto="calientes")
         if loscalientes.count()>0:
@@ -73,6 +76,16 @@ def imprimiendotodo(request):
             for i in loscalientes:
                 p.text(str(i))
                 p.text("\n")
+            p.cut()
+                #DIR ENVIO
+        if u.direnvio!="":
+            p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
+            p.text(str(imprimir.client))
+            p.set(width=2, height=2)
+            p.text("\n------------------------\n")
+            p.text(u.direnvio)
+            p.text("Total: $ ")
+            p.text(str(u.get_total()))
             p.cut()
         time.sleep(0.5)
 
@@ -124,6 +137,9 @@ def pedidos(request,**kwargs):
         p.text(str(imprimir.get_total()))
         p.text("\n------------------------\n")
         p.text(str(imprimir.comentario))
+        if imprimir.direnvio !="":
+            p.text("\n------------------------\n")
+            p.text("CON ENVIO")
         p.cut()
         loscalientes=produc_ord.filter(item__categoria_producto="calientes")
         if loscalientes.count()>0:
@@ -135,6 +151,16 @@ def pedidos(request,**kwargs):
                 p.text(str(i))
                 p.text("\n")
             p.cut()
+        #DIR ENVIO
+        if imprimir.direnvio!="":
+            p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
+            p.text(str(imprimir.client))
+            p.set(width=2, height=2)
+            p.text("\n------------------------\n")
+            p.text(imprimir.direnvio)
+            p.text("Total: $ ")
+            p.text(str(imprimir.get_total()))
+            p.cut()
     except:
         pass
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=date.today().day,
@@ -144,6 +170,10 @@ def pedidos(request,**kwargs):
                                           fecha__month=date.today().month,
                                           fecha__year=date.today().year)
     pedidostotales=todoslospedidosdeldia.count()
+    totalenvios=0
+    for i in todoslospedidosdeldia:
+        if i.direnvio!="":
+            totalenvios+=1
 
     if request.method == "POST":
         day   = int(request.POST['dia'][8:10])
@@ -152,7 +182,7 @@ def pedidos(request,**kwargs):
         return HttpResponseRedirect(reverse('tsuki_app:filtrarporfecha',args=(day,month,year)))
     x=date.today()
     fecha=Fecha({'dia':x})
-    return render(request,'tsuki_app/pedidos_list.html',{'ip':ip_address,'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
+    return render(request,'tsuki_app/pedidos_list.html',{'ip':ip_address,'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes,'envios':totalenvios})
 
 @login_required
 def confirmareliminar(request,pk):
@@ -199,6 +229,12 @@ def Index(request,**kwargs):
     except:
         pass
     return render(request, 'tsuki_app/base.html',{})
+
+# @login_required
+# def gestion_clientes(request,**kwargs):
+#     form = FormularioGestionClientes(request.POST or None)
+#
+#     return render(request, 'tsuki_app/gestion_clients.html',{'form':form,'form2':form2})
 
 @login_required
 def nuevo_pedido(request,**kwargs):
@@ -273,6 +309,9 @@ def agregarproductos(request,**kwargs):
                     p.text(str(imprimir.get_total()))
                     p.text("\n------------------------\n")
                     p.text(str(imprimir.comentario))
+                    if imprimir.direnvio !="":
+                        p.text("\n------------------------\n")
+                        p.text("CON ENVIO")
                     p.cut()
                     loscalientes=produc_ord.filter(item__categoria_producto="calientes")
                     if loscalientes.count()>0:
@@ -283,6 +322,15 @@ def agregarproductos(request,**kwargs):
                         for i in loscalientes:
                             p.text(str(i))
                             p.text("\n")
+                        p.cut()
+                    if imprimir.direnvio!="":
+                        p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
+                        p.text(str(imprimir.client))
+                        p.set(width=2, height=2)
+                        p.text("\n------------------------\n")
+                        p.text(imprimir.direnvio)
+                        p.text("Total: $ ")
+                        p.text(str(imprimir.get_total()))
                         p.cut()
                 except:
                     pass
@@ -300,7 +348,7 @@ def modificarpedido(request,pk):
     carrito=Productosordenados.objects.filter(pedido=pk)
     # extraigo todos los codigos que tiene la orden actual con sus cantidades en el dict orden_Actual
     orden_actual=list(carrito.values('item__id','cantidad').values_list('item__id','cantidad'))
-    #Cargo el formulario con info del cliente, comentario y fecha
+    #Cargo el formulario con info del cliente, comentario y fecha y direccion envio
     form = FormularioNuevoPedido(request.POST or None , instance=orden)
     if request.method=="POST" and form.is_valid:
         productos_ordenados=json.loads(request.POST['Productos'])

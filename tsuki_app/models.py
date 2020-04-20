@@ -19,6 +19,7 @@ class Pedidos(models.Model):
     fecha             = models.DateField(default=date.today)
     comentario        = models.CharField(max_length=256,null=True,blank=True)
     fecha_creacion    = models.DateTimeField(auto_now_add=True)
+    direnvio          = models.CharField(max_length=50, default="", null=True,blank=True)
 
     def __str__(self):
         return self.client.nombre_apellido

@@ -11,11 +11,17 @@ class FormularioNuevoPedido(forms.ModelForm):
     widget=autocomplete.ModelSelect2(attrs={'placeholder':'Nuevo gasto...'}))
     class Meta:
         model = Pedidos
-        fields =  ['fecha','client','comentario']
+        fields =  ['fecha','client','comentario','direnvio']
         widgets = {
             'fecha': DatePickerInput(options = {"disableMobile": "true"},attrs={'stlye':'margin-top:20px;'}),
             'comentario':forms.Textarea(attrs={'rows':5}),
+            'direnvio':forms.Textarea(attrs={'rows':1}),
         }
+
+class FormularioGestionClientes:
+    client =forms.ModelChoiceField(
+    queryset=Clientes.objects.all(),
+    widget=autocomplete.ModelSelect2(attrs={'placeholder':'Nuevo gasto...'}))
 
 class Fecha(forms.Form):
     dia= forms.DateField(widget=DatePickerInput(options = {"disableMobile": "true"}))
