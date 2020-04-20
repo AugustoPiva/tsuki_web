@@ -61,8 +61,9 @@ def imprimiendotodo(request):
         p.text("------------------------\n")
         p.text("Total: $ ")
         p.text(str(u.get_total()))
-        p.text("\n------------------------\n")
-        p.text(str(u.comentario))
+        if u.comentario !=None:
+            p.text("\n------------------------\n")
+            p.text(str(u.comentario))
         if u.direnvio !="":
             p.text("\n------------------------\n")
             p.text("CON ENVIO")
@@ -135,8 +136,9 @@ def pedidos(request,**kwargs):
         p.text("------------------------\n")
         p.text("Total: $ ")
         p.text(str(imprimir.get_total()))
-        p.text("\n------------------------\n")
-        p.text(str(imprimir.comentario))
+        if imprimir.comentario !=None:
+            p.text("\n------------------------\n")
+            p.text(str(imprimir.comentario))
         if imprimir.direnvio !="":
             p.text("\n------------------------\n")
             p.text("CON ENVIO")
@@ -307,8 +309,9 @@ def agregarproductos(request,**kwargs):
                     p.text("------------------------\n")
                     p.text("Total: $ ")
                     p.text(str(imprimir.get_total()))
-                    p.text("\n------------------------\n")
-                    p.text(str(imprimir.comentario))
+                    if imprimir.comentario != None:
+                        p.text("\n------------------------\n")
+                        p.text(str(imprimir.comentario))
                     if imprimir.direnvio !="":
                         p.text("\n------------------------\n")
                         p.text("CON ENVIO")

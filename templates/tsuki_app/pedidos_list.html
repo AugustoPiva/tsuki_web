@@ -90,7 +90,9 @@
             </div>
             <div class="col-6">
               <div class="col-12">
-                {{pedido.grouper.comentario}}
+                {% if pedido.grouper.comentario != None %}
+                  {{pedido.grouper.comentario}}
+                {% endif %}
               </div>
               <div class="col-12">
                 {{pedido.grouper.direnvio}}
