@@ -207,20 +207,21 @@ def filtrarfecha(request,**kwargs):
     productosdelasordenes=Productosordenados.objects.filter(pedido__fecha__day=kwargs['day'],
                                                             pedido__fecha__month=kwargs['month'],
                                                             pedido__fecha__year=kwargs['year']).order_by('pedido__client__nombre_apellido')
-    pedidostotales=Pedidos.objects.filter(fecha__day=kwargs['day'],
-                                          fecha__month=kwargs['month'],
-                                          fecha__year=kwargs['year']).count()
-  totalenvios=0
-  for i in pedidostotales:
-      if (i.direnvio!="") and (i.direnvio!= None):
-          totalenvios+=1
+    pedidos=Pedidos.objects.filter(fecha__day=kwargs['day'],
+                                   fecha__month=kwargs['month'],
+                                   fecha__year=kwargs['year'])
+    pedidostotales=pedidos.count()
+    totalenvios=0
+    for i in pedidos:
+        if (i.direnvio!="") and (i.direnvio!= None):
+            totalenvios+=1
     if request.method == "POST":
         day   = int(request.POST['dia'][8:10])
         month = int(request.POST['dia'][5:7])
         year  = int(request.POST['dia'][0:4])
 
         return HttpResponseRedirect(reverse('tsuki_app:filtrarporfecha',args=(day,month,year)))
-    return render(request,'tsuki_app/pedidos_list.html',{'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes})
+    return render(request,'tsuki_app/pedidos_list.html',{'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes,'envios':totalenvios})
 
 def Index(request,**kwargs):
 
