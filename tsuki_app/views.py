@@ -61,7 +61,7 @@ def imprimiendotodo(request):
         p.text("------------------------\n")
         p.text("Total: $ ")
         p.text(str(u.get_total()))
-        if u.comentario !=None:
+        if (u.direnvio !="") or (u.direnvio !=None):
             p.text("\n------------------------\n")
             p.text(str(u.comentario))
         if u.direnvio !="":
@@ -79,12 +79,13 @@ def imprimiendotodo(request):
                 p.text("\n")
             p.cut()
                 #DIR ENVIO
-        if u.direnvio!="":
+        if (u.direnvio !="") or (u.direnvio !=None):
             p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
             p.text(str(imprimir.client))
             p.set(width=2, height=2)
             p.text("\n------------------------\n")
             p.text(u.direnvio)
+            p.text("\n------------------------\n")
             p.text("Total: $ ")
             p.text(str(u.get_total()))
             p.cut()
@@ -139,7 +140,7 @@ def pedidos(request,**kwargs):
         if imprimir.comentario !=None:
             p.text("\n------------------------\n")
             p.text(str(imprimir.comentario))
-        if imprimir.direnvio !="":
+        if (imprimir.direnvio !="") or (imprimir.direnvio !=None):
             p.text("\n------------------------\n")
             p.text("CON ENVIO")
         p.cut()
@@ -154,12 +155,13 @@ def pedidos(request,**kwargs):
                 p.text("\n")
             p.cut()
         #DIR ENVIO
-        if imprimir.direnvio!="":
+        if (imprimir.direnvio !="") or (imprimir.direnvio !=None):
             p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
             p.text(str(imprimir.client))
             p.set(width=2, height=2)
             p.text("\n------------------------\n")
             p.text(imprimir.direnvio)
+            p.text("\n------------------------\n")
             p.text("Total: $ ")
             p.text(str(imprimir.get_total()))
             p.cut()
@@ -174,7 +176,7 @@ def pedidos(request,**kwargs):
     pedidostotales=todoslospedidosdeldia.count()
     totalenvios=0
     for i in todoslospedidosdeldia:
-        if i.direnvio!="":
+        if (i.direnvio!="") or (i.direnvio!=None):
             totalenvios+=1
 
     if request.method == "POST":
@@ -312,7 +314,7 @@ def agregarproductos(request,**kwargs):
                     if imprimir.comentario != None:
                         p.text("\n------------------------\n")
                         p.text(str(imprimir.comentario))
-                    if imprimir.direnvio !="":
+                    if (imprimir.direnvio !="") or (imprimir.direnvio !=None):
                         p.text("\n------------------------\n")
                         p.text("CON ENVIO")
                     p.cut()
@@ -326,12 +328,13 @@ def agregarproductos(request,**kwargs):
                             p.text(str(i))
                             p.text("\n")
                         p.cut()
-                    if imprimir.direnvio!="":
+                    if (imprimir.direnvio !="") or (imprimir.direnvio !=None):
                         p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
                         p.text(str(imprimir.client))
                         p.set(width=2, height=2)
                         p.text("\n------------------------\n")
                         p.text(imprimir.direnvio)
+                        p.text("\n------------------------\n")
                         p.text("Total: $ ")
                         p.text(str(imprimir.get_total()))
                         p.cut()
