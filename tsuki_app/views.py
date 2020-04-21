@@ -210,6 +210,10 @@ def filtrarfecha(request,**kwargs):
     pedidostotales=Pedidos.objects.filter(fecha__day=kwargs['day'],
                                           fecha__month=kwargs['month'],
                                           fecha__year=kwargs['year']).count()
+  totalenvios=0
+  for i in pedidostotales:
+      if (i.direnvio!="") and (i.direnvio!= None):
+          totalenvios+=1
     if request.method == "POST":
         day   = int(request.POST['dia'][8:10])
         month = int(request.POST['dia'][5:7])
