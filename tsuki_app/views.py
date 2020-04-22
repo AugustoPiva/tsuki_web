@@ -219,8 +219,8 @@ def filtrarfecha(request,**kwargs):
         day   = int(request.POST['dia'][8:10])
         month = int(request.POST['dia'][5:7])
         year  = int(request.POST['dia'][0:4])
-
         return HttpResponseRedirect(reverse('tsuki_app:filtrarporfecha',args=(day,month,year)))
+
     return render(request,'tsuki_app/pedidos_list.html',{'pedidostotales':pedidostotales,'x':x,'fecha':fecha,'productosdeordenes':productosdelasordenes,'envios':totalenvios})
 
 def Index(request,**kwargs):
