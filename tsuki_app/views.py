@@ -155,7 +155,7 @@ def pedidos(request,**kwargs):
                 p.text("\n")
             p.cut()
         #DIR ENVIO
-        if (i.direnvio!="") and (i.direnvio!= None):
+        if (imprimir.direnvio!="") and (imprimir.direnvio!= None):
             p.set(text_type=u'normal', width=3, height=3, smooth=True, flip=False)
             p.text(str(imprimir.client))
             p.set(width=2, height=2)

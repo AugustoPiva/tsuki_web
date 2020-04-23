@@ -95,7 +95,9 @@
                 {% endif %}
               </div>
               <div class="col-12">
-                {{pedido.grouper.direnvio}}
+                {% if pedido.grouper.direnvio != None %}
+                  {{pedido.grouper.direnvio}}
+                {% endif %}
               </div>
             </div>
           </div>
