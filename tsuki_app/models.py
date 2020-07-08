@@ -53,6 +53,7 @@ class Listaprecios(models.Model):
             ('bocados','Bocados'),
             ('surtido','Surtido'),
             ('salmon','Salmon'),
+            ('postres','Postres'),
     ]
 
     nombre_producto        = models.CharField(max_length=256)
