@@ -417,6 +417,9 @@ def producciondeldia(request,**kwargs):
     hotlangostinos      = productosdelasordenes.filter(item__nombre_producto='Hot Langostinos').aggregate(tlang=Sum('cantidad'))['tlang']
     langostinosrebozados= productosdelasordenes.filter(item__nombre_producto='Langostinos Rebozados 6p').aggregate(tpinc=Sum('cantidad'))['tpinc']
     rolles              = productosdelasordenes.filter(item__categoria_producto='rolls').annotate(Sum('cantidad'))
+    tiramisu            = productosdelasordenes.filter(item__nombre_producto='Tiramisu').aggregate(tir=Sum('cantidad'))['tir']
+    chocotorta          = productosdelasordenes.filter(item__nombre_producto='Chocotorta').aggregate(choc=Sum('cantidad'))['choc']
+    mousse              = productosdelasordenes.filter(item__nombre_producto='Mousse de maracuya').aggregate(mousse=Sum('cantidad'))['mousse']
 
     dict={'totalppp':totalpiezasporprod,
           'totalparroz':totalparroz,
@@ -429,6 +432,9 @@ def producciondeldia(request,**kwargs):
           'rsurtidos':rollssurtidos,
           'gyn':gyn,
           'totalpiezasdia':totalpiezasdeldia,
+          'tiramisu':tiramisu,
+          'chocotorta':chocotorta,
+          'mousse':mousse
     }
     return render(request,'tsuki_app/producciondiaria.html',dict)
 
