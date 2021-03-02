@@ -15,37 +15,37 @@
 </script>
 
 <div class="jumbotron">
-<div id="primerfila"class="row">
-  <div class="col-12">
-    <div class="row">
-    <div class="col-4">
-      <form method="post">
-        {% csrf_token %}
-      {{fecha.media}}
-      {{fecha.dia}}
-      <button style="margin-top:5px;" class = 'btn btn-primary' type="submit" name="button"> Buscar </button>
-      </form>
-      </div>
-      <div class="col-2">
-      <a class = 'btn btn-secondary' href="{% url 'tsuki_app:imprimirtodos' %}" onclick="detener(event)">Imprimir todos</a>
-      </div>
-      <div class="col-3">
-       <h5>{{x|date:"l"}}, {{x|date:"j"}} de {{x|date:"F"}} </h5>
-      </div>
-      <div class="col-3">
-        <div class="col-12">
-           <h5>Total pedidos: {{pedidostotales}}</h5>
+  <div id="primerfila"class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-4">
+          <form method="post">
+            {% csrf_token %}
+            {{fecha.media}}
+            {{fecha.dia}}
+            <button style="margin-top:5px;" class = 'btn btn-primary' type="submit" name="button"> Buscar </button>
+          </form>
         </div>
-        <div class="col-12">
-           <h5>Total Envios: {{envios}}</h5>
+        <div class="col-2">
+          <a class = 'btn btn-secondary' href="{% url 'tsuki_app:imprimirtodos' %}" onclick="detener(event)">Imprimir todos</a>
+        </div>
+        <div class="col-3">
+          <h5>{{x|date:"l"}}, {{x|date:"j"}} de {{x|date:"F"}} </h5>
+        </div>
+        <div class="col-3">
+          <div class="col-12">
+            <h5>Total pedidos: {{pedidostotales}}</h5>
+          </div>
+          <div class="col-12">
+            <h5>Total Envios: {{envios}}</h5>
+          </div>
         </div>
       </div>
-     </div>
+    </div>
   </div>
-</div>
-{% regroup productosdeordenes by pedido as pedido_list %}
+  {% regroup productosdeordenes by pedido as pedido_list %}
   <div id="accordion">
-      {% for pedido in pedido_list %}
+    {% for pedido in pedido_list %}
     <div class="card">
       <div class="card-header" id="headingOne">
         <div class="row">
@@ -59,22 +59,22 @@
                 </h5>
               </div>
               <div style="margin-top:10px;" class="col-6">
-                  <h5>Total: $ {{pedido.grouper.get_total}}</h5>
+                <h5>Total: $ {{pedido.grouper.get_total}}</h5>
               </div>
             </div>
           </div>
-        <div class="col-6">
+          <div class="col-6">
             <div class="row">
               <div class="col-3">
               </div>
               <div class="col-3">
-                  <a class = 'btn btn-primary' href="{% url 'tsuki_app:modificarpedido' pk=pedido.grouper.id %}">Modificar</a>
+                <a class = 'btn btn-primary' href="{% url 'tsuki_app:modificarpedido' pk=pedido.grouper.id %}">Modificar</a>
               </div>
               <div class="col-3">
-                  <a class = 'btn btn-secondary' href="{% url 'tsuki_app:imprimir' pk=pedido.grouper.id %}">Imprimir</a>
+                <a class = 'btn btn-secondary' href="{% url 'tsuki_app:imprimir' pk=pedido.grouper.id %}">Imprimir</a>
               </div>
               <div class="col-3">
-                  <a class = 'btn btn-danger' href="{% url 'tsuki_app:confirmareliminar' pk=pedido.grouper.id %}">Eliminar</a>
+                <a class = 'btn btn-danger' href="{% url 'tsuki_app:confirmareliminar' pk=pedido.grouper.id %}">Eliminar</a>
               </div>
             </div>
           </div>
@@ -82,21 +82,21 @@
       </div>
       <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
         <div class="card-body">
-        <div class="row">
-          <div class="col-6">
-            {% for producto in pedido.list  %}
-            <li> {{producto.cantidad}} - {{ producto.item.nombre_producto }}</li>
-            {% endfor %}
+          <div class="row">
+            <div class="col-6">
+              {% for producto in pedido.list  %}
+              <li> {{producto.cantidad}} - {{ producto.item.nombre_producto }}</li>
+              {% endfor %}
             </div>
             <div class="col-6">
               <div class="col-12">
                 {% if pedido.grouper.comentario != None %}
-                  {{pedido.grouper.comentario}}
+                {{pedido.grouper.comentario}}
                 {% endif %}
               </div>
               <div class="col-12">
                 {% if pedido.grouper.direnvio != None %}
-                  {{pedido.grouper.direnvio}}
+                {{pedido.grouper.direnvio}}
                 {% endif %}
               </div>
             </div>
@@ -105,6 +105,6 @@
       </div>
     </div>
     {% endfor %}
-</div>
+  </div>
 </div>
 {% endblock %}

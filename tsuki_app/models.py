@@ -49,6 +49,7 @@ class Listaprecios(models.Model):
             ('especiales','Especiales'),
             ('premiums','Premiums'),
             ('veggies','Veggies'),
+            ('veggie','Veggie'),
             ('salsa','Salsas'),
             ('bocados','Bocados'),
             ('surtido','Surtido'),
