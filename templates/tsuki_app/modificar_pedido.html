@@ -129,30 +129,24 @@
           </div>
           <!-- Division en dos columnas para barquitos por un lado y puentes barcos hots y demas por otro -->
           <div class="row">
-            <!-- Seccion barquitos -->
-            <div class="row col-6">
+            <!-- Seccion Tablas -->
               <div style="background-color: white;border:1px solid black;margin-left:0px;margin-right:0px;margin-top:5px;margin-bottom:5px;" class="row col-12">
-                <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Barquitos</h6>
+                <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Tablas</h6>
               </div>
               <div style="margin-left: 0px;" class="row">
                 {% for prod in lista %}
                 {% if prod.categoria_producto == "bd" %}
-                <a class="btn-sm btn-primary"  onclick="agregarFila({{prod.id}});return false;" style="margin-right:10px;margin-top:10px;">{{prod.nombre_producto}}</a>
+                <a class="text-white btn-sm btn-primary"  onclick="agregarFila({{prod.id}});return false;" style="margin-right:10px;margin-top:10px;">{{prod.nombre_producto}}</a>
                 <script type="text/javascript">
-                // listadoprecios={idproducto:[$, Nombre producto]}
-                listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
                 </script>
                 {% endif %}
                 {% endfor %}
                 <span></span>
               </div>
-            </div>
             <!-- Seccion puentes y barcos, hots, demas -->
-            <div style="margin-left: 5px;margin-top:5px;" class="row col-6">
-              <div class="row">
                 <!-- Dropdown de Puentes -->
-                <div class="col-6">
-                  <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button style="margin-right:5px;margin-top:5px;" class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Puentes
                   </button><br>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
@@ -160,16 +154,13 @@
                     {% if prod.categoria_producto == "puentes"%}
                     <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
                     <script type="text/javascript">
-                    // listadoprecios={idproducto:[$, Nombre producto]}
-                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
                     </script>
                     {% endif %}
                     {% endfor %}
                   </div>
-                </div>
                 <!-- Dropdown de Barcos -->
-                <div class="col-6">
-                  <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <button style="margin-right:5px;margin-top:5px;" class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Barcos
                   </button><br>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
@@ -177,19 +168,14 @@
                     {% if prod.categoria_producto == "barcos"%}
                     <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
                     <script type="text/javascript">
-                    // listadoprecios={idproducto:[$, Nombre producto]}
-                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
                     </script>
                     {% endif %}
                     {% endfor %}
                   </div>
-                </div>
-              </div>
               <!-- Hots y Otras piezas -->
-              <div class="row">
                 <!-- Hots -->
-                <div class="col-4">
-                  <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:20px;margin-top:20px;">
+                  <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
                     Hots
                   </button><br>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
@@ -197,17 +183,14 @@
                     {% if prod.categoria_producto == "calientes"%}
                     <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
                     <script type="text/javascript">
-                    // listadoprecios={idproducto:[$, Nombre producto]}
                     listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
                     </script>
                     {% endif %}
                     {% endfor %}
                     <span></span>
                   </div>
-                </div>
                 <!-- Otras piezas -->
-                <div class="col-4">
-                  <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:20px;margin-top:20px;">
+                  <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
                     Otras piezas
                   </button><br>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
@@ -215,18 +198,13 @@
                     {% if prod.categoria_producto == "varios"%}
                     <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
                     <script type="text/javascript">
-                    // listadoprecios={idproducto:[$, Nombre producto]}
                     listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
                     </script>
                     {% endif %}
                     {% endfor %}
                   </div>
-                </div>
-              </div>
-              <div class="row">
                 <!-- Salsa  -->
-                <div class="col-4">
-                  <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:20px;margin-top:20px;">
+                  <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
                     Salsas
                   </button><br>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
@@ -234,16 +212,13 @@
                     {% if prod.sub_categoria_producto == "salsa"%}
                     <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
                     <script type="text/javascript">
-                    // listadoprecios={idproducto:[$, Nombre producto]}
                     listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
                     </script>
                     {% endif %}
                     {% endfor %}
                   </div>
-                </div>
                 <!-- Postres  -->
-                <div class="col-4">
-                  <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left:20px;margin-top:20px;">
+                  <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left:5px;margin-top:5px;">
                     Postres
                   </button><br>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
@@ -256,10 +231,7 @@
                     {% endif %}
                     {% endfor %}
                   </div>
-                </div>
               </div>
-            </div>
-          </div>
         </div>
         <!-- Segunda columna de la pagina -->
         <div class="col-6">
@@ -301,13 +273,12 @@
 
           <!-- Fila para poner boton Terminar modificacion con la opcio de modificar nombre, fecha y comentario-->
           <div class="row">
-            <div class="col-6">
               <form method="post">
                 {% csrf_token %}
                 <div class="row">
-                  <h6>Nombre cliente (si quiere modificarse el cliente)</h6>
+                  <h6>Nombre cliente</h6>
                 </div>
-                <div class="row">
+                <div style='margin-bottom:5px;' class="row">
                   {{form.client}}
                 </div>
                 <div class="row">
@@ -316,8 +287,6 @@
                 <div class="row">
                   {{form.comentario}}
                 </div>
-              </div>
-              <div class="col-6">
                 <div class="row">
                   <h6>Fecha</h6>
                 </div>
@@ -335,12 +304,10 @@
                   <input id='productos' type="hidden" name="Productos" value='{}'>
                   <input style = "margin-top:10px;" class = 'btn btn-primary' type="submit" value="Terminar modificacion">
                 </div>
-              </div>
             </form>
           </div>
         </div>
       </div>
     </div>
-
   </body>
 </html>
