@@ -5,12 +5,12 @@
 {% load my_extras %}
 
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title></title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title></title>
 
-    {# https://bootswatch.com/#}
+  {# https://bootswatch.com/#}
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" type = "text/css" href="{% static "/css/FuentesyEstilos.css" %}">
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -21,293 +21,293 @@
   <script src="{% static "javascript/javaparanuevopedido.js" %}"> </script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <script type="text/javascript">
-        // Objeto que obtiene todos los rolls con sus precio y nombre
-        // ,utilizado para vincular los botones de cada roll
-        // cuando el usuario hace click
-        var listadoprecios = {};
-        // Acumulador para calcular costo total
-        var total = {{orden.get_total}};
-        // Objeto que obtiene los productos (rolls y combinados)
-        // para poder mostrarlos mientras se van agregando
-        var fila = 'fila';
-        var productospedidos = {};
-        function agregarFila(producto){
-          if (producto in productospedidos){
-            productospedidos[producto]++;
-            $('#'+producto+'.c').text(''+productospedidos[producto]);
-            $('#'+producto+'.t').text('$'+productospedidos[producto]*listadoprecios[producto][0]);
-          }else{
-            $('#tabla-carro').append('<tr id='+producto+' class='+fila+'><td>'+listadoprecios[producto][1]+'</td><td id='+producto+' class=c >1</td><td id='+producto+' class=t > $'+listadoprecios[producto][0]+'</td><td><a class="btn btn-primary" onclick="eliminarProducto('+producto+');return false;">X</a></td></tr>');
-            productospedidos[producto]=1;
-          }
-          total  = total + listadoprecios[producto][0];
-          $('#total').html(' $ '+ total);
-          $('#productos').val(JSON.stringify(productospedidos));
-        }
-        function eliminarProducto(producto){
-          if (productospedidos[producto]==1){
-            delete productospedidos[producto];
-            $('#'+producto+'.fila').remove();
-          }else{
-            productospedidos[producto]--;
-            $('#'+producto+'.c').text(''+productospedidos[producto]);
-            $('#'+producto+'.t').text('$'+productospedidos[producto]*listadoprecios[producto][0]);
-          }
-          total  = total - listadoprecios[producto][0];
-          $('#total').html(' $ '+ total);
-          $('#productos').val(JSON.stringify(productospedidos));
-        }
-    </script>
-    <div class="jumbotron">
-      <div class="row">
-        <!-- Primer columna de la pagina -->
-        <div class="col-6">
-          <!-- Rolls Clasicos -->
-          <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;" class="row">
-            <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Clasicos</h6>
-          </div>
-            <div class="row">
-              {% for prod in lista %}
-              {% if prod.sub_categoria_producto == "clasicos"%}
-              <a class="btn-sm btn-primary" onclick="agregarFila({{prod.id}});return false;" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
-              <script type="text/javascript">
-              // listadoprecios={idproducto:[$, Nombre producto]}
-              listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-              </script>
-              {% endif %}
-              {% endfor %}
-            </div>
-          <!-- Rolls Especiales -->
-          <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;" class="row">
-            <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Especiales</h6>
-          </div>
-          <div class="row">
-            {% for prod in lista %}
-            {% if prod.sub_categoria_producto == "especiales"%}
-            <a class="btn-sm btn-secondary" onclick="agregarFila({{prod.id}});return false;" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
-            <script type="text/javascript">
-            // listadoprecios={idproducto:[$, Nombre producto]}
-            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-            </script>
-            {% endif %}
-            {% endfor %}
-          </div>
-          <!-- Rolls Premium -->
-          <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;" class="row">
-            <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Premiums</h6>
-          </div>
-          <div class="row">
-            {% for prod in lista %}
-            {% if prod.sub_categoria_producto == "premiums"%}
-            <a class="btn-sm btn-warning" onclick="agregarFila({{prod.id}});return false;" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
-            <script type="text/javascript">
-            // listadoprecios={idproducto:[$, Nombre producto]}
-            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-            </script>
-            {% endif %}
-            {% endfor %}
-          </div>
-          <!-- Rolls Veggies -->
-          <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;" class="row">
-            <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Veggies</h6>
-          </div>
-          <div class="row">
-            {% for prod in lista %}
-            {% if prod.sub_categoria_producto == "veggies"%}
-            <a class="btn-sm btn-success" onclick="agregarFila({{prod.id}});return false;" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
-            <script type="text/javascript">
-            // listadoprecios={idproducto:[$, Nombre producto]}
-            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-            </script>
-            {% endif %}
-            {% endfor %}
-          </div>
-          <!-- Division en dos columnas para barquitos por un lado y puentes barcos hots y demas por otro -->
-          <div class="row">
-            <!-- Seccion Tablas -->
-              <div style="background-color: white;border:1px solid black;margin-left:0px;margin-right:0px;margin-top:5px;margin-bottom:5px;" class="row col-12">
-                <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Tablas</h6>
-              </div>
-              <div style="margin-left: 0px;" class="row">
-                {% for prod in lista %}
-                {% if prod.categoria_producto == "bd" %}
-                <a class="text-white btn-sm btn-primary"  onclick="agregarFila({{prod.id}});return false;" style="margin-right:10px;margin-top:10px;">{{prod.nombre_producto}}</a>
-                <script type="text/javascript">
-                listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
-                </script>
-                {% endif %}
-                {% endfor %}
-                <span></span>
-              </div>
-            <!-- Seccion puentes y barcos, hots, demas -->
-                <!-- Dropdown de Puentes -->
-                  <button style="margin-right:5px;margin-top:5px;" class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Puentes
-                  </button><br>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    {% for prod in lista %}
-                    {% if prod.categoria_producto == "puentes"%}
-                    <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
-                    <script type="text/javascript">
-                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
-                    </script>
-                    {% endif %}
-                    {% endfor %}
-                  </div>
-                <!-- Dropdown de Barcos -->
-                  <button style="margin-right:5px;margin-top:5px;" class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Barcos
-                  </button><br>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    {% for prod in lista %}
-                    {% if prod.categoria_producto == "barcos"%}
-                    <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
-                    <script type="text/javascript">
-                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
-                    </script>
-                    {% endif %}
-                    {% endfor %}
-                  </div>
-              <!-- Hots y Otras piezas -->
-                <!-- Hots -->
-                  <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
-                    Hots
-                  </button><br>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    {% for prod in lista %}
-                    {% if prod.categoria_producto == "calientes"%}
-                    <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
-                    <script type="text/javascript">
-                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-                    </script>
-                    {% endif %}
-                    {% endfor %}
-                    <span></span>
-                  </div>
-                <!-- Otras piezas -->
-                  <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
-                    Otras piezas
-                  </button><br>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    {% for prod in lista %}
-                    {% if prod.categoria_producto == "varios"%}
-                    <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
-                    <script type="text/javascript">
-                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-                    </script>
-                    {% endif %}
-                    {% endfor %}
-                  </div>
-                <!-- Salsa  -->
-                  <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
-                    Salsas
-                  </button><br>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    {% for prod in lista %}
-                    {% if prod.sub_categoria_producto == "salsa"%}
-                    <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
-                    <script type="text/javascript">
-                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-                    </script>
-                    {% endif %}
-                    {% endfor %}
-                  </div>
-                <!-- Postres  -->
-                  <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left:5px;margin-top:5px;">
-                    Postres
-                  </button><br>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                    {% for prod in lista %}
-                    {% if prod.sub_categoria_producto == "postres"%}
-                    <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
-                    <script type="text/javascript">
-                    listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-                    </script>
-                    {% endif %}
-                    {% endfor %}
-                  </div>
-              </div>
+  <script type="text/javascript">
+  // Objeto que obtiene todos los rolls con sus precio y nombre
+  // ,utilizado para vincular los botones de cada roll
+  // cuando el usuario hace click
+  var listadoprecios = {};
+  // Acumulador para calcular costo total
+  var total = {{orden.get_total}};
+  // Objeto que obtiene los productos (rolls y combinados)
+  // para poder mostrarlos mientras se van agregando
+  var fila = 'fila';
+  var productospedidos = {};
+  function agregarFila(producto){
+    if (producto in productospedidos){
+      productospedidos[producto]++;
+      $('#'+producto+'.c').text(''+productospedidos[producto]);
+      $('#'+producto+'.t').text('$'+productospedidos[producto]*listadoprecios[producto][0]);
+    }else{
+      $('#tabla-carro').append('<tr id='+producto+' class='+fila+'><td>'+listadoprecios[producto][1]+'</td><td id='+producto+' class=c >1</td><td id='+producto+' class=t > $'+listadoprecios[producto][0]+'</td><td><a class="btn btn-primary" onclick="eliminarProducto('+producto+');return false;">X</a></td></tr>');
+      productospedidos[producto]=1;
+    }
+    total  = total + listadoprecios[producto][0];
+    $('#total').html(' $ '+ total);
+    $('#productos').val(JSON.stringify(productospedidos));
+  }
+  function eliminarProducto(producto){
+    if (productospedidos[producto]==1){
+      delete productospedidos[producto];
+      $('#'+producto+'.fila').remove();
+    }else{
+      productospedidos[producto]--;
+      $('#'+producto+'.c').text(''+productospedidos[producto]);
+      $('#'+producto+'.t').text('$'+productospedidos[producto]*listadoprecios[producto][0]);
+    }
+    total  = total - listadoprecios[producto][0];
+    $('#total').html(' $ '+ total);
+    $('#productos').val(JSON.stringify(productospedidos));
+  }
+  </script>
+  <div class="jumbotron">
+    <div class="row">
+      <!-- Primer columna de la pagina -->
+      <div class="col-6">
+        <!-- Rolls Clasicos -->
+        <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;" class="row">
+          <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Clasicos</h6>
         </div>
-        <!-- Segunda columna de la pagina -->
-        <div class="col-6">
-          <!-- Nombre cliente -->
-          <div class="row" style="background-color: white;border:1px solid black;">
-            <h4 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%">{{ orden.client }}</h4>
+        <div class="row">
+          {% for prod in lista %}
+          {% if prod.sub_categoria_producto == "clasicos"%}
+          <a class="btn-sm btn-primary" onclick="agregarFila({{prod.id}});return false;" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+          <script type="text/javascript">
+          // listadoprecios={idproducto:[$, Nombre producto]}
+          listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+          </script>
+          {% endif %}
+          {% endfor %}
+        </div>
+        <!-- Rolls Especiales -->
+        <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;" class="row">
+          <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Especiales</h6>
+        </div>
+        <div class="row">
+          {% for prod in lista %}
+          {% if prod.sub_categoria_producto == "especiales"%}
+          <a class="btn-sm btn-secondary" onclick="agregarFila({{prod.id}});return false;" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+          <script type="text/javascript">
+          // listadoprecios={idproducto:[$, Nombre producto]}
+          listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+          </script>
+          {% endif %}
+          {% endfor %}
+        </div>
+        <!-- Rolls Premium -->
+        <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;" class="row">
+          <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Premiums</h6>
+        </div>
+        <div class="row">
+          {% for prod in lista %}
+          {% if prod.sub_categoria_producto == "premiums"%}
+          <a class="btn-sm btn-warning" onclick="agregarFila({{prod.id}});return false;" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+          <script type="text/javascript">
+          // listadoprecios={idproducto:[$, Nombre producto]}
+          listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+          </script>
+          {% endif %}
+          {% endfor %}
+        </div>
+        <!-- Rolls Veggies -->
+        <div style="background-color: white;border:1px solid black;margin-right:0px;margin-top:15px;margin-bottom:3px;" class="row">
+          <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Veggies</h6>
+        </div>
+        <div class="row">
+          {% for prod in lista %}
+          {% if prod.sub_categoria_producto == "veggies"%}
+          <a class="btn-sm btn-success" onclick="agregarFila({{prod.id}});return false;" style="margin-right:5px;margin-top:5px;">{{prod.nombre_producto}}</a>
+          <script type="text/javascript">
+          // listadoprecios={idproducto:[$, Nombre producto]}
+          listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+          </script>
+          {% endif %}
+          {% endfor %}
+        </div>
+        <!-- Division en dos columnas para barquitos por un lado y puentes barcos hots y demas por otro -->
+        <div class="row">
+          <!-- Seccion Tablas -->
+          <div style="background-color: white;border:1px solid black;margin-left:0px;margin-right:0px;margin-top:5px;margin-bottom:5px;" class="row col-12">
+            <h6 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%" class='textosrolls'>Tablas</h6>
           </div>
-          <!-- Tabla de rolls y tablas seleccionados -->
-          <div id="carro" class="row">
-            <table id="tabla-carro" class="table">
-              <thead>
-                <tr>
-                  <th scope="col">Producto</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Precio</th>
-                  <th scope="col">Eliminar</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for producto in carro %}
-                <tr id="{{producto.item.id}}" class='fila'>
-                  <script type="text/javascript">
-                    productospedidos[{{producto.item.id}}]={{producto.cantidad}};
-                  </script>
-                  <td><p>{{producto.item.nombre_producto}}</p></td>
-                  <td id='{{producto.item.id}}' class='c'>{{producto.cantidad}}</td>
-                  <td id='{{producto.item.id}}' class='t'>$ {{producto.precio_total}}</td>
-                  <td><a class="btn btn-primary" onclick="eliminarProducto({{producto.item.id}});return false;">X</a></td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+          <div style="margin-left: 0px;" class="row">
+            {% for prod in lista %}
+            {% if prod.categoria_producto == "bd" %}
+            <a class="text-white btn-sm btn-primary"  onclick="agregarFila({{prod.id}});return false;" style="margin-right:10px;margin-top:10px;">{{prod.nombre_producto}}</a>
+            <script type="text/javascript">
+            listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
+            </script>
+            {% endif %}
+            {% endfor %}
+            <span></span>
           </div>
-          <!-- Fila para poner total -->
-          <div style="margin-top: 10px;margin-bottom: 10px; background-color: white;border:1px solid black;" class="row">
-            <h4 style="margin-left: 10px;margin-top: 10px;margin-bottom: 10px;"id="totalcarrito">Total:</h4>
-            <h4 style="margin-left: 10px;margin-top: 10px;margin-bottom: 10px;"id="total">$ {{orden.get_total}}</h4>
+          <!-- Seccion puentes y barcos, hots, demas -->
+          <!-- Dropdown de Puentes -->
+          <button style="margin-right:5px;margin-top:5px;" class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Puentes
+          </button><br>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            {% for prod in lista %}
+            {% if prod.categoria_producto == "puentes"%}
+            <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+            <script type="text/javascript">
+            listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
+            </script>
+            {% endif %}
+            {% endfor %}
           </div>
-
-          <!-- Fila para poner boton Terminar modificacion con la opcio de modificar nombre, fecha y comentario-->
-          <div class="row">
-              <form method="post">
-                {% csrf_token %}
-                <div class="row">
-                  <h6>Nombre cliente</h6>
-                </div>
-                <div style='margin-bottom:5px;' class="row">
-                  {{form.client}}
-                </div>
-                <div class="row">
-                  <h6>Comentarios</h6>
-                </div>
-                <div class="row">
-                  {{form.comentario}}
-                </div>
-                <div class="row">
-                  <h6>Fecha</h6>
-                </div>
-                <div class="row">
-                  {{form.media}}
-                  {{form.fecha}}
-                </div>
-                <div class="row">
-                  <h6>Direccion</h6>
-                </div>
-                <div class="row">
-                  {{form.direnvio}}
-                </div>
-                <div class="row">
-                  <input id='productos' type="hidden" name="Productos" value='{}'>
-                  <input style = "margin-top:10px;" class = 'btn btn-primary' type="submit" value="Terminar modificacion">
-                </div>
-            </form>
+          <!-- Dropdown de Barcos -->
+          <button style="margin-right:5px;margin-top:5px;" class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Barcos
+          </button><br>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            {% for prod in lista %}
+            {% if prod.categoria_producto == "barcos"%}
+            <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+            <script type="text/javascript">
+            listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
+            </script>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <!-- Hots y Otras piezas -->
+          <!-- Hots -->
+          <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
+            Hots
+          </button><br>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            {% for prod in lista %}
+            {% if prod.categoria_producto == "calientes"%}
+            <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+            <script type="text/javascript">
+            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+            </script>
+            {% endif %}
+            {% endfor %}
+            <span></span>
+          </div>
+          <!-- Otras piezas -->
+          <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
+            Otras piezas
+          </button><br>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            {% for prod in lista %}
+            {% if prod.categoria_producto == "varios"%}
+            <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+            <script type="text/javascript">
+            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+            </script>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <!-- Salsa  -->
+          <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
+            Salsas
+          </button><br>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            {% for prod in lista %}
+            {% if prod.sub_categoria_producto == "salsa"%}
+            <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+            <script type="text/javascript">
+            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+            </script>
+            {% endif %}
+            {% endfor %}
+          </div>
+          <!-- Postres  -->
+          <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left:5px;margin-top:5px;">
+            Postres
+          </button><br>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            {% for prod in lista %}
+            {% if prod.sub_categoria_producto == "postres"%}
+            <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+            <script type="text/javascript">
+            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+            </script>
+            {% endif %}
+            {% endfor %}
           </div>
         </div>
       </div>
+      <!-- Segunda columna de la pagina -->
+      <div class="col-6">
+        <!-- Nombre cliente -->
+        <div class="row" style="background-color: white;border:1px solid black;">
+          <h4 style="margin-top: 5px;margin-left: auto;margin-right: auto;width:20%">{{ orden.client }}</h4>
+        </div>
+        <!-- Tabla de rolls y tablas seleccionados -->
+        <div id="carro" class="row">
+          <table id="tabla-carro" class="table">
+            <thead>
+              <tr>
+                <th scope="col">Producto</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Eliminar</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for producto in carro %}
+              <tr id="{{producto.item.id}}" class='fila'>
+                <script type="text/javascript">
+                productospedidos[{{producto.item.id}}]={{producto.cantidad}};
+                </script>
+                <td><p>{{producto.item.nombre_producto}}</p></td>
+                <td id='{{producto.item.id}}' class='c'>{{producto.cantidad}}</td>
+                <td id='{{producto.item.id}}' class='t'>$ {{producto.precio_total}}</td>
+                <td><a class="btn btn-primary" onclick="eliminarProducto({{producto.item.id}});return false;">X</a></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <!-- Fila para poner total -->
+        <div style="margin-top: 10px;margin-bottom: 10px; background-color: white;border:1px solid black;" class="row">
+          <h4 style="margin-left: 10px;margin-top: 10px;margin-bottom: 10px;"id="totalcarrito">Total:</h4>
+          <h4 style="margin-left: 10px;margin-top: 10px;margin-bottom: 10px;"id="total">$ {{orden.get_total}}</h4>
+        </div>
+
+        <!-- Fila para poner boton Terminar modificacion con la opcio de modificar nombre, fecha y comentario-->
+        <div style='margin-left:5px;' class="row">
+          <form method="post">
+            {% csrf_token %}
+            <div class="row">
+              <h6>Nombre cliente</h6>
+            </div>
+            <div style='margin-bottom:5px;' class="row">
+              {{form.client}}
+            </div>
+            <div class="row">
+              <h6>Comentarios</h6>
+            </div>
+            <div class="row">
+              {{form.comentario}}
+            </div>
+            <div class="row">
+              <h6>Fecha</h6>
+            </div>
+            <div class="row">
+              {{form.media}}
+              {{form.fecha}}
+            </div>
+            <div class="row">
+              <h6>Direccion</h6>
+            </div>
+            <div class="row">
+              {{form.direnvio}}
+            </div>
+            <div class="row">
+              <input id='productos' type="hidden" name="Productos" value='{}'>
+              <input style = "margin-top:10px;" class = 'btn btn-primary' type="submit" value="Terminar modificacion">
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
-  </body>
+  </div>
+</body>
 </html>
