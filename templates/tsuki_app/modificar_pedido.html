@@ -146,90 +146,104 @@
           </div>
           <!-- Seccion puentes y barcos, hots, demas -->
           <!-- Dropdown de Puentes -->
-          <button style="margin-right:5px;margin-top:5px;" class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Puentes
-          </button><br>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            {% for prod in lista %}
-            {% if prod.categoria_producto == "puentes"%}
-            <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
-            <script type="text/javascript">
-            listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
-            </script>
-            {% endif %}
-            {% endfor %}
+          <div class="btn-group">
+            <button style="margin-right:5px;margin-left:10px;margin-top:5px;" class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Puentes
+            </button><br>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              {% for prod in lista %}
+              {% if prod.categoria_producto == "puentes"%}
+              <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+              <script type="text/javascript">
+              listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
+              console.log({{prod.nombre_producto}})
+              </script>
+              {% endif %}
+              {% endfor %}
+            </div>
           </div>
           <!-- Dropdown de Barcos -->
-          <button style="margin-right:5px;margin-top:5px;" class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Barcos
-          </button><br>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            {% for prod in lista %}
-            {% if prod.categoria_producto == "barcos"%}
-            <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
-            <script type="text/javascript">
-            listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
-            </script>
-            {% endif %}
-            {% endfor %}
+          <div class="btn-group">
+            <button style="margin-right:5px;margin-top:5px;" class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Barcos
+            </button><br>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu3">
+              {% for prod in lista %}
+              {% if prod.categoria_producto == "barcos"%}
+              <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+              <script type="text/javascript">
+              listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
+              console.log({{prod.nombre_producto}})
+              </script>
+              {% endif %}
+              {% endfor %}
+            </div>
           </div>
           <!-- Hots y Otras piezas -->
           <!-- Hots -->
-          <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
-            Hots
-          </button><br>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            {% for prod in lista %}
-            {% if prod.categoria_producto == "calientes"%}
-            <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
-            <script type="text/javascript">
-            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-            </script>
-            {% endif %}
-            {% endfor %}
-            <span></span>
+          <div class="btn-group">
+            <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
+              Hots
+            </button><br>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              {% for prod in lista %}
+              {% if prod.categoria_producto == "calientes"%}
+              <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+              <script type="text/javascript">
+              listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+              </script>
+              {% endif %}
+              {% endfor %}
+              <span></span>
+            </div>
           </div>
           <!-- Otras piezas -->
-          <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
-            Otras piezas
-          </button><br>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            {% for prod in lista %}
-            {% if prod.categoria_producto == "varios"%}
-            <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
-            <script type="text/javascript">
-            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-            </script>
-            {% endif %}
-            {% endfor %}
+          <div class="btn-group">
+            <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
+              Otras piezas
+            </button><br>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              {% for prod in lista %}
+              {% if prod.categoria_producto == "varios"%}
+              <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+              <script type="text/javascript">
+              listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+              </script>
+              {% endif %}
+              {% endfor %}
+            </div>
           </div>
           <!-- Salsa  -->
-          <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
-            Salsas
-          </button><br>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            {% for prod in lista %}
-            {% if prod.sub_categoria_producto == "salsa"%}
-            <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
-            <script type="text/javascript">
-            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-            </script>
-            {% endif %}
-            {% endfor %}
+          <div class="btn-group">
+            <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right:5px;margin-top:5px;">
+              Salsas
+            </button><br>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              {% for prod in lista %}
+              {% if prod.sub_categoria_producto == "salsa"%}
+              <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+              <script type="text/javascript">
+              listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+              </script>
+              {% endif %}
+              {% endfor %}
+            </div>
           </div>
           <!-- Postres  -->
-          <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left:5px;margin-top:5px;">
-            Postres
-          </button><br>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            {% for prod in lista %}
-            {% if prod.sub_categoria_producto == "postres"%}
-            <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
-            <script type="text/javascript">
-            listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
-            </script>
-            {% endif %}
-            {% endfor %}
+          <div class="btn-group">
+            <button class="btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-left:5px;margin-top:5px;">
+              Postres
+            </button><br>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+              {% for prod in lista %}
+              {% if prod.sub_categoria_producto == "postres"%}
+              <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
+              <script type="text/javascript">
+              listadoprecios[{{prod.id}}] = [{{prod.precio_producto}},"{{prod.nombre_producto}}"]
+              </script>
+              {% endif %}
+              {% endfor %}
+            </div>
           </div>
         </div>
       </div>
