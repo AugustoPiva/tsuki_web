@@ -156,7 +156,6 @@
               <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
               <script type="text/javascript">
               listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
-              console.log({{prod.nombre_producto}})
               </script>
               {% endif %}
               {% endfor %}
@@ -173,7 +172,6 @@
               <a class = "dropdown-item"  onclick="agregarFila({{prod.id}});return false;">{{prod.nombre_producto}}</a>
               <script type="text/javascript">
               listadoprecios[{{prod.id}}] = [{{prod.precio_producto  }},"{{prod.nombre_producto}}"]
-              console.log({{prod.nombre_producto}})
               </script>
               {% endif %}
               {% endfor %}
